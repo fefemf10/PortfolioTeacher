@@ -4,7 +4,13 @@
     {
         public static void Initialize(ApplicationContext context)
         {
-            context.Database.EnsureCreated();
+            if (!context.Database.EnsureCreated())
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
+            else
+                context.Database.EnsureCreated();
             context.SaveChanges();
         }
     }
