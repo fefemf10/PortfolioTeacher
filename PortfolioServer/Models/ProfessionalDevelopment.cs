@@ -11,5 +11,6 @@
         public string SeriaDocument { get; set; }
         public string NumberDocument { get; set; }
         public DateOnly DateСompletion { get; set; }
-    }
+        public int ListeningTime { get; set; }
+	}
 }
