@@ -1,0 +1,9 @@
+﻿@inject IStringLocalizer<CultureSelector> localizer
+<NavLink class="nav-link">
+	<select class="form-select" @bind="Culture">
+		@foreach (var culture in cultures)
+		{
+			<option value="@culture">@culture.DisplayName</option>
+		}
+	</select>
+</NavLink>
