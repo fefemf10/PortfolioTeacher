@@ -12,7 +12,7 @@ namespace PortfolioSite.Extensions
 			string result = await jsInterop.InvokeAsync<string>("blazorCulture.get");
 			CultureInfo cultureInfo;
             if (result is null)
-				cultureInfo = new CultureInfo("en-US");
+				cultureInfo = new CultureInfo("ru-RU");
 			else
 				cultureInfo = new CultureInfo(result);
 			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;

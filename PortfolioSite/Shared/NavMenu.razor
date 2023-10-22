@@ -1,48 +1,136 @@
 ﻿@inject IStringLocalizer<NavMenu> localizer
-<div class="top-row navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">@localizer["Title"]</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+
+<Bar @bind-Visible="@topbarVisible"	
+	Breakpoint="Breakpoint.Desktop"
+	ThemeContrast="ThemeContrast.Light"
+	 Padding="Padding.Is3.OnX">
+	<BarBrand>
+		<BarItem>
+			<BarLink To="#">
+				<BarIcon IconName="IconName.Dashboard" />
+				@localizer["Title"]
+			</BarLink>
+		</BarItem>
+	</BarBrand>
+	<BarToggler/>
+	<BarMenu>
+		<BarStart>
+			<BarItem>
+				<BarLink To="about">
+					<Button Color="Color.Primary" Block=true><BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd"/>@localizer["About"]</Button>
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="work">
+					<Button Color="Color.Primary" Block=true><BarIcon IconName="IconName.Building" Padding="Padding.Is2.FromEnd" />@localizer["Work"]</Button>
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="university">
+					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-university")" Padding="Padding.Is2.FromEnd" />@localizer["University"]</Button>
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="awards">
+					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-award")" Padding="Padding.Is2.FromEnd" />@localizer["Awards"]</Button>
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="scienceprojects">
+					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-flask")" Padding="Padding.Is2.FromEnd" />@localizer["ScienceProjects"]</Button>
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="professionaldevelopments">
+					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-chalkboard-teacher")" Padding="Padding.Is2.FromEnd" />@localizer["ProfessionalDevelopments"]</Button>
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="disciplines">
+					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-list-ul")" Padding="Padding.Is2.FromEnd" />@localizer["Disciplines"]</Button>
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="publicactivities">
+					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-walking")" Padding="Padding.Is2.FromEnd" />@localizer["PublicActivities"]</Button>
+				</BarLink>
+			</BarItem>
+		</BarStart>
+	</BarMenu>
+</Bar>
+@code {
+	private bool topbarVisible = false;
+}
+@* <div class="top-row navbar navbar-dark">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="">@localizer["Title"]</a>
+		<button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+	</div>
 </div>
 
 <div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill" aria-hidden="true"></span> @localizer["Home"]
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill" aria-hidden="true"></span> @localizer["Counter"]
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="bi bi-list-nested" aria-hidden="true"></span> @localizer["FetchData"]
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link ps-3">
-                <span class="bi bi-translate" aria-hidden="true"></span> @localizer["Language"]
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <CultureSelector />
-        </div>
-    </nav>
+	<nav class="flex-column">
+		<div class="nav-item px-2">
+			<NavLink class="nav-link" href="about" Match="NavLinkMatch.All">
+				<span class="bi bi-person-fill" aria-hidden="true"></span> @localizer["About"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<NavLink class="nav-link" href="work">
+				<span class="bi bi-buildings" aria-hidden="true"></span> @localizer["Work"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<NavLink class="nav-link" href="university">
+				<span class="bi bi-building" aria-hidden="true"></span> @localizer["University"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<NavLink class="nav-link" href="awards">
+				<span class="bi bi-award-fill" aria-hidden="true"></span> @localizer["Awards"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<NavLink class="nav-link" href="scienceprojects">
+				<span class="bi bi-collection" aria-hidden="true"></span> @localizer["ScienceProjects"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<NavLink class="nav-link" href="professionaldevelopments">
+				<span class="bi bi-lightning-fill" aria-hidden="true"></span> @localizer["ProfessionalDevelopments"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<NavLink class="nav-link" href="disciplines">
+				<span class="bi bi-card-list" aria-hidden="true"></span> @localizer["Disciplines"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<NavLink class="nav-link" href="publicactivities">
+				<span class="bi bi-person-lines-fill" aria-hidden="true"></span> @localizer["PublicActivities"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<NavLink class="nav-link">
+				<span class="bi bi-translate" aria-hidden="true"></span> @localizer["Language"]
+			</NavLink>
+		</div>
+		<div class="nav-item px-2">
+			<CultureSelector />
+		</div>
+	</nav>
 </div>
 
 @code {
-    private bool collapseNavMenu = true;
+	private bool collapseNavMenu = true;
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+	private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
+	private void ToggleNavMenu()
+	{
+		collapseNavMenu = !collapseNavMenu;
+	}
 }
+ *@

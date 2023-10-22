@@ -2,6 +2,21 @@
 @inject IStringLocalizer<Index> localizer
 <PageTitle>@localizer["Title"]</PageTitle>
 
-<h1>@localizer["Header"]</h1>
-
-Welcome to your new app.
+<Heading>@localizer["Header"]</Heading>
+<button class="btn btn-primary" @onclick=SD>Hello2</button>
+<Button Color="Color.Primary" Clicked="SD">Hello</Button>
+<Span>
+	Clicked @counter times
+</Span>
+@code{
+	int counter;
+	public void SD2()
+	{
+		++counter;
+	}
+	public Task SD()
+	{
+		++counter;
+		return Task.CompletedTask;
+	}
+}
