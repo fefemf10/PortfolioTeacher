@@ -1,11 +1,38 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager navigationManager
+@inject IdentityAuthenticationStateProvider authStateProvider
 <MediaQueryList>
-	<Layout>
-		<LayoutHeader>
-			<NavMenu />
-		</LayoutHeader>
-		<LayoutContent>
-			@Body
-		</LayoutContent>
-	</Layout>
+	@if (isDesktop)
+	{
+		<Layout>
+			<Layout Sider>
+				<LayoutSider>
+					<LayoutSiderContent>
+						<SideMenu />
+					</LayoutSiderContent>
+				</LayoutSider>
+				<Layout>
+					<LayoutContent Padding="Padding.Is3.OnAll">
+						@Body
+					</LayoutContent>
+				</Layout>
+			</Layout>
+		</Layout>
+	}
+	else
+	{
+		<Layout>
+			<LayoutHeader>
+				<NavMenu />
+			</LayoutHeader>
+			<LayoutContent Padding="Padding.Is3.OnAll">
+				@Body
+			</LayoutContent>
+		</Layout>
+	}
+	<MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="isDesktop" />
 </MediaQueryList>
+
+@code{
+	private bool isDesktop = false;
+}

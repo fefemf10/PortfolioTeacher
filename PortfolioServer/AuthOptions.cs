@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using PortfolioServer.Helpers;
+using PortfolioShared.Helpers;
 using System.Text;
 
-namespace PortfolioServer
+namespace PortfolioShared
 {
 	public static class AuthOptions
 	{

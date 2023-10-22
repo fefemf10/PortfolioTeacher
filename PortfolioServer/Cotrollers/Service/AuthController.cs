@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using PortfolioServer.Helpers;
-using PortfolioServer.Models.Service;
-using PortfolioServer.ViewModels.Request;
-using PortfolioServer.ViewModels.Response;
+using PortfolioShared.Helpers;
+using PortfolioShared.Models.Service;
+using PortfolioShared.ViewModels.Request;
+using PortfolioShared.ViewModels.Response;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 
-namespace PortfolioServer.Cotrollers.Service
+namespace PortfolioShared.Cotrollers.Service
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -33,25 +33,25 @@ namespace PortfolioServer.Cotrollers.Service
 			this.configuration = configuration;
 		}
 		[HttpPost("registration")]
-        public async Task<ActionResult<ResponseUser>> RegistrationAsync([FromBody] RequestUser requestUser)
+        public async Task<ActionResult<ResponseUser>> RegistrationAsync([FromBody] RequestRegistration requestRegistration)
         {
-			User managedUser = new User() { Id = Guid.NewGuid(), UserName = requestUser.Email, Email = requestUser.Email };
-			var result = await userManager.CreateAsync(managedUser, requestUser.Password!);
+			User managedUser = new User() { Id = Guid.NewGuid(), UserName = requestRegistration.Email, Email = requestRegistration.Email };
+			var result = await userManager.CreateAsync(managedUser, requestRegistration.Password!);
 			foreach (var error in result.Errors)
 			{
 				ModelState.AddModelError(string.Empty, error.Description);
 			}
 			if (!result.Succeeded) return BadRequest();
-			await userManager.AddToRoleAsync(managedUser, requestUser.Teacher!.Value ? "Teacher" : "Student");
-			return await Login(requestUser);
+			await userManager.AddToRoleAsync(managedUser, requestRegistration.Teacher!.Value ? "Teacher" : "Student");
+			return await Login(new RequestLogin() { Email = requestRegistration.Email, Password = requestRegistration.Password });
         }
 		[HttpPost("login")]
-		public async Task<ActionResult<ResponseUser>> Login([FromBody] RequestUser requestUser)
+		public async Task<ActionResult<ResponseUser>> Login([FromBody] RequestLogin requestLogin)
 		{
-			User? user = await userManager.FindByEmailAsync(requestUser.Email!);
+			User? user = await userManager.FindByEmailAsync(requestLogin.Email!);
 			if (user is null)
 				return BadRequest("Bad credentials");
-			bool isPasswordValid = await userManager.CheckPasswordAsync(user, requestUser.Password!);
+			bool isPasswordValid = await userManager.CheckPasswordAsync(user, requestLogin.Password!);
             if (!isPasswordValid)
 				return BadRequest("Bad credentials");
 			

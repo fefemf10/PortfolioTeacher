@@ -1,5 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using PortfolioServer.Models.Service;
+using PortfolioShared.Models.Service;
 using System.ComponentModel;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace PortfolioServer.Helpers
+namespace PortfolioShared.Helpers
 {
 	public static class JwtBearerExtension
 	{

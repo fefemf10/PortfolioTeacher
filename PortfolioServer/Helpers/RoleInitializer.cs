@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using PortfolioServer.Models.Service;
+using PortfolioShared.Models.Service;
 
-namespace PortfolioServer.Helpers
+namespace PortfolioShared.Helpers
 {
 	public static class RoleInitializer
 	{

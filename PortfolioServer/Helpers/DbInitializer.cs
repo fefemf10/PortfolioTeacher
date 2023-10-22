@@ -1,4 +1,4 @@
-﻿namespace PortfolioServer.Helpers
+﻿namespace PortfolioShared.Helpers
 {
     public static class DbInitializer
     {

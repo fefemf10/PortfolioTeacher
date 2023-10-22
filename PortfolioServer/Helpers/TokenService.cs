@@ -1,7 +1,7 @@
-﻿using PortfolioServer.Models.Service;
+﻿using PortfolioShared.Models.Service;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace PortfolioServer.Helpers
+namespace PortfolioShared.Helpers
 {
 	public class TokenService : ITokenService
 	{

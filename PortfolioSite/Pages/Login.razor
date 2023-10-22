@@ -1,0 +1,152 @@
+﻿@page "/login"
+@using PortfolioShared.ViewModels.Request
+@using Blazorise.Icons
+@layout LoginLayout
+@inject IStringLocalizer<Login> localizer
+@inject NavigationManager navigationManager
+@inject IdentityAuthenticationStateProvider authStateProvider
+<Container Flex="Flex.Column.AlignContent.Center.Wrap" Breakpoint="Breakpoint.Mobile">
+<Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Pills Justified="true">
+	<Items>
+		<Tab Name="login">@localizer["Login"]</Tab>
+		<Tab Name="register">@localizer["Registration"]</Tab>
+	</Items>
+	<Content>
+			<TabPanel Name="login">
+			<Card>
+				<CardBody>
+					<CardTitle>
+						@localizer["LoginTitle"]
+					</CardTitle>
+				</CardBody>
+				<CardBody>
+					<Validations Mode="ValidationMode.Auto" Model="@requestLogin">
+						<Validation>
+							<Field Horizontal>
+							<FieldLabel RequiredIndicator ColumnSize="ColumnSize.IsFull">@localizer["FieldEmail"]</FieldLabel>
+										<FieldBody ColumnSize="ColumnSize.IsFull">
+									<TextEdit Role="TextRole.Email" Placeholder="@localizer["FieldEmailPlaceholder"]" @bind-Text="@requestLogin.Email">
+										<Feedback>
+											<ValidationError />
+										</Feedback>
+									</TextEdit>
+								</FieldBody>
+							</Field>
+						</Validation>
+						<Validation>
+							<Field Horizontal>
+							<FieldLabel RequiredIndicator ColumnSize="ColumnSize.IsFull">@localizer["FieldPassword"]</FieldLabel>
+								<FieldBody ColumnSize="ColumnSize.IsFull">
+									<TextEdit Role="TextRole.Password" Placeholder="@localizer["FieldPasswordPlaceholder"]" @bind-Text="@requestLogin.Password">
+										<Feedback>
+											<ValidationError />
+										</Feedback>
+									</TextEdit>
+								</FieldBody>
+							</Field>
+						</Validation>
+					</Validations>
+				</CardBody>
+				<CardBody>
+					<Button Color="Color.Primary" Clicked="@OnLoginClicked">@localizer["ButtonLogin"]</Button>
+					<Button Color="Color.Secondary">Forgot Password</Button>
+				</CardBody>
+			</Card>
+		</TabPanel>
+		<TabPanel Name="register">
+			<Card>
+				<CardBody>
+					<CardTitle>
+						@localizer["RegistrationTitle"]
+					</CardTitle>
+				</CardBody>
+				<CardBody>
+					<Validations Mode="ValidationMode.Auto" Model="@requestRegistration">
+						<Validation>
+							<Field Horizontal>
+							<FieldLabel RequiredIndicator ColumnSize="ColumnSize.IsFull">@localizer["FieldEmail"]</FieldLabel>
+										<FieldBody ColumnSize="ColumnSize.IsFull">
+									<TextEdit Role="TextRole.Email" Placeholder="@localizer["FieldEmailPlaceholder"]" @bind-Text="@requestRegistration.Email">
+										<Feedback>
+											<ValidationError />
+										</Feedback>
+									</TextEdit>
+								</FieldBody>
+							</Field>
+						</Validation>
+						<Validation>
+							<Field Horizontal>
+							<FieldLabel RequiredIndicator ColumnSize="ColumnSize.IsFull">@localizer["FieldPassword"]</FieldLabel>
+								<FieldBody ColumnSize="ColumnSize.IsFull">
+									<TextEdit Role="TextRole.Password" Placeholder="@localizer["FieldPasswordPlaceholder"]" @bind-Text="@requestRegistration.Password">
+										<Feedback>
+											<ValidationError />
+										</Feedback>
+									</TextEdit>
+								</FieldBody>
+							</Field>
+						</Validation>
+								<Validation>
+									<Field Horizontal>
+									<FieldLabel RequiredIndicator ColumnSize="ColumnSize.IsFull">@localizer["FieldConfirmPassword"]</FieldLabel>
+										<FieldBody ColumnSize="ColumnSize.IsFull">
+											<TextEdit Role="TextRole.Password" Placeholder="@localizer["FieldConfirmPasswordPlaceholder"]" @bind-Text="@requestRegistration.ConfirmPassword">
+												<Feedback>
+													<ValidationError />
+												</Feedback>
+											</TextEdit>
+										</FieldBody>
+									</Field>
+								</Validation>
+						<Field Horizontal>
+						<FieldLabel RequiredIndicator ColumnSize="ColumnSize.IsHalf">@localizer["FieldTeacher"]</FieldLabel>
+							<FieldBody ColumnSize="ColumnSize.IsAuto" Margin="Margin.IsAuto.OnY">
+								<Check @bind-Checked="@requestRegistration.Teacher"></Check>
+							</FieldBody>
+						</Field>
+					</Validations>
+				</CardBody>
+				<CardBody>
+					<Button Color="Color.Primary" Clicked="@OnRegisterClicked">@localizer["ButtonRegistration"]</Button>
+				</CardBody>
+			</Card>
+		</TabPanel>
+	</Content>
+</Tabs>
+</Container>
+@code {
+	string selectedTab = "login";
+	RequestLogin requestLogin = new RequestLogin();
+	RequestRegistration requestRegistration = new RequestRegistration();
+	private Task OnSelectedTabChanged(string name)
+	{
+		selectedTab = name;
+		return Task.CompletedTask;
+	}
+	string Error { get; set; }
+	async Task OnLoginClicked()
+	{
+		try
+		{
+			await authStateProvider.Login(requestLogin);
+			navigationManager.NavigateTo("");
+		}
+		catch (Exception ex)
+		{
+			Error = ex.Message;
+		}
+	}
+
+	async Task OnRegisterClicked()
+	{
+		try
+		{
+			await authStateProvider.Register(requestRegistration);
+			navigationManager.NavigateTo("");
+		}
+		catch (Exception ex)
+		{
+			Error = ex.Message;
+		}
+	}
+}

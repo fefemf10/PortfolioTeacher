@@ -1,22 +1,18 @@
 ﻿@page "/"
+@attribute [Authorize]
 @inject IStringLocalizer<Index> localizer
 <PageTitle>@localizer["Title"]</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <h1>Hello @context.User.Identity.Name !!</h1>
 
-<Heading>@localizer["Header"]</Heading>
-<button class="btn btn-primary" @onclick=SD>Hello2</button>
-<Button Color="Color.Primary" Clicked="SD">Hello</Button>
-<Span>
-	Clicked @counter times
-</Span>
+        Welcome to your new app.
+
+    </Authorized>
+    <Authorizing>
+        <h1>Loading ...</h1>
+    </Authorizing>
+</AuthorizeView>
 @code{
-	int counter;
-	public void SD2()
-	{
-		++counter;
-	}
-	public Task SD()
-	{
-		++counter;
-		return Task.CompletedTask;
-	}
+
 }

@@ -7,9 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PortfolioServer;
-using PortfolioServer.Helpers;
-using PortfolioServer.Models.Service;
+using PortfolioShared;
+using PortfolioShared.Helpers;
+using PortfolioShared.Models.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 

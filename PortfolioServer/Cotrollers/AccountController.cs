@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace PortfolioServer.Cotrollers
+namespace PortfolioShared.Cotrollers
 {
 	[Route("api/[controller]")]
 	[ApiController]

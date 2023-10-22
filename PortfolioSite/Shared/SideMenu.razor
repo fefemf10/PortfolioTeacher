@@ -1,0 +1,70 @@
+﻿@inject IStringLocalizer<NavMenu> localizer
+
+<Bar
+ThemeContrast="ThemeContrast.Light"
+Mode="BarMode.VerticalInline">
+	<BarBrand>
+		<BarItem>
+			<BarLink To="#">
+				<BarIcon IconName="IconName.Dashboard" />
+				@localizer["Title"]
+			</BarLink>
+		</BarItem>
+	</BarBrand>
+	<BarMenu>
+		<BarStart>
+			<BarItem>
+				<BarLink To="about">
+					<BarIcon IconName="IconName.User" />
+					@localizer["About"]
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="work">
+					<BarIcon IconName="IconName.Building" />
+					@localizer["Work"]
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="university">
+					<BarIcon IconName="@("fa-university")" />
+					@localizer["University"]
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="awards">
+					<BarIcon IconName="@("fa-award")" />
+					@localizer["Awards"]
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="scienceprojects">
+					<BarIcon IconName="@("fa-flask")" />
+					@localizer["ScienceProjects"]
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="professionaldevelopments">
+					<BarIcon IconName="@("fa-chalkboard-teacher")" />
+					@localizer["ProfessionalDevelopments"]
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="disciplines">
+					<BarIcon IconName="@("fa-list-ul")" />
+					@localizer["Disciplines"]
+				</BarLink>
+			</BarItem>
+			<BarItem>
+				<BarLink To="publicactivities">
+					<BarIcon IconName="@("fa-walking")" Padding="Padding.Is2.FromEnd" />
+					@localizer["PublicActivities"]
+				</BarLink>
+			</BarItem>
+		</BarStart>
+	</BarMenu>
+</Bar>
+<MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="@isDesktop" />
+@code {
+	private bool isDesktop = false;
+}

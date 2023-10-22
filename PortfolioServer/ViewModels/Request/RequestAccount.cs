@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PortfolioServer.ViewModels.Request
+namespace PortfolioShared.ViewModels.Request
 {
 	public class RequestAccount
 	{

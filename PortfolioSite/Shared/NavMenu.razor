@@ -1,9 +1,10 @@
 ﻿@inject IStringLocalizer<NavMenu> localizer
 
-<Bar @bind-Visible="@topbarVisible"	
-	Breakpoint="Breakpoint.Desktop"
-	ThemeContrast="ThemeContrast.Light"
-	 Padding="Padding.Is3.OnX">
+<Bar @bind-Visible="@topbarVisible"
+	 Breakpoint="Breakpoint.Widescreen"
+	 ThemeContrast="ThemeContrast.Light"
+	 Mode="BarMode.Horizontal"
+	 Padding="Padding.Is4.OnX.Is3.FromTop">
 	<BarBrand>
 		<BarItem>
 			<BarLink To="#">
@@ -17,49 +18,60 @@
 		<BarStart>
 			<BarItem>
 				<BarLink To="about">
-					<Button Color="Color.Primary" Block=true><BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd"/>@localizer["About"]</Button>
+					<BarIcon IconName="IconName.User" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+					@localizer["About"]
 				</BarLink>
 			</BarItem>
 			<BarItem>
 				<BarLink To="work">
-					<Button Color="Color.Primary" Block=true><BarIcon IconName="IconName.Building" Padding="Padding.Is2.FromEnd" />@localizer["Work"]</Button>
+					<BarIcon IconName="IconName.Building" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+					@localizer["Work"]
 				</BarLink>
 			</BarItem>
 			<BarItem>
 				<BarLink To="university">
-					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-university")" Padding="Padding.Is2.FromEnd" />@localizer["University"]</Button>
+					<BarIcon IconName="@("fa-university")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+					@localizer["University"]
 				</BarLink>
 			</BarItem>
 			<BarItem>
 				<BarLink To="awards">
-					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-award")" Padding="Padding.Is2.FromEnd" />@localizer["Awards"]</Button>
+					<BarIcon IconName="@("fa-award")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+					@localizer["Awards"]
 				</BarLink>
 			</BarItem>
 			<BarItem>
 				<BarLink To="scienceprojects">
-					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-flask")" Padding="Padding.Is2.FromEnd" />@localizer["ScienceProjects"]</Button>
+					<BarIcon IconName="@("fa-flask")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+					@localizer["ScienceProjects"]
 				</BarLink>
 			</BarItem>
 			<BarItem>
 				<BarLink To="professionaldevelopments">
-					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-chalkboard-teacher")" Padding="Padding.Is2.FromEnd" />@localizer["ProfessionalDevelopments"]</Button>
+					<BarIcon IconName="@("fa-chalkboard-teacher")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+					@localizer["ProfessionalDevelopments"]
 				</BarLink>
 			</BarItem>
 			<BarItem>
 				<BarLink To="disciplines">
-					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-list-ul")" Padding="Padding.Is2.FromEnd" />@localizer["Disciplines"]</Button>
+					<BarIcon IconName="@("fa-list-ul")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+					@localizer["Disciplines"]
 				</BarLink>
 			</BarItem>
 			<BarItem>
 				<BarLink To="publicactivities">
-					<Button Color="Color.Primary" Block=true><BarIcon IconName="@("fa-walking")" Padding="Padding.Is2.FromEnd" />@localizer["PublicActivities"]</Button>
+					<BarIcon IconName="@("fa-walking")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+					@localizer["PublicActivities"]
 				</BarLink>
 			</BarItem>
 		</BarStart>
 	</BarMenu>
 </Bar>
+<MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="isDesktop" />
 @code {
 	private bool topbarVisible = false;
+	private bool isDesktop = false;
+	private BarMode barMode => isDesktop ? BarMode.Horizontal : BarMode.VerticalInline;
 }
 @* <div class="top-row navbar navbar-dark">
 	<div class="container-fluid">

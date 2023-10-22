@@ -1,7 +1,13 @@
 ﻿@page "/about"
+@attribute [Authorize]
+@using System.ComponentModel.DataAnnotations
+@using PortfolioSite.ViewModels
+
 @inject IStringLocalizer<About> localizer
 <PageTitle>@localizer["Title"]</PageTitle>
 
+
 @code {
+	private RequestUser user = new();
 
 }

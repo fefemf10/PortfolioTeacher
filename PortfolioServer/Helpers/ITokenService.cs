@@ -1,6 +1,6 @@
-﻿using PortfolioServer.Models.Service;
+﻿using PortfolioShared.Models.Service;
 
-namespace PortfolioServer.Helpers
+namespace PortfolioShared.Helpers
 {
 	public interface ITokenService
 	{

@@ -1,12 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PortfolioServer.Helpers;
-using PortfolioServer.Models;
-using PortfolioServer.Models.Service;
-using System;
-using System.Reflection.Metadata;
-using System.Security.Principal;
+using PortfolioShared.Helpers;
+using PortfolioShared.Models;
+using PortfolioShared.Models.Service;
 
 public class ApplicationContext : IdentityDbContext<User, Role, Guid>
 {
