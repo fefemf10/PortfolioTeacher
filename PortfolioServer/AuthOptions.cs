@@ -11,6 +11,7 @@ namespace PortfolioShared
 		public static string Issuer => Configuration["JwtAuth:Issuer"]!;
 		public static string Audience => Configuration["JwtAuth:Audience"]!;
 		public static string Key => Configuration["JwtAuth:Key"]!;
+		public static string ServerURL => Configuration["JwtAuth:ServerURL"]!;
 		public static int AccessTokenLifeTime => Configuration.GetValue<int>("JwtAuth:AccessTokenLifeTime");
 		public static int RefreshTokenLifeTime => Configuration.GetValue<int>("JwtAuth:RefreshTokenLifeTime");
 		public static SymmetricSecurityKey GetSymmetricSecurityKey => new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key));

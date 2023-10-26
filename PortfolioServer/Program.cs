@@ -9,7 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PortfolioShared;
 using PortfolioShared.Helpers;
+using PortfolioShared.Models;
 using PortfolioShared.Models.Service;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,6 +67,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			ValidateIssuerSigningKey = true,
 			ClockSkew = TimeSpan.Zero
 		};
+		options.Authority = AuthOptions.ServerURL;
 	});
 
 //builder.Services.AddIdentityCore<User>(options =>
@@ -78,10 +81,22 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 //	.AddRoles<IdentityRole>()
 //	.AddEntityFrameworkStores<ApplicationContext>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddAuthorization(options => options.DefaultPolicy =
-	new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-	.RequireAuthenticatedUser()
-	.Build());
+builder.Services.AddAuthorization(options =>
+{
+	options.DefaultPolicy =
+		new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+		.RequireAuthenticatedUser()
+		.Build();
+	options.AddPolicy(Roles.Administrator.ToString(), builder =>
+	{
+		builder.RequireClaim(ClaimTypes.Role, Roles.Administrator.ToString());
+	});
+	options.AddPolicy(Roles.Moderator.ToString(), builder =>
+	{
+		builder.RequireAssertion(x => x.User.HasClaim(ClaimTypes.Role, Roles.Administrator.ToString())
+		|| x.User.HasClaim(ClaimTypes.Role, Roles.Moderator.ToString()));
+	});
+});
 
 builder.Services.AddIdentity<User, Role>(options =>
 	{
@@ -105,9 +120,8 @@ using (var scope = app.Services.CreateScope())
 {
 	var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
 	var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
-	var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
 	//DbInitializer.Initialize(dbContext);
-	await RoleInitializer.Initialize(userManager, roleManager);
+	await RoleInitializer.Initialize(userManager);
 	dbContext.SaveChanges();
 }
 // Configure the HTTP request pipeline.

@@ -10,7 +10,7 @@ namespace PortfolioSite.Services
 {
 	public class IdentityAuthenticationStateProvider : AuthenticationStateProvider
 	{
-		private User user;
+		private ResponseUser user;
 		private readonly IAuthorizationAPI authorizationAPI;
 
 		public IdentityAuthenticationStateProvider(IAuthorizationAPI authorizationAPI)
@@ -18,11 +18,13 @@ namespace PortfolioSite.Services
 			this.authorizationAPI = authorizationAPI;
 		}
 
-		public async Task<ResponseLogin> Login(RequestLogin requestLogin)
+		public async Task Login(RequestLogin requestLogin)
 		{
-			await authorizationAPI.Login(requestLogin);
+			Task<ResponseLogin> _ = authorizationAPI.Login(requestLogin);
+			_.Wait();
+			ResponseLogin responseLogin = _.Result;
+			user = new ResponseUser(responseLogin.Guid, responseLogin.Email, responseLogin.AccessToken, responseLogin.RefreshToken, true);
 			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
-			return new ResponseLogin(Guid.NewGuid(), "", "", "");
 		}
 
 		public async Task<ResponseRegistration> Register(RequestRegistration requestRegistration)
@@ -39,7 +41,7 @@ namespace PortfolioSite.Services
 			NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 		}
 
-		private async Task<User> GetUserInfo()
+		private async Task<ResponseUser> GetUserInfo()
 		{
 			if (user is not null) return user;
 			user = await authorizationAPI.GetUserInfo();
@@ -49,19 +51,19 @@ namespace PortfolioSite.Services
 		public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 		{
 			var identity = new ClaimsIdentity();
-			//try
-			//{
-			//	var userInfo = await GetUserInfo();
-			//	if (userInfo.IsAuthenticated)
-			//	{
-			//		var claims = new[] { new Claim(ClaimTypes.Name, userInfo.UserName) }.Concat(userInfo.ExposedClaims.Select(c => new Claim(c.Key, c.Value)));
-			//		identity = new ClaimsIdentity(claims, "Server authentication");
-			//	}
-			//}
-			//catch (HttpRequestException ex)
-			//{
-			//	Console.WriteLine("Request failed:" + ex.ToString());
-			//}
+			try
+			{
+				var userInfo = await GetUserInfo();
+				if (userInfo.IsAuthenticated)
+				{
+					//var claims = new[] { new Claim(ClaimTypes.Name, userInfo.UserName) }.Concat(userInfo.ExposedClaims.Select(c => new Claim(c.Key, c.Value)));
+					//identity = new ClaimsIdentity(claims, "Server authentication");
+				}
+			}
+			catch (HttpRequestException ex)
+			{
+				Console.WriteLine("Request failed:" + ex.ToString());
+			}
 
 			return new AuthenticationState(new ClaimsPrincipal(identity));
 		}

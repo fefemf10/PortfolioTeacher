@@ -14,13 +14,19 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped<IResizeListener, ResizeListener>();
+
 builder.Services.AddScoped<IdentityAuthenticationStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(s => s.GetRequiredService<IdentityAuthenticationStateProvider>());
 builder.Services.AddScoped<IAuthorizationAPI, AuthorzationAPI>();
+
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-builder.Services
-    .AddBlazorise(options =>
+builder.Services.AddOidcAuthentication(options =>
+{
+    builder.Configuration.Bind("Local", options.ProviderOptions);
+	options.ProviderOptions.DefaultScopes.Add("PortfolioServer");
+});
+builder.Services.AddBlazorise(options =>
     {
         options.Immediate = true;
     })

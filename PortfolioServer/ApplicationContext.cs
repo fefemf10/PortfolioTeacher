@@ -6,7 +6,6 @@ using PortfolioShared.Models.Service;
 
 public class ApplicationContext : IdentityDbContext<User, Role, Guid>
 {
-	public DbSet<User> Users { get; set; }
 	public DbSet<Work> Works { get; set; }
 	public DbSet<University> Universities { get; set; }
 	public DbSet<ScienceProject> ScienceProjects { get; set; }

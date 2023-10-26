@@ -9,6 +9,6 @@ namespace PortfolioShared.Authorization
 		Task<ResponseLogin> Login(RequestLogin requestLogin);
 		Task<ResponseRegistration> Register(RequestRegistration requestRegistration);
 		Task Logout();
-		Task<User> GetUserInfo();
+		Task<ResponseUser> GetUserInfo();
 	}
 }

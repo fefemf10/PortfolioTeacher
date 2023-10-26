@@ -62,7 +62,7 @@ namespace PortfolioShared.Cotrollers.Service
 			user.RefreshToken = configuration.GenerateRefreshToken();
 			user.RefreshTokenExpityTime = DateTimeOffset.Now.AddMinutes(AuthOptions.RefreshTokenLifeTime);
 			await userManager.UpdateAsync(user);
-			return Ok(new ResponseUser(user.Id, user.Email!, accessToken, user.RefreshToken));
+			return Ok(new ResponseUser(user.Id, user.Email!, accessToken, user.RefreshToken, true));
 		}
 		[HttpPost("refreshToken")]
 		public async Task<ActionResult<AuthTokens>> RefreshToken([FromBody] AuthTokens tokens)
