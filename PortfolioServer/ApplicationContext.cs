@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using PortfolioShared.Helpers;
+﻿using Microsoft.EntityFrameworkCore;
 using PortfolioShared.Models;
-using PortfolioShared.Models.Service;
 
-public class ApplicationContext : IdentityDbContext<User, Role, Guid>
+public class ApplicationContext : DbContext
 {
+	public DbSet<User> Users { get; set; }
 	public DbSet<Work> Works { get; set; }
 	public DbSet<University> Universities { get; set; }
 	public DbSet<ScienceProject> ScienceProjects { get; set; }
@@ -19,19 +17,19 @@ public class ApplicationContext : IdentityDbContext<User, Role, Guid>
 	public ApplicationContext() : base()
 	{
 		Database.EnsureCreated();
-    }
+	}
 	public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
 	{
 		Database.EnsureCreated();
-    }
+	}
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		base.OnModelCreating(modelBuilder);
 
-		modelBuilder.Entity<Teacher>().HasOne(teacher => teacher.User).WithOne(user => user.Teacher).HasPrincipalKey<User>(user => user.Id);
-        modelBuilder.Entity<Student>().HasOne(student => student.User).WithOne(user => user.Student).HasPrincipalKey<User>(user => user.Id);
+		modelBuilder.Entity<User>().HasKey(user => user.Id);
+		modelBuilder.Entity<User>().UseTptMappingStrategy();
 
-        modelBuilder.Entity<Work>().HasMany(work => work.Teachers).WithMany(teacher => teacher.Works).UsingEntity<WorkTeacher>();
+		modelBuilder.Entity<Work>().HasMany(work => work.Teachers).WithMany(teacher => teacher.Works).UsingEntity<WorkTeacher>();
 		modelBuilder.Entity<University>().HasMany(university => university.Teachers).WithMany(teacher => teacher.Universities).UsingEntity<UniversityTeacher>();
 		modelBuilder.Entity<Discipline>().HasMany(discipline => discipline.Teachers).WithMany(teacher => teacher.Disciplines).UsingEntity<DisciplineTeacher>();
 		modelBuilder.Entity<ScienceProject>().HasMany(scienceProject => scienceProject.Teachers).WithMany(teacher => teacher.ScienceProjects).UsingEntity<ScienceProjectTeacher>();

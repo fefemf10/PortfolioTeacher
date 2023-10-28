@@ -4,7 +4,6 @@
 @layout LoginLayout
 @inject IStringLocalizer<Login> localizer
 @inject NavigationManager navigationManager
-@inject IdentityAuthenticationStateProvider authStateProvider
 <Container Flex="Flex.Column.AlignContent.Center.Wrap" Breakpoint="Breakpoint.Mobile">
 <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged" Pills Justified="true">
 	<Items>
@@ -128,7 +127,7 @@
 	{
 		try
 		{
-			await authStateProvider.Login(requestLogin);
+			//await authStateProvider.Login(requestLogin);
 			navigationManager.NavigateTo("");
 		}
 		catch (Exception ex)
@@ -141,7 +140,7 @@
 	{
 		try
 		{
-			await authStateProvider.Register(requestRegistration);
+			//await authStateProvider.Register(requestRegistration);
 			navigationManager.NavigateTo("");
 		}
 		catch (Exception ex)

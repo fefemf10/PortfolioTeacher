@@ -1,6 +1,7 @@
-﻿using IdentityModel;
-using IdentityServer4;
-using IdentityServer4.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
+using IdentityModel;
+using System.Security.Claims;
 
 namespace IdentityServer
 {
@@ -22,7 +23,7 @@ namespace IdentityServer
 			},
 			new Client
 			{
-				ClientId = "interactive",
+				ClientId = "PortfolioSite",
 				ClientSecrets = { new Secret("client_secret".ToSha256()) },
 				AllowedGrantTypes = GrantTypes.Code,
 				AllowedScopes =
@@ -31,13 +32,12 @@ namespace IdentityServer
 					IdentityServerConstants.StandardScopes.Profile,
 					"PortfolioServer",
 				},
-				RedirectUris = {"https://localhost:2001/signin-oidc"},
-				PostLogoutRedirectUris = {"https://localhost:2001/signout-callback-oidc"},
-
+				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
+				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
+				RequireClientSecret = false,
+				RequirePkce = true,
 				RequireConsent = false,
-
-				AccessTokenLifetime = 5,
-
+				AccessTokenLifetime = 3600,
 				AllowOfflineAccess = true
 			}
 		};
@@ -53,8 +53,8 @@ namespace IdentityServer
 			new IdentityResources.Profile(),
 			new IdentityResource
 				{
-					Name = "role",
-					UserClaims = new List<string> { "role" }
+					Name = ClaimTypes.Role,
+					UserClaims = new List<string> { ClaimTypes.Role }
 				},
 
 		};

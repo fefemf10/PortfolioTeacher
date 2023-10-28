@@ -1,17 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using PortfolioShared.Helpers;
-using PortfolioShared.Models.Service;
 
 namespace IdentityServer
 {
-	public class ApplicationContext : IdentityDbContext<User, Role, Guid>
+	public class ApplicationContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
 	{
-		public ApplicationContext() : base()
-		{
-		}
 		public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
 		{
+			
 		}
 	}
 }

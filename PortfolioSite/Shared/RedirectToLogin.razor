@@ -1,10 +1,7 @@
 ﻿@inject NavigationManager navigationManager
-
-<Heading>Redirecting...</Heading>
-
 @code{
 	protected override void OnInitialized()
 	{
-		navigationManager.NavigateTo("/login");
+		navigationManager.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(navigationManager.Uri)}");
 	}
 }
