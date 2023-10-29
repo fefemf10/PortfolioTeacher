@@ -1,3 +1,8 @@
+using Blazorise;
+using Blazorise.Bootstrap5;
+using Blazorise.Icons.FontAwesome;
+using BlazorPro.BlazorSize;
+using Duende.IdentityServer.Services;
 using IdentityServer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -7,9 +12,9 @@ if (seed)
 {
 	args = args.Except(new[] { "/seed" }).ToArray();
 }
-
+seed = false;
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddControllers();
 string assembly = typeof(Program).Assembly.GetName().Name!;
 string connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
 ServerVersion serverVersion = ServerVersion.AutoDetect(connection);
@@ -29,6 +34,8 @@ builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(options =>
 	options.Password.RequireDigit = false;
 	options.User.RequireUniqueEmail = true;
 })
+	.AddSignInManager<SignInManager<IdentityUser<Guid>>>()
+	.AddUserManager<UserManager<IdentityUser<Guid>>>()
 	.AddEntityFrameworkStores<ApplicationContext>()
 	.AddDefaultTokenProviders();
 
@@ -44,15 +51,50 @@ builder.Services.AddIdentityServer()
 	})
 	.AddDeveloperSigningCredential();
 
+	builder.Services.AddScoped<ICorsPolicyService>(sp => {
+		var logger = sp.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
+		return new DefaultCorsPolicyService(logger)
+		{
+			AllowAll = true
+		};
+	}); ;
+
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("MyPolicy", builder =>
+	{
+		builder
+		.AllowAnyOrigin()
+		.AllowAnyHeader()
+		.AllowAnyMethod();
+	});
+});
+builder.Services.AddScoped<IResizeListener, ResizeListener>();
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-
+builder.Services.AddBlazorise(options =>
+{
+    options.Immediate = true;
+})
+    .AddBootstrap5Providers()
+    .AddFontAwesomeIcons();
+builder.Services.AddMediaQueryService();
+builder.Services.AddResizeListener();
 var app = builder.Build();
+if (!app.Environment.IsDevelopment())
+{
+	app.UseExceptionHandler("/Error", createScopeForErrors: true);
+	app.UseHsts();
+}
+app.UseCors("MyPolicy");
+app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.MapBlazorHub();
-app.MapFallbackToPage("/_Host");
 app.UseRouting();
+app.UseAntiforgery();
+app.MapBlazorHub();
+app.MapFallbackToPage("/Index");
 app.UseIdentityServer();
 app.UseAuthorization();
-app.MapDefaultControllerRoute();
+app.MapControllers();
 app.Run();

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Microsoft.VisualBasic;
 using PortfolioShared.Models;
 using System.Security.Claims;
 
@@ -42,10 +43,10 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 		options.UseMySql(connection, version);
 	});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddIdentityServerAuthentication(JwtBearerDefaults.AuthenticationScheme, options =>
+	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 	{
 		options.Authority = builder.Configuration["IdentityServer:Url"];
-		options.ApiName = "PortfolioServer";
+		options.Audience = builder.Configuration["IdentityServer:Audience"];
 	});
 
 builder.Services.AddAuthorization(options =>
@@ -65,10 +66,18 @@ builder.Services.AddAuthorization(options =>
 	});
 });
 
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("MyPolicy", builder =>
+	{
+		builder
+		.AllowAnyOrigin()
+		.AllowAnyHeader()
+		.AllowAnyMethod();
+	});
+});
 var app = builder.Build();
-app.UseCors(builder => builder.AllowAnyOrigin());
-
+app.UseCors("MyPolicy");
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();

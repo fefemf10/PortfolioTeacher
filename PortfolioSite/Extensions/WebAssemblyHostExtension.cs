@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.JSInterop;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using System.Globalization;
 
 namespace PortfolioSite.Extensions
@@ -8,10 +8,10 @@ namespace PortfolioSite.Extensions
 	{
 		public async static Task SetDefaultCulture(this WebAssemblyHost webAssemblyHost)
 		{
-			IJSRuntime jsInterop = webAssemblyHost.Services.GetRequiredService<IJSRuntime>();
-			string result = await jsInterop.InvokeAsync<string>("blazorCulture.get");
+			ILocalStorageService localStorage = webAssemblyHost.Services.GetRequiredService<ILocalStorageService>();
+			string result = await localStorage.GetItemAsStringAsync("BlazorCulture");
 			CultureInfo cultureInfo;
-            if (result is null)
+			if (result is null)
 				cultureInfo = new CultureInfo("ru-RU");
 			else
 				cultureInfo = new CultureInfo(result);

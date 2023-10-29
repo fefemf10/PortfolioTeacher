@@ -34,9 +34,58 @@ namespace IdentityServer
 				},
 				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
 				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
+				AccessTokenLifetime = 3600,
+				AllowOfflineAccess = true
+			},
+			new Client
+			{
+				ClientId = "PortfolioSiteNoClientSecret",
+				ClientSecrets = { new Secret("client_secret".ToSha256()) },
+				AllowedGrantTypes = GrantTypes.Code,
+				AllowedScopes =
+				{
+					IdentityServerConstants.StandardScopes.OpenId,
+					IdentityServerConstants.StandardScopes.Profile,
+					"PortfolioServer",
+				},
+				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
+				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
 				RequireClientSecret = false,
-				RequirePkce = true,
-				RequireConsent = false,
+				AccessTokenLifetime = 3600,
+				AllowOfflineAccess = true
+			},
+			new Client
+			{
+				ClientId = "PortfolioSiteNoPkce",
+				ClientSecrets = { new Secret("client_secret".ToSha256()) },
+				AllowedGrantTypes = GrantTypes.Code,
+				AllowedScopes =
+				{
+					IdentityServerConstants.StandardScopes.OpenId,
+					IdentityServerConstants.StandardScopes.Profile,
+					"PortfolioServer",
+				},
+				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
+				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
+				RequirePkce = false,
+				AccessTokenLifetime = 3600,
+				AllowOfflineAccess = true
+			},
+			new Client
+			{
+				ClientId = "PortfolioSiteNoPkceNoClientSecret",
+				ClientSecrets = { new Secret("client_secret".ToSha256()) },
+				AllowedGrantTypes = GrantTypes.Code,
+				AllowedScopes =
+				{
+					IdentityServerConstants.StandardScopes.OpenId,
+					IdentityServerConstants.StandardScopes.Profile,
+					"PortfolioServer",
+				},
+				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
+				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
+				RequireClientSecret = false,
+				RequirePkce = false,
 				AccessTokenLifetime = 3600,
 				AllowOfflineAccess = true
 			}
