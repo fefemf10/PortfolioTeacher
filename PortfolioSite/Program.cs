@@ -25,13 +25,19 @@ builder.Services.AddScoped<IResizeListener, ResizeListener>();
 //builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ApiAuthorizationMessageHandler>();
 builder.Services.AddHttpClient("PortfolioServer", httpClient => httpClient.BaseAddress = new Uri(builder.Configuration["PortfolioServer:Url"]!)).AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
-
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddOidcAuthentication(options =>
 {
     builder.Configuration.Bind("Oidc", options.ProviderOptions);
 });
+//builder.Services.AddClientCredentialsTokenManagement().AddClient("PortfolioServer", client =>
+//{
+//	client.TokenEndpoint = builder.Configuration["IdentityServer:Url"]! + "/connect/token";
+//	client.ClientId = builder.Configuration["IdentityServer:ClientId"];
+//	client.ClientSecret = builder.Configuration["IdentityServer:ClientSecret"];
+//	client.Scope = builder.Configuration["PortfolioServer:Scope"];
+//});
 builder.Services.AddBlazorise(options =>
     {
         options.Immediate = true;
@@ -40,6 +46,7 @@ builder.Services.AddBlazorise(options =>
     .AddFontAwesomeIcons();
 builder.Services.AddMediaQueryService();
 builder.Services.AddResizeListener();
+builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()

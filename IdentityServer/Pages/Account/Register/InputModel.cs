@@ -12,7 +12,14 @@ public class InputModel
     [EmailAddress]
     public string Email { get; set; }
     [Required]
-    public string Password { get; set; }
+    [MinLength(5, ErrorMessage = "The password must consist of 5 or more characters")]
+	[DataType(DataType.Password)]
+	public string Password { get; set; }
+	[Required]
+	[MinLength(5, ErrorMessage = "The confirm password must consist of 5 or more characters")]
+	[DataType(DataType.Password)]
+    [Compare("Password")]
+	public string ConfirmPassword { get; set; }
 
     public string ReturnUrl { get; set; }
     [Required]

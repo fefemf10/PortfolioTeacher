@@ -1,0 +1,53 @@
+﻿@page "/Disciplines"
+@using IdentityModel.Client
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using PortfolioShared.ViewModels.Response
+@inject IStringLocalizer<ProfessionalDevelopments> localizer
+@inject IHttpClientFactory httpFactory
+@inject IAccessTokenProvider tokenProvider
+<PageTitle>@localizer["Title"]</PageTitle>
+
+<AuthorizeView>
+	<Authorized>
+		<Container>
+				<Select TValue="int" SelectedValue="@selectedValue" SelectedValueChanged="@OnSelectedValueChanged">
+					@if (disciplines == null)
+				{
+					
+				}
+				else
+					{
+						@foreach (var discipline in disciplines)
+						{
+							<SelectItem Value="@discipline.Id">@discipline.Name</SelectItem>
+						}
+					}
+				</Select>
+		</Container>
+	</Authorized>
+</AuthorizeView>
+
+@code {
+	int selectedValue;
+	private ResponseDiscipline[]? disciplines;
+	Task OnSelectedValueChanged(int value)
+	{
+		selectedValue = value;
+		Console.WriteLine(selectedValue);
+
+		return Task.CompletedTask;
+	}
+	protected override async Task OnInitializedAsync()
+	{
+		var accessTokenResult = await tokenProvider.RequestAccessToken();
+		string accessToken = String.Empty;
+		if (accessTokenResult.TryGetToken(out var token))
+		{
+			accessToken = token.Value;
+		}
+
+		HttpClient webapi = httpFactory.CreateClient("PortfolioServer");
+		webapi.SetBearerToken(accessToken);
+		disciplines = await webapi.GetFromJsonAsync<ResponseDiscipline[]>("Discipline/GetDisciplines");
+	}
+}

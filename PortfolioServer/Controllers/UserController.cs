@@ -6,8 +6,8 @@ using PortfolioShared.ViewModels.Response;
 namespace PortfolioShared.Cotrollers
 {
     [Authorize]
-	[ApiController]
 	[Route("api/[controller]/[action]")]
+	[ApiController]
 	public class UserController : ControllerBase
 	{
 		private readonly ApplicationContext db;

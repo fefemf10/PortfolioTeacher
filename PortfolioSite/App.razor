@@ -1,3 +1,4 @@
+@inject IStringLocalizer<App> localizer
 <CascadingAuthenticationState>
 	<Router AppAssembly="@typeof(App).Assembly">
 		<Found Context="routeData">
@@ -8,10 +9,23 @@
 			</AuthorizeRouteView>
 		</Found>
 		<NotFound>
-			<PageTitle>Not found</PageTitle>
-			<LayoutView Layout="@typeof(MainLayout)">
-				<p role="alert">Sorry, there's nothing at this address.</p>
-			</LayoutView>
+			<PageTitle>@localizer["Title"]</PageTitle>
+				<Div Margin="Margin.IsAuto.OnX" TextAlignment="TextAlignment.Center">
+					<Div Padding="Padding.Is5.OnY">
+						<DisplayHeading Size="DisplayHeadingSize.Is1" TextWeight="TextWeight.Bold" TextColor="TextColor.Primary" Margin="Margin.Is4.FromBottom">
+							404
+						</DisplayHeading>
+						<Paragraph TextSize="TextSize.ExtraLarge" Margin="Margin.Is4.FromBottom">
+							@localizer["Missing"]
+						</Paragraph>
+						<Paragraph Margin="Margin.Is4.FromBottom">
+							@localizer["MissingDescription"]
+						</Paragraph>
+						<Button Color="Color.Primary" Size="Size.Large" Type="ButtonType.Link" To="/">
+							@localizer["ButtonHomePage"]
+						</Button>
+					</Div>
+				</Div>
 		</NotFound>
 	</Router>
 </CascadingAuthenticationState>

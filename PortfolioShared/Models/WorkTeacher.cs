@@ -3,7 +3,7 @@
     public class WorkTeacher
     {
         public int Id { get; set; }
-        public int TeacherId { get; set; }
+        public Guid TeacherId { get; set; }
         public int WorkId { get; set; }
         public string Post { get; set; }
         public DateOnly BeginTimeWork { get; set; }

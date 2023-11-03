@@ -1,17 +1,13 @@
 ﻿@page "/"
-@attribute [Authorize]
 @inject IStringLocalizer<Index> localizer
 <PageTitle>@localizer["Title"]</PageTitle>
 <AuthorizeView>
     <Authorized>
-        <h1>Hello @context.User.Identity.Name !!</h1>
+        <Heading>Hello @context.User.Identity.Name !!</Heading>
 
         Welcome to your new app.
 
     </Authorized>
-    <Authorizing>
-        <h1>Loading ...</h1>
-    </Authorizing>
 </AuthorizeView>
 @code{
 

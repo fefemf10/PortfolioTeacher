@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Microsoft.VisualBasic;
 using PortfolioShared.Models;
@@ -46,7 +47,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 	{
 		options.Authority = builder.Configuration["IdentityServer:Url"];
-		options.Audience = builder.Configuration["IdentityServer:Audience"];
+		options.TokenValidationParameters = new TokenValidationParameters { ValidateAudience = false };
+		options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
 	});
 
 builder.Services.AddAuthorization(options =>

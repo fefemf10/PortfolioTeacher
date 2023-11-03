@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace IdentityServer.Controllers
 {
 	[AllowAnonymous]
-	[ApiController]
 	[Route("[controller]/[action]")]
+	[ApiController]
 	public class AccountController : ControllerBase
 	{
 		private readonly IIdentityServerInteractionService interaction;
