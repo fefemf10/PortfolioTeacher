@@ -1,11 +1,12 @@
-﻿@inject IStringLocalizer<NavMenu> localizer
-
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject IStringLocalizer<NavMenu> localizer
+@inject SignOutSessionStateManager SignOutManager
 <Bar
 ThemeContrast="ThemeContrast.Light"
 Mode="BarMode.VerticalInline">
 	<BarBrand>
 		<BarItem>
-			<BarLink To="#">
+			<BarLink To="">
 				<BarIcon IconName="IconName.Dashboard" />
 				@localizer["Title"]
 			</BarLink>
@@ -62,9 +63,21 @@ Mode="BarMode.VerticalInline">
 				</BarLink>
 			</BarItem>
 		</BarStart>
+		<BarEnd>
+			<BarItem>
+				<BarLink To="Authentication/Logout" Clicked="@BeginSignOut">
+					<BarIcon IconName="@("fa-right-from-bracket")" Padding="Padding.Is2.FromEnd" />
+					@localizer["Logout"]
+				</BarLink>
+			</BarItem>
+		</BarEnd>
 	</BarMenu>
 </Bar>
 <MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="@isDesktop" />
 @code {
 	private bool isDesktop = false;
+	private async Task BeginSignOut(MouseEventArgs args)
+	{
+		await SignOutManager.SetSignOutState();
+	}
 }

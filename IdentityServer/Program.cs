@@ -1,7 +1,3 @@
-using Blazorise;
-using Blazorise.Bootstrap5;
-using Blazorise.Icons.FontAwesome;
-using BlazorPro.BlazorSize;
 using Duende.IdentityServer.Services;
 using IdentityServer;
 using Microsoft.AspNetCore.Identity;
@@ -14,6 +10,8 @@ if (seed)
 }
 seed = false;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
 builder.Services.AddControllers();
 string assembly = typeof(Program).Assembly.GetName().Name!;
 string connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
@@ -69,18 +67,7 @@ builder.Services.AddCors(options =>
 		.AllowAnyMethod();
 	});
 });
-builder.Services.AddScoped<IResizeListener, ResizeListener>();
-builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
-builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
-builder.Services.AddBlazorise(options =>
-{
-    options.Immediate = true;
-})
-    .AddBootstrap5Providers()
-    .AddFontAwesomeIcons();
-builder.Services.AddMediaQueryService();
-builder.Services.AddResizeListener();
+
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
@@ -92,9 +79,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAntiforgery();
-app.MapBlazorHub();
-app.MapFallbackToPage("/Index");
 app.UseIdentityServer();
 app.UseAuthorization();
 app.MapControllers();
+app.MapRazorPages();
 app.Run();
