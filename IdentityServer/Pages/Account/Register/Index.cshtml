@@ -1,0 +1,41 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model IdentityServer.Pages.Account.Register.Index
+
+<div class="register-page">
+	<partial name="_ValidationSummary" />
+
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-header">
+					<h2>Register</h2>
+				</div>
+				<div class="card-body">
+					<form asp-route="/Account/Register/Index">
+						<input type="hidden" asp-for="Input.ReturnUrl" />
+
+						<div class="form-group">
+							<label asp-for="Input.Email"></label>
+							<input class="form-control" placeholder="Email" asp-for="Input.Email" autofocus>
+						</div>
+						<div class="form-group">
+							<label asp-for="Input.Password"></label>
+							<input type="password" class="form-control" placeholder="Password"
+								   asp-for="Input.Password" autofocus>
+						</div>
+						<div class="form-group">
+							<label asp-for="Input.RoleName"></label>
+							<select asp-for="Input.RoleName" class="form-control"
+									asp-items="@(new SelectList(Model.View.RolesList))"></select>
+						</div>
+						<button type="submit" class="btn btn-primary" name="Input.Button" value="register">Register</button>
+					</form>
+				</div>
+				<div class="card-footer">
+					<a asp-page="../Login/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">Login</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

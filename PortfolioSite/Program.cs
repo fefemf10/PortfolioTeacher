@@ -3,6 +3,7 @@ using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -39,6 +40,12 @@ builder.Services.AddBlazorise(options =>
     .AddFontAwesomeIcons();
 builder.Services.AddMediaQueryService();
 builder.Services.AddResizeListener();
+builder.Services.AddAuthorizationCore(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+});
 var app = builder.Build();
 await app.SetDefaultCulture();
 await app.RunAsync();

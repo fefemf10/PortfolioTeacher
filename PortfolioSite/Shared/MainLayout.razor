@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager navigationManager
+
+
 <MediaQueryList>
 	@if (isDesktop)
 	{
@@ -7,7 +9,11 @@
 			<Layout Sider>
 				<LayoutSider>
 					<LayoutSiderContent>
-						<SideMenu />
+						<AuthorizeView>
+							<Authorized>
+								<SideMenu />
+							</Authorized>
+						</AuthorizeView>
 					</LayoutSiderContent>
 				</LayoutSider>
 				<Layout>
@@ -22,16 +28,22 @@
 	{
 		<Layout>
 			<LayoutHeader>
-				<NavMenu />
+				<AuthorizeView>
+					<Authorized>
+						<NavMenu />
+					</Authorized>
+				</AuthorizeView>
 			</LayoutHeader>
 			<LayoutContent Padding="Padding.Is3.OnAll">
 				@Body
 			</LayoutContent>
 		</Layout>
 	}
+
 	<MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="isDesktop" />
 </MediaQueryList>
 
-@code{
+
+@code {
 	private bool isDesktop = false;
 }

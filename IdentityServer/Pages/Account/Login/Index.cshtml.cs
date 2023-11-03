@@ -37,7 +37,8 @@ public class Index : PageModel
 
 	public ViewModel View { get; set; }
 
-	[BindProperty] public InputModel Input { get; set; }
+	[BindProperty]
+	public InputModel Input { get; set; }
 
 	public async Task<IActionResult> OnGet(string returnUrl)
 	{
@@ -58,7 +59,7 @@ public class Index : PageModel
 		var context = await interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
 
 		// the user clicked the "cancel" button
-		if (Input.Button != "login")
+		if (Input.Button == "cancel")
 		{
 			if (context != null)
 			{
@@ -85,11 +86,11 @@ public class Index : PageModel
 		if (ModelState.IsValid)
 		{
 			var result =
-				await signInManager.PasswordSignInAsync(Input.Username, Input.Password, Input.RememberLogin, true);
+				await signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberLogin, true);
 			if (result.Succeeded)
 			{
-				var user = await userManager.FindByNameAsync(Input.Username);
-				await events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id.ToString(), user.UserName,
+				var user = await userManager.FindByEmailAsync(Input.Email);
+				await events.RaiseAsync(new UserLoginSuccessEvent(user.Email, user.Id.ToString(), user.UserName,
 					clientId: context?.Client.ClientId));
 
 				if (context != null)
@@ -120,7 +121,7 @@ public class Index : PageModel
 				throw new Exception("invalid return URL");
 			}
 
-			await events.RaiseAsync(new UserLoginFailureEvent(Input.Username, "invalid credentials",
+			await events.RaiseAsync(new UserLoginFailureEvent(Input.Email, "invalid credentials",
 				clientId: context?.Client.ClientId));
 			ModelState.AddModelError(string.Empty, LoginOptions.InvalidCredentialsErrorMessage);
 		}
@@ -142,7 +143,7 @@ public class Index : PageModel
 			// this is meant to short circuit the UI and only trigger the one external IdP
 			View = new ViewModel { EnableLocalLogin = local };
 
-			Input.Username = context?.LoginHint;
+			Input.Email = context?.LoginHint;
 
 			if (!local)
 			{
