@@ -5,6 +5,7 @@
 		Administrator,
 		Moderator,
 		Teacher,
-		Student
+		Student,
+		IdentityServer
 	}
 }

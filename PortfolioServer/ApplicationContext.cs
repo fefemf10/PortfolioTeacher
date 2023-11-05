@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PortfolioShared.Models;
+using System.Text.Json;
 
 public class ApplicationContext : DbContext
 {
@@ -14,13 +15,14 @@ public class ApplicationContext : DbContext
 	public DbSet<ProfessionalDevelopment> ProfessionalDevelopments { get; set; }
 	public DbSet<Teacher> Teachers { get; set; }
 	public DbSet<Student> Students { get; set; }
+	
+	private static Discipline[] disciplinesData;
+
 	public ApplicationContext() : base()
 	{
-		Database.EnsureCreated();
 	}
 	public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
 	{
-		Database.EnsureCreated();
 	}
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
@@ -40,5 +42,13 @@ public class ApplicationContext : DbContext
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.ProfessionalDevelopments).WithOne(professionalDevelopment => professionalDevelopment.Teacher).HasForeignKey(professionalDevelopment => professionalDevelopment.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.AwardStudents).WithOne(awardStudent => awardStudent.Teacher).HasForeignKey(awardStudent => awardStudent.TeacherId);
 		modelBuilder.Entity<Student>().HasMany(student => student.AwardStudents).WithOne(awardStudent => awardStudent.Student).HasForeignKey(awardStudent => awardStudent.StudentId);
+		if (disciplinesData is null)
+		{
+			using FileStream openStream = File.OpenRead("SeedData/Discipline.json");
+			if (openStream is not null)
+				disciplinesData = JsonSerializer.Deserialize<Discipline[]>(openStream);
+		}
+		if (disciplinesData is not null)
+			modelBuilder.Entity<Discipline>().HasData(disciplinesData);
 	}
 }

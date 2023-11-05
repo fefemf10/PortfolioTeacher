@@ -5,6 +5,8 @@ using PortfolioShared.Models;
 using Duende.IdentityServer.EntityFramework.Storage;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.AspNet.SignalR.Hubs;
 
 namespace IdentityServer
 {
@@ -54,49 +56,41 @@ namespace IdentityServer
 		{
 			var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser<Guid>>>();
 
-			var admin = userMgr.FindByEmailAsync("admin@admin.com").Result;
-			if (admin is null)
+			var user = userMgr.FindByEmailAsync("admin@admin.com").Result;
+			if (user is null)
 			{
-				admin = new IdentityUser<Guid>
+				user = new IdentityUser<Guid>
 				{
 					UserName = "admin@admin.com",
 					Email = "admin@admin.com",
-					EmailConfirmed = true
+					EmailConfirmed = true,
 				};
-				var result = userMgr.CreateAsync(admin, "admin").Result;
-				if (!result.Succeeded)
-				{
-					throw new Exception(result.Errors.First().Description);
-				}
-				result = userMgr.AddClaimAsync(admin,new Claim(ClaimTypes.Role, Roles.Administrator.ToString())).Result;
-				if (!result.Succeeded)
-				{
-					throw new Exception(result.Errors.First().Description);
-				}
+				userMgr.CreateAsync(user, "admin").Wait();
+				userMgr.AddClaimAsync(user, new Claim(ClaimTypes.Role, Roles.Administrator.ToString())).Wait();
 			}
 		}
 		
-		private static void EnsureSeedData(ConfigurationDbContext context)
+		private static void EnsureSeedData(ConfigurationDbContext db)
 		{
-			if (!context.Clients.Any())
+			if (!db.Clients.Any())
 			{
-				context.Clients.AddRange(Configuration.Clients.Select(x => x.ToEntity()).ToArray());
-				context.SaveChanges();
+				db.Clients.AddRange(Configuration.Clients.Select(x => x.ToEntity()).ToArray());
+				db.SaveChanges();
 			}
-			if (!context.IdentityResources.Any())
+			if (!db.IdentityResources.Any())
 			{
-				context.IdentityResources.AddRange(Configuration.IdentityResources.Select(x => x.ToEntity()).ToArray());
-				context.SaveChanges();
+				db.IdentityResources.AddRange(Configuration.IdentityResources.Select(x => x.ToEntity()).ToArray());
+				db.SaveChanges();
 			}
-			if (!context.ApiScopes.Any())
+			if (!db.ApiScopes.Any())
 			{
-				context.ApiScopes.AddRange(Configuration.ApiScopes.Select(x => x.ToEntity()).ToArray());
-				context.SaveChanges();
+				db.ApiScopes.AddRange(Configuration.ApiScopes.Select(x => x.ToEntity()).ToArray());
+				db.SaveChanges();
 			}
-			if (!context.ApiResources.Any())
+			if (!db.ApiResources.Any())
 			{
-				context.ApiResources.AddRange(Configuration.ApiResources.Select(x => x.ToEntity()).ToArray());
-				context.SaveChanges();
+				db.ApiResources.AddRange(Configuration.ApiResources.Select(x => x.ToEntity()).ToArray());
+				db.SaveChanges();
 			}
 		}
 	}

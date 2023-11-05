@@ -1,16 +1,14 @@
-using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using IdentityModel;
-using IdentityServerHost.Pages;
 using IdentityServerHost.Pages.Register;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using PortfolioShared.Models;
 using System.Security.Claims;
-using static IdentityModel.OidcConstants;
 
 namespace IdentityServer.Pages.Account.Register
 {
@@ -21,16 +19,18 @@ namespace IdentityServer.Pages.Account.Register
 		private readonly IIdentityProviderStore identityProviderStore;
 		private readonly IIdentityServerInteractionService interaction;
 		private readonly IAuthenticationSchemeProvider schemeProvider;
+        private readonly IHubContext<RegistrationHub> hubContext;
 		private readonly SignInManager<IdentityUser<Guid>> signInManager;
 		private readonly UserManager<IdentityUser<Guid>> userManager;
 
-		public Index(IIdentityServerInteractionService interaction, IClientStore clientStore, IAuthenticationSchemeProvider schemeProvider, IIdentityProviderStore identityProviderStore, IEventService events, UserManager<IdentityUser<Guid>> userManager, SignInManager<IdentityUser<Guid>> signInManager)
+		public Index(IIdentityServerInteractionService interaction, IClientStore clientStore, IAuthenticationSchemeProvider schemeProvider, IIdentityProviderStore identityProviderStore, IEventService events, IHubContext<RegistrationHub> hubContext, UserManager<IdentityUser<Guid>> userManager, SignInManager<IdentityUser<Guid>> signInManager)
         {
 			this.userManager = userManager;
 			this.signInManager = signInManager;
 			this.interaction = interaction;
 			this.clientStore = clientStore;
 			this.schemeProvider = schemeProvider;
+            this.hubContext = hubContext;
 			this.identityProviderStore = identityProviderStore;
 			this.events = events;
 		}
@@ -75,6 +75,7 @@ namespace IdentityServer.Pages.Account.Register
 
                     if (loginresult.Succeeded)
                     {
+                        await hubContext.Clients.All.SendAsync("Receive", user.Id, user.Email, Enum.Parse<Roles>(Input.RoleName));
                         if (Url.IsLocalUrl(Input.ReturnUrl))
                         {
                             return Redirect(Input.ReturnUrl);

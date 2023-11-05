@@ -10,13 +10,15 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["PortfolioServer/PortfolioServer.csproj", "PortfolioServer/"]
-RUN dotnet restore "PortfolioServer/PortfolioServer.csproj"
+COPY ["PortfolioShared/PortfolioShared.csproj", "PortfolioShared/"]
+RUN dotnet restore "./PortfolioServer/./PortfolioServer.csproj"
 COPY . .
 WORKDIR "/src/PortfolioServer"
-RUN dotnet build "PortfolioServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./PortfolioServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "PortfolioServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish "./PortfolioServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

@@ -1,5 +1,6 @@
 using Duende.IdentityServer.Services;
 using IdentityServer;
+using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +9,9 @@ if (seed)
 {
 	args = args.Except(new[] { "/seed" }).ToArray();
 }
-seed = false;
+seed = true;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddSignalR();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddControllers();
@@ -83,4 +85,5 @@ app.UseIdentityServer();
 app.UseAuthorization();
 app.MapControllers();
 app.MapRazorPages();
+app.MapHub<RegistrationHub>("/RegistrationHub");
 app.Run();

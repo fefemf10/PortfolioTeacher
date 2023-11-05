@@ -1,12 +1,15 @@
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualBasic;
+using PortfolioServer;
 using PortfolioShared.Models;
 using System.Security.Claims;
-
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+HubConnection connection;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -36,7 +39,6 @@ builder.Services.AddSwaggerGen(options =>
 		}
 	});
 });
-
 builder.Services.AddDbContext<ApplicationContext>(options =>
 	{
 		string connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
@@ -47,8 +49,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 	{
 		options.Authority = builder.Configuration["IdentityServer:Url"];
-		options.TokenValidationParameters = new TokenValidationParameters { ValidateAudience = false };
-		options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+		options.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateAudience = false,
+			ValidTypes = new[] { "at+jwt" }
+		};
 	});
 
 builder.Services.AddAuthorization(options =>
@@ -57,14 +62,31 @@ builder.Services.AddAuthorization(options =>
 		new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
 		.RequireAuthenticatedUser()
 		.Build();
+	options.AddPolicy("IdentityServer", pBuilder =>
+	{
+		pBuilder.RequireClaim(JwtClaimTypes.Issuer, builder.Configuration["IdentityServer:Url"]!).RequireClaim(JwtClaimTypes.Role, Roles.IdentityServer.ToString());
+	});
 	options.AddPolicy(Roles.Administrator.ToString(), builder =>
 	{
-		builder.RequireClaim(ClaimTypes.Role, Roles.Administrator.ToString());
+		builder.RequireClaim(JwtClaimTypes.Role, Roles.Administrator.ToString());
 	});
 	options.AddPolicy(Roles.Moderator.ToString(), builder =>
 	{
-		builder.RequireAssertion(x => x.User.HasClaim(ClaimTypes.Role, Roles.Administrator.ToString())
-		|| x.User.HasClaim(ClaimTypes.Role, Roles.Moderator.ToString()));
+		builder.RequireAssertion(x => x.User.HasClaim(JwtClaimTypes.Role, Roles.Administrator.ToString())
+		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Moderator.ToString()));
+	});
+	options.AddPolicy(Roles.Teacher.ToString(), builder =>
+	{
+		builder.RequireAssertion(x => x.User.HasClaim(JwtClaimTypes.Role, Roles.Administrator.ToString())
+		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Moderator.ToString())
+		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Teacher.ToString()));
+	});
+	options.AddPolicy(Roles.Student.ToString(), builder =>
+	{
+		builder.RequireAssertion(x => x.User.HasClaim(JwtClaimTypes.Role, Roles.Administrator.ToString())
+		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Moderator.ToString())
+		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Teacher.ToString())
+		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Student.ToString()));
 	});
 });
 
@@ -79,6 +101,27 @@ builder.Services.AddCors(options =>
 	});
 });
 var app = builder.Build();
+
+connection = new HubConnectionBuilder().WithAutomaticReconnect().WithUrl("https://localhost:7001/RegistrationHub").Build();
+connection.On<Guid, string, Roles>("Receive", (Id, Email, Role) =>
+{
+	using (var scope = app.Services.CreateAsyncScope())
+	{
+		var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+		switch (Role)
+		{
+			case Roles.Teacher:
+				db.Teachers.Add(new Teacher() { Id = Id, Email = Email });
+				db.SaveChanges();
+				break;
+			case Roles.Student:
+				db.Students.Add(new Student() { Id = Id, Email = Email });
+				db.SaveChanges();
+				break;
+		}
+	}
+});
+connection.StartAsync();
 app.UseCors("MyPolicy");
 if (app.Environment.IsDevelopment())
 {

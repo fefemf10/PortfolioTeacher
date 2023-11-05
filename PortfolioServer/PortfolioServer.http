@@ -1,6 +1,13 @@
-@PortfolioServer_HostAddress = http://localhost:5231
+﻿@PortfolioServer_HostAddress = https://localhost:6001
 
-GET {{PortfolioServer_HostAddress}}/weatherforecast/
-Accept: application/json
+POST {{PortfolioServer_HostAddress}}/discipline/Add?name=string
+
+###
+
+DELETE {{PortfolioServer_HostAddress}}/discipline/DeleteById?id=0
+
+###
+
+GET {{PortfolioServer_HostAddress}}/discipline/Get
 
 ###
