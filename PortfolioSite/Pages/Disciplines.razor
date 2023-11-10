@@ -8,29 +8,23 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
 
-<AuthorizeView>
-	<Authorized>
-		<Container>
-				<ListView TItem="@ResponseDiscipline"
-					Data="@userDisciplines"
-					TextField="(item) => item.Name"
-					ValueField="(item) => item.Id.ToString()"
-					Mode="ListGroupMode.Selectable"
-					Height="300px"
-					@bind-SelectedItem="@userDisciplineSelectedItem">
-				</ListView>
-				<SelectList TItem="@ResponseDiscipline"
-							TValue="int"
-							Data="@disciplines"
-							TextField="@((item)=>item.Name)"
-							ValueField="@((item)=>item.Id)"
-							@bind-SelectedValue="@selectedValue"/>
+	<ListView TItem="ResponseDiscipline"
+			  Data="@userDisciplines"
+			  TextField="(item) => item.Name"
+			  ValueField="(item) => item.Id.ToString()"
+			  Mode="ListGroupMode.Selectable"
+			  Height="300px"
+			  @bind-SelectedItem="@userDisciplineSelectedItem">
+	</ListView>
+	<SelectList TItem="@ResponseDiscipline"
+				TValue="int"
+				Data="@disciplines"
+				TextField="@((item)=>item.Name)"
+				ValueField="@((item)=>item.Id)"
+				@bind-SelectedValue="@selectedValue" />
 
-				<Button Color="Color.Success" Clicked="@AddDiscipline">Add discipline</Button>
-				<Button Color="Color.Success" Clicked="@DeleteDiscipline">Delete discipline</Button>
-		</Container>
-	</Authorized>
-</AuthorizeView>
+	<Button Color="Color.Success" Clicked="@AddDiscipline">Add discipline</Button>
+	<Button Color="Color.Success" Clicked="@DeleteDiscipline">Delete discipline</Button>
 
 	@code {
 	HttpClient webapi;
@@ -43,31 +37,38 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 			userDisciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>($"Teacher/{guid.ToString()}/GetDisciplines");
 		disciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>("Discipline/Get");
 		disciplines = disciplines.Except(userDisciplines).ToList();
-		//selectedValue = disciplines.First().Id;
+		selectedValue = disciplines.First().Id;
 	}
 	private void AddDiscipline()
 	{
-		selectedDiscipline = disciplines.Single(x => x.Id == selectedValue);
-		userDisciplines.Add(selectedDiscipline);
-		disciplines.Remove(selectedDiscipline);
-		webapi.PostAsync($"Teacher/{guid.ToString()}/AddDiscipline/{selectedValue}", null).Wait();
-		selectedDiscipline = disciplines.First();
-		selectedValue = selectedDiscipline.Id;
+		if (disciplines.Count > 0)
+		{
+			selectedDiscipline = disciplines.Single(x => x.Id == selectedValue);
+			userDisciplines.Add(selectedDiscipline);
+			disciplines.Remove(selectedDiscipline);
+			webapi.PostAsync($"Teacher/{guid.ToString()}/AddDiscipline/{selectedValue}", null);
+			if (disciplines.Count > 0)
+				selectedValue = disciplines.First().Id;
+		}
 	}
 	private void DeleteDiscipline()
 	{
-		if (userDisciplineSelectedItem is null)
-			return;
-		userDisciplines.Remove(userDisciplineSelectedItem);
-		if (!disciplines.Contains(userDisciplineSelectedItem))
-			disciplines.Add(userDisciplineSelectedItem);
-		webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteDiscipline/{userDisciplineSelectedItem.Id}").Wait();
-		userDisciplineSelectedItem = null;
+		if (userDisciplines.Count > 0)
+		{
+			if (userDisciplineSelectedItem is null)
+				return;
+			userDisciplines.Remove(userDisciplineSelectedItem);
+			if (!disciplines.Contains(userDisciplineSelectedItem))
+				disciplines.Add(userDisciplineSelectedItem);
+			webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteDiscipline/{userDisciplineSelectedItem.Id}");
+			userDisciplineSelectedItem = userDisciplines.FirstOrDefault();
+		}
 	}
 }

@@ -9,7 +9,7 @@ if (seed)
 {
 	args = args.Except(new[] { "/seed" }).ToArray();
 }
-seed = true;
+seed = false;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSignalR();
 builder.Services.AddRazorPages();

@@ -1,12 +1,34 @@
 ﻿@page "/about"
-@attribute [Authorize]
 @using System.ComponentModel.DataAnnotations
 @using PortfolioSite.ViewModels
 
 @inject IStringLocalizer<About> localizer
 <PageTitle>@localizer["Title"]</PageTitle>
 
-
+	<Container>
+		<Grid>
+			<Column ColumnSize="ColumnSize.Is12">
+				<Alert Color="Color.Primary" Visible Margin="Margin.Is0">
+					Col 6
+				</Alert>
+			</Column>
+			<Column ColumnSize="ColumnSize.Is12">
+				<Alert Color="Color.Primary" Visible Margin="Margin.Is0">
+					Col 6
+				</Alert>
+			</Column>
+			<Column ColumnSize="ColumnSize.Is12">
+				<Alert Color="Color.Primary" Visible Margin="Margin.Is0">
+					Col 6
+				</Alert>
+			</Column>
+			<Column ColumnSize="ColumnSize.Is12">
+				<Alert Color="Color.Primary" Visible Margin="Margin.Is0">
+					Col 6
+				</Alert>
+			</Column>
+		</Grid>
+	</Container>
 @code {
 	private RequestUser user = new();
 
