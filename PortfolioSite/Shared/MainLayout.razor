@@ -3,9 +3,9 @@
 
 
 <MediaQueryList>
-	@if (isDesktop)
-	{
-		<Layout>
+	<Layout>
+		@* @if (isDesktop)
+		{
 			<Layout Sider>
 				<LayoutSider>
 					<LayoutSiderContent>
@@ -16,17 +16,13 @@
 						</AuthorizeView>
 					</LayoutSiderContent>
 				</LayoutSider>
-				<Layout>
-					<LayoutContent Padding="Padding.Is3.OnAll">
-						@Body
-					</LayoutContent>
-				</Layout>
+				<LayoutContent Padding="Padding.Is3.OnAll">
+					@Body
+				</LayoutContent>
 			</Layout>
-		</Layout>
-	}
-	else
-	{
-		<Layout>
+		}
+		else
+		{
 			<LayoutHeader>
 				<AuthorizeView>
 					<Authorized>
@@ -37,10 +33,36 @@
 			<LayoutContent Padding="Padding.Is3.OnAll">
 				@Body
 			</LayoutContent>
+		} *@
+		@if (!isDesktop)
+		{
+		<LayoutHeader>
+			<AuthorizeView>
+				<Authorized>
+					<NavMenu />
+				</Authorized>
+			</AuthorizeView>
+		</LayoutHeader>
+		}
+		<Layout Sider>
+			@if (isDesktop)
+			{
+			<LayoutSider>
+					<LayoutSiderContent>
+						<AuthorizeView>
+						<Authorized>
+							<SideMenu />
+						</Authorized>
+					</AuthorizeView>
+				</LayoutSiderContent>
+			</LayoutSider>
+			}
+			<LayoutContent Padding="Padding.Is3.OnAll">
+				@Body
+			</LayoutContent>
 		</Layout>
-	}
-
-	<MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="isDesktop" />
+	</Layout>
+<MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="isDesktop" />
 </MediaQueryList>
 
 

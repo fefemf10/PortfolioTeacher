@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PortfolioShared.Helpers;
 using PortfolioShared.Models;
-using PortfolioShared.ViewModels.Request;
 using PortfolioShared.ViewModels.Response;
-using System.ComponentModel.DataAnnotations;
-using System.Drawing;
-using System.Reflection;
 
 namespace PortfolioShared.Cotrollers
 {
