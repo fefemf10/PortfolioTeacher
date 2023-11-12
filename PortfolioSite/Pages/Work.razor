@@ -1,36 +1,46 @@
 ﻿@page "/Work"
 @inject IStringLocalizer<Work> localizer
 <PageTitle>@localizer["Title"]</PageTitle>
-	
-<AuthorizeView>
-	<Authorized>
-		<Container Width="Width.Is100" Flex="Flex.Column.AlignItems.Center">
-			<Grid Width="Width.Is25" Margin="Margin.IsAuto">
-				<Column ColumnSize="ColumnSize.Is12">
-					<Alert Color="Color.Primary" Visible Margin="Margin.Is0">
-						Col 6
-					</Alert>
-				</Column>
-				<Column ColumnSize="ColumnSize.Is12">
-					<Alert Color="Color.Primary" Visible Margin="Margin.Is0">
-						Col 6
-					</Alert>
-				</Column>
-				<Column ColumnSize="ColumnSize.Is12">
-					<Alert Color="Color.Primary" Visible Margin="Margin.Is0">
-						Col 6
-					</Alert>
-				</Column>
-				<Column ColumnSize="ColumnSize.Is12">
-					<Alert Color="Color.Primary" Visible Margin="Margin.Is0">
-						Col 6
-					</Alert>
-				</Column>
-			</Grid>
-		</Container>
-	</Authorized>
-</AuthorizeView>
+
+	<Container>
+		<Grid Columns="GridColumns.Are1" Gap="Gap.Is0.OnY">
+			<Field>
+				<Validation Validator="ValidationRule.IsNotEmpty">
+					<TextEdit Placeholder="Last Name" @bind-Text="@lastName" />
+				</Validation>
+			</Field>
+			<Field>
+				<Validation Validator="ValidationRule.IsNotEmpty">
+					<TextEdit Placeholder="First Name" @bind-Text="@firstName" />
+				</Validation>
+			</Field>
+			<Field>
+				<Validation Validator="ValidationRule.IsNotEmpty">
+					<TextEdit Placeholder="Middle Name" @bind-Text="@middleName" />
+				</Validation>
+			</Field>
+			<Field>
+				<Validation Validator="ValidationRule.IsNotEmpty">
+					<TextEdit Placeholder="Post" @bind-Text="@post" />
+				</Validation>
+			</Field>
+			<Field>
+				<Validation Validator="ValidationRule.IsNotEmpty">
+					<TextEdit Placeholder="Academic Degree" @bind-Text="@academicDegree" />
+				</Validation>
+			</Field>
+			<Field>
+				<Validation Validator="ValidationRule.IsNotEmpty">
+					<TextEdit Placeholder="Academic Title" @bind-Text="@academicTitle" />
+				</Validation>
+			</Field>
+			<Field>
+				<DateEdit TValue="DateOnly?" @bind-Date="@dateBirthday" />
+			</Field>
+		</Grid>
+		<Button Color="Color.Success" Clicked="@AddInfo">Save changes</Button>
+	</Container>
 
 @code {
-
+	
 }

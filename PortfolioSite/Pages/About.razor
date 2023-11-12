@@ -14,17 +14,17 @@
 		<Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
 			<Field>
 				<Validation Validator="ValidationRule.IsNotEmpty">
+					<TextEdit Placeholder="Last Name" @bind-Text="@lastName" />
+				</Validation>
+			</Field>
+			<Field>
+				<Validation Validator="ValidationRule.IsNotEmpty">
 					<TextEdit Placeholder="First Name" @bind-Text="@firstName" />
 				</Validation>
 			</Field>
 			<Field>
 				<Validation Validator="ValidationRule.IsNotEmpty">
 					<TextEdit Placeholder="Middle Name" @bind-Text="@middleName" />
-				</Validation>
-			</Field>
-			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Last Name" @bind-Text="@lastName" />
 				</Validation>
 			</Field>
 			<Field>
