@@ -7,6 +7,6 @@
         public int WorkId { get; set; }
         public string Post { get; set; }
         public DateOnly BeginTimeWork { get; set; }
-        public DateOnly EndTimeWork { get; set; }
+        public DateOnly? EndTimeWork { get; set; }
     }
 }

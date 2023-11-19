@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public List<Teacher> Teachers { get; set; }
-    }
+        public List<Teacher> Teachers { get; set; } = new();
+		public List<WorkTeacher> WorkTeachers { get; set; } = new();
+	}
 }

@@ -80,5 +80,14 @@ namespace PortfolioServer.Controllers
 			db.SaveChanges();
 			return Ok();
 		}
+		[HttpGet("{guid:guid}/[action]")]
+		public ActionResult<ResponseWork[]> GetWorks(Guid guid)
+		{
+			Teacher? teacher = db.Teachers.Include(x => x.Works).SingleOrDefault(user => user.Id == guid);
+			if (teacher is null)
+				return BadRequest();
+			return Ok(Array.ConvertAll(teacher.WorkTeachers.ToArray(),
+				workTeacher => new ResponseWork(workTeacher.WorkId, teacher.Works.First(x => x.Id == workTeacher.WorkId).Name, workTeacher.Post, workTeacher.BeginTimeWork, workTeacher.EndTimeWork)));
+		}
 	}
 }

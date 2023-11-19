@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PortfolioServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231119184627_NullableEndTimeWork")]
+    partial class NullableEndTimeWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +45,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Awards", (string)null);
+                    b.ToTable("Awards");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.AwardStudent", b =>
@@ -70,7 +73,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("AwardStudent", (string)null);
+                    b.ToTable("AwardStudent");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Discipline", b =>
@@ -85,7 +88,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Disciplines", (string)null);
+                    b.ToTable("Disciplines");
 
                     b.HasData(
                         new
@@ -378,7 +381,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("DisciplineTeacher", (string)null);
+                    b.ToTable("DisciplineTeacher");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Dissertation", b =>
@@ -401,7 +404,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Dissertations", (string)null);
+                    b.ToTable("Dissertations");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.ProfessionalDevelopment", b =>
@@ -441,7 +444,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("ProfessionalDevelopments", (string)null);
+                    b.ToTable("ProfessionalDevelopments");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Publication", b =>
@@ -473,7 +476,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Publications", (string)null);
+                    b.ToTable("Publications");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.ScienceProject", b =>
@@ -488,7 +491,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ScienceProjects", (string)null);
+                    b.ToTable("ScienceProjects");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.ScienceProjectTeacher", b =>
@@ -518,7 +521,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("ScienceProjectTeacher", (string)null);
+                    b.ToTable("ScienceProjectTeacher");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.University", b =>
@@ -533,7 +536,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Universities", (string)null);
+                    b.ToTable("Universities");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.UniversityTeacher", b =>
@@ -565,7 +568,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("UniversityId");
 
-                    b.ToTable("UniversityTeacher", (string)null);
+                    b.ToTable("UniversityTeacher");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.User", b =>
@@ -592,7 +595,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
                     b.UseTptMappingStrategy();
                 });
@@ -609,7 +612,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Works", (string)null);
+                    b.ToTable("Works");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.WorkTeacher", b =>
@@ -640,14 +643,14 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("WorkId");
 
-                    b.ToTable("WorkTeacher", (string)null);
+                    b.ToTable("WorkTeacher");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Student", b =>
                 {
                     b.HasBaseType("PortfolioShared.Models.User");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Teacher", b =>
@@ -666,7 +669,7 @@ namespace PortfolioServer.Migrations
                     b.Property<string>("Post")
                         .HasColumnType("longtext");
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Award", b =>

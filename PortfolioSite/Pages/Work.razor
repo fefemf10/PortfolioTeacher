@@ -1,46 +1,75 @@
 ﻿@page "/Work"
+@using PortfolioShared.ViewModels.Request
+@using PortfolioShared.ViewModels.Response
+@using Blazorise.DataGrid;
 @inject IStringLocalizer<Work> localizer
+@inject IHttpClientFactory httpFactory
+@inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
 
-	<Container>
-		<Grid Columns="GridColumns.Are1" Gap="Gap.Is0.OnY">
-			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Last Name" @bind-Text="@lastName" />
-				</Validation>
-			</Field>
-			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="First Name" @bind-Text="@firstName" />
-				</Validation>
-			</Field>
-			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Middle Name" @bind-Text="@middleName" />
-				</Validation>
-			</Field>
-			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Post" @bind-Text="@post" />
-				</Validation>
-			</Field>
-			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Academic Degree" @bind-Text="@academicDegree" />
-				</Validation>
-			</Field>
-			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Academic Title" @bind-Text="@academicTitle" />
-				</Validation>
-			</Field>
-			<Field>
-				<DateEdit TValue="DateOnly?" @bind-Date="@dateBirthday" />
-			</Field>
-		</Grid>
-		<Button Color="Color.Success" Clicked="@AddInfo">Save changes</Button>
-	</Container>
-
+<DataGrid TItem="@ResponseWork"
+          Data="@userWorks"
+          @bind-SelectedRow="@userWorkSelectedItem"
+          Editable
+          Responsive
+          ShowPager
+          CommandMode="DataGridCommandMode.ButtonRow">
+    <DataGridColumns>
+        <DataGridColumn Field="@nameof(ResponseWork.Id)" Caption="#" Sortable="false" />
+        <DataGridColumn Field="@nameof(ResponseWork.Name)" Caption="Name" Editable />
+        <DataGridColumn Field="@nameof(ResponseWork.Post)" Caption="Post" Editable />
+        <DataGridColumn Field="@nameof(ResponseWork.BeginTimeWork)" Caption="Begin Time Work" Editable />
+        <DataGridColumn Field="@nameof(ResponseWork.EndTimeOnly)" Caption="End Time Work" Editable />
+    </DataGridColumns>
+    <ButtonRowTemplate>
+        <Button Color="Color.Success" Clicked="context.NewCommand.Clicked">New</Button>
+        <Button Color="Color.Primary" Disabled="(userWorkSelectedItem is null)" Clicked="context.EditCommand.Clicked">Edit</Button>
+		<Button Color="Color.Danger" Disabled="(userWorkSelectedItem is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
+    </ButtonRowTemplate>
+</DataGrid>
 @code {
-	
+	Validations validations;
+	HttpClient webapi;
+	Guid guid;
+	string nameWork = string.Empty;
+	string post = string.Empty;
+	DateOnly beginTimeWork;
+	DateOnly? endTimeWork;
+	List<ResponseWork>? userWorks;
+	ResponseWork? userWorkSelectedItem;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		webapi = httpFactory.CreateClient("PortfolioServer");
+		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
+			userWorks = await webapi.GetFromJsonAsync<List<ResponseWork>>($"Teacher/{guid.ToString()}/GetWorks");
+
+	}
+	private void AddWork()
+	{
+		if (validations.ValidateAll().GetAwaiter().GetResult())
+		{
+			// if (userWorks.FirstOrDefault(x => x.Name == nameWork && x.Post == post && x.BeginTimeWork == beginTimeWork) is null)
+			// {
+			// 	userWorks.Add(new ResponseWork(nameWork, post, beginTimeWork, endTimeWork));
+			// 	webapi.PostAsync($"Teacher/{guid.ToString()}/AddWork/{nameWork}", null);
+			// 	webapi.($"Teacher/{guid.ToString()}/AddWork/{nameWork}", null);
+			// 	if (disciplines.Count > 0)
+			// 		selectedValue = disciplines.First().Id;
+			// }
+		}
+	}
+	private void DeleteWork()
+	{
+		if (userWorks.Count > 0)
+		{
+			if (userWorkSelectedItem is null)
+				return;
+			userWorks.Remove(userWorkSelectedItem);
+			webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteWork/{userWorkSelectedItem.Id}");
+			userWorkSelectedItem = userWorks.FirstOrDefault();
+		}
+	}
 }
