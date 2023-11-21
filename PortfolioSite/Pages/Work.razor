@@ -13,11 +13,12 @@
           Editable
           Responsive
           ShowPager
+		  UseValidation
           CommandMode="DataGridCommandMode.ButtonRow">
     <DataGridColumns>
         <DataGridColumn Field="@nameof(ResponseWork.Id)" Caption="#" Sortable="false" />
-        <DataGridColumn Field="@nameof(ResponseWork.Name)" Caption="Name" Editable />
-        <DataGridColumn Field="@nameof(ResponseWork.Post)" Caption="Post" Editable />
+        <DataGridColumn Field="@nameof(ResponseWork.Name)" Caption="Name" Validator="ValidationRule.IsNotEmpty" Editable />
+        <DataGridColumn Field="@nameof(ResponseWork.Post)" Caption="Post" Validator="ValidationRule.IsNotEmpty" Editable />
         <DataGridColumn Field="@nameof(ResponseWork.BeginTimeWork)" Caption="Begin Time Work" Editable />
         <DataGridColumn Field="@nameof(ResponseWork.EndTimeOnly)" Caption="End Time Work" Editable />
     </DataGridColumns>
@@ -45,7 +46,6 @@
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 			userWorks = await webapi.GetFromJsonAsync<List<ResponseWork>>($"Teacher/{guid.ToString()}/GetWorks");
-
 	}
 	private void AddWork()
 	{

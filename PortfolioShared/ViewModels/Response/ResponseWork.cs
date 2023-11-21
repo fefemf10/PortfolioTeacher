@@ -6,5 +6,12 @@ using System.Threading.Tasks;
 
 namespace PortfolioShared.ViewModels.Response
 {
-	public record ResponseWork(int Id, string Name, string Post, DateOnly BeginTimeWork, DateOnly? EndTimeOnly);
+	public class ResponseWork
+	{
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public string Post { get; set; }
+		public DateOnly BeginTimeWork { get; set; } = DateOnly.FromDateTime(DateTimeOffset.Now.DateTime);
+		public DateOnly? EndTimeOnly { get; set; }
+	}
 }
