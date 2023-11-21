@@ -20,7 +20,7 @@
         <DataGridColumn Field="@nameof(ResponseWork.Name)" Caption="Name" Validator="ValidationRule.IsNotEmpty" Editable />
         <DataGridColumn Field="@nameof(ResponseWork.Post)" Caption="Post" Validator="ValidationRule.IsNotEmpty" Editable />
         <DataGridColumn Field="@nameof(ResponseWork.BeginTimeWork)" Caption="Begin Time Work" Editable />
-        <DataGridColumn Field="@nameof(ResponseWork.EndTimeOnly)" Caption="End Time Work" Editable />
+        <DataGridColumn Field="@nameof(ResponseWork.EndTimeWork)" Caption="End Time Work" Editable />
     </DataGridColumns>
     <ButtonRowTemplate>
         <Button Color="Color.Success" Clicked="context.NewCommand.Clicked">New</Button>

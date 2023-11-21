@@ -12,6 +12,6 @@ namespace PortfolioShared.ViewModels.Response
 		public string Name { get; set; }
 		public string Post { get; set; }
 		public DateOnly BeginTimeWork { get; set; } = DateOnly.FromDateTime(DateTimeOffset.Now.DateTime);
-		public DateOnly? EndTimeOnly { get; set; }
+		public DateOnly? EndTimeWork { get; set; }
 	}
 }

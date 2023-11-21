@@ -87,7 +87,7 @@ namespace PortfolioServer.Controllers
 			if (teacher is null)
 				return BadRequest();
 			return Ok(Array.ConvertAll(teacher.WorkTeachers.ToArray(),
-				workTeacher => new ResponseWork(workTeacher.WorkId, teacher.Works.First(x => x.Id == workTeacher.WorkId).Name, workTeacher.Post, workTeacher.BeginTimeWork, workTeacher.EndTimeWork)));
+				workTeacher => new ResponseWork { Id = workTeacher.WorkId, Name = teacher.Works.First(x => x.Id == workTeacher.WorkId).Name, Post = workTeacher.Post, BeginTimeWork = workTeacher.BeginTimeWork, EndTimeWork = workTeacher.EndTimeWork }));
 		}
 	}
 }
