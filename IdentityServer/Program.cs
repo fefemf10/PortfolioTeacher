@@ -1,6 +1,5 @@
 using Duende.IdentityServer.Services;
 using IdentityServer;
-using Microsoft.AspNet.SignalR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

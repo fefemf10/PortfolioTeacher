@@ -5,8 +5,6 @@ using PortfolioShared.Models;
 using Duende.IdentityServer.EntityFramework.Storage;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.AspNet.SignalR.Hubs;
 
 namespace IdentityServer
 {
