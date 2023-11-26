@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PortfolioServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20231124192541_UpdateTeacherWork")]
+    partial class UpdateTeacherWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -617,14 +620,24 @@ namespace PortfolioServer.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("TeacherId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TeacherId");
-
                     b.ToTable("Works");
+                });
+
+            modelBuilder.Entity("TeacherWork", b =>
+                {
+                    b.Property<Guid>("TeachersId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("WorksId")
+                        .HasColumnType("int");
+
+                    b.HasKey("TeachersId", "WorksId");
+
+                    b.HasIndex("WorksId");
+
+                    b.ToTable("TeacherWork");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Student", b =>
@@ -749,13 +762,19 @@ namespace PortfolioServer.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PortfolioShared.Models.Work", b =>
+            modelBuilder.Entity("TeacherWork", b =>
                 {
-                    b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
-                        .WithMany("Works")
-                        .HasForeignKey("TeacherId");
+                    b.HasOne("PortfolioShared.Models.Teacher", null)
+                        .WithMany()
+                        .HasForeignKey("TeachersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Teacher");
+                    b.HasOne("PortfolioShared.Models.Work", null)
+                        .WithMany()
+                        .HasForeignKey("WorksId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Student", b =>
@@ -792,8 +811,6 @@ namespace PortfolioServer.Migrations
                     b.Navigation("ProfessionalDevelopments");
 
                     b.Navigation("Publications");
-
-                    b.Navigation("Works");
                 });
 #pragma warning restore 612, 618
         }

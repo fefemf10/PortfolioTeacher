@@ -8,26 +8,28 @@
 <PageTitle>@localizer["Title"]</PageTitle>
 
 <DataGrid TItem="@ResponseWork"
-          Data="@userWorks"
-          @bind-SelectedRow="@userWorkSelectedItem"
-          Editable
-          Responsive
-          ShowPager
+		  Data="@userWorks"
+		  @bind-SelectedRow="@userWorkSelectedItem"
+		  Editable
+		  Responsive
+		  ShowPager
 		  UseValidation
-          CommandMode="DataGridCommandMode.ButtonRow">
-    <DataGridColumns>
-        <DataGridColumn Field="@nameof(ResponseWork.Id)" Caption="#" Sortable="false" />
-        <DataGridColumn Field="@nameof(ResponseWork.Name)" Caption="Name" Validator="ValidationRule.IsNotEmpty" Editable />
-        <DataGridColumn Field="@nameof(ResponseWork.Post)" Caption="Post" Validator="ValidationRule.IsNotEmpty" Editable />
-        <DataGridColumn Field="@nameof(ResponseWork.BeginTimeWork)" Caption="Begin Time Work" Editable />
-        <DataGridColumn Field="@nameof(ResponseWork.EndTimeWork)" Caption="End Time Work" Editable />
-    </DataGridColumns>
-    <ButtonRowTemplate>
-        <Button Color="Color.Success" Clicked="context.NewCommand.Clicked">New</Button>
-        <Button Color="Color.Primary" Disabled="(userWorkSelectedItem is null)" Clicked="context.EditCommand.Clicked">Edit</Button>
-		<Button Color="Color.Danger" Disabled="(userWorkSelectedItem is null)" Clicked="context.DeleteCommand.Clicked">Delete</Button>
-    </ButtonRowTemplate>
+		  CommandMode="DataGridCommandMode.ButtonRow"
+		  @ref="@dataGrid">
+	<DataGridColumns>
+		<DataGridColumn Field="@nameof(ResponseWork.Id)" Caption="#" Sortable="false" />
+		<DataGridColumn Field="@nameof(ResponseWork.Name)" Caption="@localizer["TableColumnName"]" Validator="ValidationRule.IsNotEmpty" Editable />
+		<DataGridColumn Field="@nameof(ResponseWork.Post)" Caption="@localizer["TableColumnPost"]" Validator="ValidationRule.IsNotEmpty" Editable />
+		<DataGridColumn Field="@nameof(ResponseWork.BeginTimeWork)" Caption="@localizer["TableColumnBeginTimeWork"]" Editable />
+		<DataGridColumn Field="@nameof(ResponseWork.EndTimeWork)" Caption="@localizer["TableColumnEndTimeWork"]" Editable />
+	</DataGridColumns>
+	<ButtonRowTemplate>
+		<Button Color="Color.Success" Clicked="context.NewCommand.Clicked">@localizer["AddWorkButton"]</Button>
+		<Button Color="Color.Primary" Disabled="(userWorkSelectedItem is null)" Clicked="context.EditCommand.Clicked">@localizer["EditWorkButton"]</Button>
+		<Button Color="Color.Danger" Disabled="(userWorkSelectedItem is null)" Clicked="context.DeleteCommand.Clicked">@localizer["RemoveWorkButton"]</Button>
+	</ButtonRowTemplate>
 </DataGrid>
+<Button Color="Color.Success" Clicked="@SaveChanges">@localizer["SaveChangesButton"]</Button>
 @code {
 	Validations validations;
 	HttpClient webapi;
@@ -38,7 +40,7 @@
 	DateOnly? endTimeWork;
 	List<ResponseWork>? userWorks;
 	ResponseWork? userWorkSelectedItem;
-
+	DataGrid<ResponseWork> dataGrid;
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
@@ -46,30 +48,16 @@
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 			userWorks = await webapi.GetFromJsonAsync<List<ResponseWork>>($"Teacher/{guid.ToString()}/GetWorks");
+		dataGrid.NewItemCreator = AddNewItem;
 	}
-	private void AddWork()
+	private ResponseWork AddNewItem()
 	{
-		if (validations.ValidateAll().GetAwaiter().GetResult())
-		{
-			// if (userWorks.FirstOrDefault(x => x.Name == nameWork && x.Post == post && x.BeginTimeWork == beginTimeWork) is null)
-			// {
-			// 	userWorks.Add(new ResponseWork(nameWork, post, beginTimeWork, endTimeWork));
-			// 	webapi.PostAsync($"Teacher/{guid.ToString()}/AddWork/{nameWork}", null);
-			// 	webapi.($"Teacher/{guid.ToString()}/AddWork/{nameWork}", null);
-			// 	if (disciplines.Count > 0)
-			// 		selectedValue = disciplines.First().Id;
-			// }
-		}
+		ResponseWork? lastWork = userWorks.LastOrDefault();
+		return new ResponseWork { Id = lastWork is null ? 1 : lastWork.Id + 1 };
 	}
-	private void DeleteWork()
+	private void SaveChanges()
 	{
-		if (userWorks.Count > 0)
-		{
-			if (userWorkSelectedItem is null)
-				return;
-			userWorks.Remove(userWorkSelectedItem);
-			webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteWork/{userWorkSelectedItem.Id}");
-			userWorkSelectedItem = userWorks.FirstOrDefault();
-		}
+		JsonContent jc = JsonContent.Create<List<ResponseWork>>(userWorks);
+		webapi.PutAsync($"Teacher/{guid.ToString()}/UpdateListWorks", jc);
 	}
 }

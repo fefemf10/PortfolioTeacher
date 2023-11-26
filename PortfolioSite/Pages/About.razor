@@ -14,39 +14,39 @@
 		<Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
 			<Field>
 				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Last Name" @bind-Text="@lastName" />
+					<TextEdit Placeholder=@localizer["FieldLastName"] @bind-Text="@lastName" />
 				</Validation>
 			</Field>
 			<Field>
 				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="First Name" @bind-Text="@firstName" />
+					<TextEdit Placeholder=@localizer["FieldFirstName"] @bind-Text="@firstName" />
 				</Validation>
 			</Field>
 			<Field>
 				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Middle Name" @bind-Text="@middleName" />
+					<TextEdit Placeholder=@localizer["FieldMiddleName"] @bind-Text="@middleName" />
 				</Validation>
 			</Field>
 			<Field>
 				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Post" @bind-Text="@post" />
+					<TextEdit Placeholder=@localizer["FieldPost"] @bind-Text="@post" />
 				</Validation>
 			</Field>
 			<Field>
 				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Academic Degree" @bind-Text="@academicDegree" />
+					<TextEdit Placeholder=@localizer["FieldAcademicDegree"] @bind-Text="@academicDegree" />
 				</Validation>
 			</Field>
 			<Field>
 				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder="Academic Title" @bind-Text="@academicTitle" />
+					<TextEdit Placeholder=@localizer["FieldAcademicTitle"] @bind-Text="@academicTitle" />
 				</Validation>
 			</Field>
 			<Field>
 				<DateEdit TValue="DateOnly?" @bind-Date="@dateBirthday" />
 			</Field>
 		</Grid>
-		<Button Color="Color.Success" Clicked="@AddInfo">Save changes</Button>
+		<Button Color="Color.Success" Clicked="@AddInfo">@localizer["SaveChangesButton"]</Button>
 	</Container>
 }
 

@@ -2,11 +2,12 @@
 @using IdentityModel.Client
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using PortfolioShared.ViewModels.Response
-@inject IStringLocalizer<ProfessionalDevelopments> localizer
+@inject IStringLocalizer<Disciplines> localizer
 @inject IHttpClientFactory httpFactory
 @inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
 
+	<Container>
 	<ListView TItem="ResponseDiscipline"
 			  Data="@userDisciplines"
 			  TextField="(item) => item.Name"
@@ -21,10 +22,9 @@
 				TextField="@((item)=>item.Name)"
 				ValueField="@((item)=>item.Id)"
 				@bind-SelectedValue="@selectedValue" />
-
-	<Button Color="Color.Success" Clicked="@AddDiscipline">Add discipline</Button>
-	<Button Color="Color.Success" Clicked="@DeleteDiscipline">Delete discipline</Button>
-
+		<Button Margin="Margin.Is3.OnY" Color="Color.Success" Clicked="@AddDiscipline">@localizer["AddDisciplineButton"]</Button>
+		<Button Margin="Margin.Is3.OnY" Color="Color.Success" Clicked="@DeleteDiscipline">@localizer["RemoveDisciplineButton"]</Button>
+	</Container>
 	@code {
 	HttpClient webapi;
 	Guid guid;

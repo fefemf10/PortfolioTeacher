@@ -86,8 +86,22 @@ namespace PortfolioServer.Controllers
 			Teacher? teacher = db.Teachers.Include(x => x.Works).SingleOrDefault(user => user.Id == guid);
 			if (teacher is null)
 				return BadRequest();
-			return Ok(Array.ConvertAll(teacher.WorkTeachers.ToArray(),
-				workTeacher => new ResponseWork { Id = workTeacher.WorkId, Name = teacher.Works.First(x => x.Id == workTeacher.WorkId).Name, Post = workTeacher.Post, BeginTimeWork = workTeacher.BeginTimeWork, EndTimeWork = workTeacher.EndTimeWork }));
+			ResponseWork[] responseWorks = Array.ConvertAll(teacher.Works.ToArray(),
+				work => new ResponseWork { Name = work.Name, Post = work.Post, BeginTimeWork = work.BeginTimeWork, EndTimeWork = work.EndTimeWork });
+			for (int i = 0; i < responseWorks.Length; i++)
+				responseWorks[i].Id = i+1;
+			return Ok(responseWorks);
+		}
+		[HttpPut("{guid:guid}/[action]")]
+		public ActionResult UpdateListWorks(Guid guid, [FromBody] ResponseWork[] responseWorks)
+		{
+			Teacher? teacher = db.Teachers.Include(x => x.Works).SingleOrDefault(user => user.Id == guid);
+			if (teacher is null)
+				return BadRequest();
+			db.Works.RemoveRange(teacher.Works);
+			teacher.Works = Array.ConvertAll(responseWorks, work => new Work { Name = work.Name, Post = work.Post, BeginTimeWork = work.BeginTimeWork, EndTimeWork = work.EndTimeWork }).ToList();
+			db.SaveChanges();
+			return Ok();
 		}
 	}
 }
