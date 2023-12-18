@@ -31,10 +31,10 @@ public class ApplicationContext : DbContext
 		modelBuilder.Entity<User>().HasKey(user => user.Id);
 		modelBuilder.Entity<User>().UseTptMappingStrategy();
 
-		modelBuilder.Entity<University>().HasMany(university => university.Teachers).WithMany(teacher => teacher.Universities).UsingEntity<UniversityTeacher>();
 		modelBuilder.Entity<Discipline>().HasMany(discipline => discipline.Teachers).WithMany(teacher => teacher.Disciplines).UsingEntity<DisciplineTeacher>();
-		modelBuilder.Entity<ScienceProject>().HasMany(scienceProject => scienceProject.Teachers).WithMany(teacher => teacher.ScienceProjects).UsingEntity<ScienceProjectTeacher>();
 
+		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.ScienceProjects).WithOne(scienceProject => scienceProject.Teacher).HasForeignKey(scienceProject => scienceProject.TeacherId);
+		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Universities).WithOne(university => university.Teacher).HasForeignKey(university => university.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Works).WithOne(work => work.Teacher).HasForeignKey(work => work.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Publications).WithOne(publication => publication.Teacher).HasForeignKey(publication => publication.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Awards).WithOne(award => award.Teacher).HasForeignKey(award => award.TeacherId);
