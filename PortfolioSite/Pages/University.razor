@@ -1,13 +1,95 @@
 ﻿@page "/University"
+@using PortfolioShared.ViewModels.Request
+@using PortfolioShared.ViewModels.Response
+@using Blazorise.DataGrid;
+@using PortfolioSite.Shared.Localization;
+@using PortfolioSite.Helpers;
+@inject IStringLocalizer<TableControls> tableControlsLocalizer
 @inject IStringLocalizer<University> localizer
+@inject IHttpClientFactory httpFactory
+@inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
-
-<AuthorizeView>
-	<Authorized>
-
-	</Authorized>
-</AuthorizeView>
-
+<Heading TextAlignment="TextAlignment.Center">@localizer["Title"]</Heading>
+<DataGrid TItem="@RequestUniversity"
+		  Data="@userUniversities"
+		  Editable
+		  Responsive
+		  ShowPager
+		  ShowPageSizes
+		  Filterable
+		  FilterMode="DataGridFilterMode.Menu"
+		  UseValidation
+		  ValidationsHandlerType="ValidationHandlerType.DataAnnotation"
+		  Navigable
+		  PagerOptions="@(new() {PaginationPosition = PagerElementPosition.Center})"
+		  EditMode="DataGridEditMode.Cell"
+		  RowInserted="OnRowInserted"
+		  RowUpdated="OnRowUpdated"
+		  RowRemoved="OnRowDeleted"
+		  @ref="@dataGrid">
+	<DataGridColumns>
+		<DataGridCommandColumn>
+			<NewCommandTemplate>
+				<Button Color="Color.Success" Clicked="@context.Clicked">@tableControlsLocalizer["AddRowButton"]</Button>
+			</NewCommandTemplate>
+			<EditCommandTemplate>
+				<Button Color="Color.Primary" Clicked="@context.Clicked">@tableControlsLocalizer["EditRowButton"]</Button>
+			</EditCommandTemplate>
+			<DeleteCommandTemplate>
+				<Button Color="Color.Danger" Clicked="@context.Clicked">@tableControlsLocalizer["RemoveRowButton"]</Button>
+			</DeleteCommandTemplate>
+			<SaveCommandTemplate>
+				<Button Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
+			</SaveCommandTemplate>
+			<CancelCommandTemplate>
+				<Button Color="Color.Secondary" Clicked="@context.Clicked">@tableControlsLocalizer["CancelRowButton"]</Button>
+			</CancelCommandTemplate>
+		</DataGridCommandColumn>
+		<DataGridColumn Field="@nameof(RequestUniversity.Name)" Caption="@localizer["TableColumnName"]" Editable />
+		<DataGridColumn Field="@nameof(RequestUniversity.Specialization)" Caption="@localizer["TableColumnSpecialization"]" Editable />
+		<DataGridColumn Field="@nameof(RequestUniversity.Qualification)" Caption="@localizer["TableColumnQualification"]" Editable />
+		<DataGridColumn Field="@nameof(RequestUniversity.YearGraduation)" Caption="@localizer["TableColumnYearGraduation"]" Editable />
+	</DataGridColumns>
+	<NextPageButtonTemplate><Icon Name="IconName.StepForward" /></NextPageButtonTemplate>
+	<PreviousPageButtonTemplate><Icon Name="IconName.StepBackward" /></PreviousPageButtonTemplate>
+	<LastPageButtonTemplate><Icon Name="IconName.Forward" /></LastPageButtonTemplate>
+	<FirstPageButtonTemplate><Icon Name="IconName.Backward" /></FirstPageButtonTemplate>
+	<TotalItemsTemplate><Badge>@context.TotalItems total items</Badge></TotalItemsTemplate>
+	<TotalItemsShortTemplate><Badge>@context.TotalItems</Badge></TotalItemsShortTemplate>
+	<ItemsPerPageTemplate></ItemsPerPageTemplate>
+	<TotalItemsTemplate><Badge Color="Color.Success">@context.TotalItems</Badge></TotalItemsTemplate>
+	<TotalItemsShortTemplate><Badge Color="Color.Success">@context.TotalItems</Badge></TotalItemsShortTemplate>
+</DataGrid>
+<SnackbarStack @ref="@snackbarStack" DefaultInterval="3000.0" Location="SnackbarStackLocation.BottomEnd" TextWeight="TextWeight.Bold" TextSize="TextSize.ExtraLarge" />
 @code {
-
+	SnackbarStack snackbarStack;
+	List<RequestUniversity>? userUniversities;
+	DataGrid<RequestUniversity> dataGrid;
+	HttpClient webapi;
+	Guid guid;
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		webapi = httpFactory.CreateClient("PortfolioServer");
+		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
+			userUniversities = await webapi.GetFromJsonAsync<List<RequestUniversity>>($"Teacher/{guid.ToString()}/GetUniversity");
+	}
+	private void OnRowInserted(SavedRowItem<RequestUniversity, Dictionary<string, object>> e)
+	{
+		JsonContent jc = JsonContent.Create<RequestUniversity>(e.NewItem);
+		webapi.PostAsync($"Teacher/{guid.ToString()}/AddUniversity", jc);
+		snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
+	}
+	private void OnRowUpdated(SavedRowItem<RequestUniversity, Dictionary<string, object>> e)
+	{
+		JsonContent jc = JsonContent.Create<RequestUniversity>(e.NewItem);
+		webapi.PutAsync($"Teacher/{guid.ToString()}/UpdateUniversity", jc);
+		snackbarStack.PushAsync(tableControlsLocalizer["UpdateRowNotification"], SnackbarColor.Warning);
+	}
+	private void OnRowDeleted(RequestUniversity e)
+	{
+		webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteUniversity/{e.Id}");
+		snackbarStack.PushAsync(tableControlsLocalizer["RemoveRowNotification"], SnackbarColor.Danger);
+	}
 }

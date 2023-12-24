@@ -4,15 +4,15 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace IdentityServerHost.Pages.Login;
+namespace IdentityServer.Pages.Account.Login;
 
 public class InputModel
 {
-    [Required]
-	[EmailAddress]
+    [Required(ErrorMessageResourceName = "EmailRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Login.InputModel))]
+	[EmailAddress(ErrorMessageResourceName = "EmailError", ErrorMessageResourceType = typeof(Resources.Pages.Account.Login.InputModel))]
     public string? Email { get; set; }
 
-    [Required]
+    [Required(ErrorMessageResourceName = "PasswordRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Login.InputModel))]
     public string? Password { get; set; }
 
     public bool RememberLogin { get; set; }

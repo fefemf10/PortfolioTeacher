@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace PortfolioShared.ViewModels.Response
 {
-	public record ResponseDiscipline(int Id, string Name);
+	public record ResponseDiscipline(Guid Id, string Name);
 }

@@ -3,16 +3,12 @@ using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
-using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using PortfolioSite;
 using PortfolioSite.Extensions;
 using PortfolioSite.Handlers;
-using System.Runtime.CompilerServices;
-using System.Security.Claims;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 

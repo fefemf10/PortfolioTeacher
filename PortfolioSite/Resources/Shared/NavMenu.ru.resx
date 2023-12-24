@@ -129,8 +129,11 @@
   <data name="Language" xml:space="preserve">
     <value>Язык</value>
   </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Выход</value>
+  </data>
   <data name="ProfessionalDevelopments" xml:space="preserve">
-    <value>Квалификация</value>
+    <value>ПК</value>
   </data>
   <data name="PublicActivities" xml:space="preserve">
     <value>Социальные проекты</value>

@@ -6,7 +6,7 @@
 @inject IHttpClientFactory httpFactory
 @inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
-
+<Heading TextAlignment="TextAlignment.Center">@localizer["Title"]</Heading>
 	<Container>
 	<ListView TItem="ResponseDiscipline"
 			  Data="@userDisciplines"
@@ -17,7 +17,7 @@
 			  @bind-SelectedItem="@userDisciplineSelectedItem">
 	</ListView>
 	<SelectList TItem="@ResponseDiscipline"
-				TValue="int"
+				TValue="Guid"
 				Data="@disciplines"
 				TextField="@((item)=>item.Name)"
 				ValueField="@((item)=>item.Id)"
@@ -28,7 +28,7 @@
 	@code {
 	HttpClient webapi;
 	Guid guid;
-	int selectedValue;
+	Guid selectedValue;
 	ResponseDiscipline? selectedDiscipline;
 	List<ResponseDiscipline>? disciplines;
 	List<ResponseDiscipline>? userDisciplines;
@@ -40,7 +40,7 @@
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-			userDisciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>($"Teacher/{guid.ToString()}/GetDisciplines");
+			userDisciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>($"Teacher/{guid.ToString()}/GetDiscipline");
 		disciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>("Discipline/Get");
 		disciplines = disciplines.Except(userDisciplines).ToList();
 		if (disciplines.Count > 0)

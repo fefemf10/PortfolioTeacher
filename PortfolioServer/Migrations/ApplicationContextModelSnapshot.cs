@@ -18,11 +18,26 @@ namespace PortfolioServer.Migrations
                 .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("DisciplineTeacher", b =>
+                {
+                    b.Property<Guid>("DisciplinesId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("TeachersId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("DisciplinesId", "TeachersId");
+
+                    b.HasIndex("TeachersId");
+
+                    b.ToTable("DisciplineTeacher");
+                });
+
             modelBuilder.Entity("PortfolioShared.Models.Award", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateOnly?>("DateAward")
                         .HasColumnType("date");
@@ -35,21 +50,21 @@ namespace PortfolioServer.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("TeacherId")
+                    b.Property<Guid>("TeacherId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Awards", (string)null);
+                    b.ToTable("Awards");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.AwardStudent", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateOnly?>("DateAward")
                         .HasColumnType("date");
@@ -58,7 +73,7 @@ namespace PortfolioServer.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("StudentId")
+                    b.Property<Guid>("StudentId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid?>("TeacherId")
@@ -70,14 +85,14 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("AwardStudent", (string)null);
+                    b.ToTable("AwardStudent");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Discipline", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -85,313 +100,292 @@ namespace PortfolioServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Disciplines", (string)null);
+                    b.ToTable("Disciplines");
 
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = new Guid("12ffe8b8-01eb-4c09-81a7-7e15c911b1cb"),
                             Name = "История России"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = new Guid("3f169905-50b7-4a84-b424-140eb3946cd8"),
                             Name = "Основы российской государственности"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = new Guid("c4183262-cb6e-4d9e-8f28-8b2edd2599ae"),
                             Name = "Иностранный язык"
                         },
                         new
                         {
-                            Id = 4,
+                            Id = new Guid("235dc790-c49a-4b14-bc1d-017fe745b32e"),
                             Name = "Философия"
                         },
                         new
                         {
-                            Id = 5,
+                            Id = new Guid("8c2e674e-b4b6-4205-aaf4-93c45706d6aa"),
                             Name = "Безопасность жизнедеятельности"
                         },
                         new
                         {
-                            Id = 6,
+                            Id = new Guid("a4807c61-1fb1-4c4f-8a7d-4964cb38d980"),
                             Name = "Русский язык и культура речи"
                         },
                         new
                         {
-                            Id = 7,
+                            Id = new Guid("f3c3b2f1-0170-42a4-9524-9f9f9b127fc2"),
                             Name = "Высшая математика"
                         },
                         new
                         {
-                            Id = 8,
+                            Id = new Guid("48386306-691f-468b-b867-eb22ee3df0b8"),
                             Name = "Информатика"
                         },
                         new
                         {
-                            Id = 9,
+                            Id = new Guid("e1286a19-96cc-4c8f-add9-7bd03085c5ef"),
                             Name = "Развитие информационного общества"
                         },
                         new
                         {
-                            Id = 10,
+                            Id = new Guid("62001240-683a-4409-b5c4-ce04778d2939"),
                             Name = "Основы алгоритмизации"
                         },
                         new
                         {
-                            Id = 11,
+                            Id = new Guid("1598d07e-c99d-4839-a790-61256cb8a47f"),
                             Name = "Основы программирования"
                         },
                         new
                         {
-                            Id = 12,
+                            Id = new Guid("19da9c1f-a421-487a-bf92-16429226e00a"),
                             Name = "Программная инженерия"
                         },
                         new
                         {
-                            Id = 13,
+                            Id = new Guid("74b956a0-08a0-44a5-b065-d329174febe5"),
                             Name = "Операционные системы"
                         },
                         new
                         {
-                            Id = 14,
+                            Id = new Guid("a78d181d-1f35-4caa-a72a-2b5ea8e6d06c"),
                             Name = "Экономика"
                         },
                         new
                         {
-                            Id = 15,
+                            Id = new Guid("ef22b2fe-e6e3-47ff-bed7-dd56ffc6e3f0"),
                             Name = "Правоведение"
                         },
                         new
                         {
-                            Id = 16,
+                            Id = new Guid("c3e3eacd-8ac1-4bb6-b448-eaa6d7588b96"),
                             Name = "Социология"
                         },
                         new
                         {
-                            Id = 17,
+                            Id = new Guid("b843b0b7-0856-48a1-b695-1d8896b265cb"),
                             Name = "Психология"
                         },
                         new
                         {
-                            Id = 18,
+                            Id = new Guid("f65a0795-2b10-44ee-8b12-aa5f23753270"),
                             Name = "Технологии разработки программного продукта"
                         },
                         new
                         {
-                            Id = 19,
+                            Id = new Guid("6060cdc6-fddc-43fc-80c9-132a4c5c9791"),
                             Name = "Интернет технологии"
                         },
                         new
                         {
-                            Id = 20,
+                            Id = new Guid("8e1c394d-8d69-4756-85e5-612c5d188d70"),
                             Name = "Информационная безопасность"
                         },
                         new
                         {
-                            Id = 21,
+                            Id = new Guid("4f4847ab-4c87-47e6-b83e-f9a012ed8491"),
                             Name = "Численные методы"
                         },
                         new
                         {
-                            Id = 22,
+                            Id = new Guid("4cec87e4-cdb4-4b09-b480-6e7ee8903fd7"),
                             Name = "Исследование операций"
                         },
                         new
                         {
-                            Id = 23,
+                            Id = new Guid("b8fe41ba-f8fa-40e0-a74d-18b79eef077c"),
                             Name = "Дискретная математика"
                         },
                         new
                         {
-                            Id = 24,
+                            Id = new Guid("e1975a73-2028-4967-adc7-0423cbd3a00d"),
                             Name = "Математика криптографии"
                         },
                         new
                         {
-                            Id = 25,
+                            Id = new Guid("53ef19d2-6fae-4966-82b6-0ee4129d7497"),
                             Name = "Математические методы принятия решений"
                         },
                         new
                         {
-                            Id = 26,
+                            Id = new Guid("d66d9b36-6be7-48ec-8b32-44f6a1db29e7"),
                             Name = "Математический инструментарий и модели оценки бизнеса"
                         },
                         new
                         {
-                            Id = 27,
+                            Id = new Guid("c3dcc704-b393-46e0-92a7-9019f0c62c1a"),
                             Name = "Анализ данных"
                         },
                         new
                         {
-                            Id = 28,
+                            Id = new Guid("e3c3d704-3250-4488-aa6a-ed5725a92944"),
                             Name = "Базы данных"
                         },
                         new
                         {
-                            Id = 29,
+                            Id = new Guid("31c592ad-61af-4edb-866e-4204fedf6848"),
                             Name = "Управление жизненным циклом информационных систем"
                         },
                         new
                         {
-                            Id = 30,
+                            Id = new Guid("344966da-a613-4371-83c2-db08c0395089"),
                             Name = "ИТ инфраструкту рапредприятия"
                         },
                         new
                         {
-                            Id = 31,
+                            Id = new Guid("7df7032d-f8ff-4bbe-b8f7-f7d6b4049464"),
                             Name = "Управление проектами"
                         },
                         new
                         {
-                            Id = 32,
+                            Id = new Guid("d2b85abd-a623-4249-9484-5021e05124a5"),
                             Name = "Физическая культура и спорт"
                         },
                         new
                         {
-                            Id = 33,
+                            Id = new Guid("0005f8d5-3f23-4cd2-af31-24f893311a47"),
                             Name = "Информационные системы и технологии в управленческой деятельности"
                         },
                         new
                         {
-                            Id = 34,
+                            Id = new Guid("296568c4-677d-4a88-a8b9-f08090b006ee"),
                             Name = "Специальные главы высшей математики"
                         },
                         new
                         {
-                            Id = 35,
+                            Id = new Guid("c6558dec-2c27-4422-a857-dfdfdd234c85"),
                             Name = "Вычислительные системы, сети, телекоммуникации"
                         },
                         new
                         {
-                            Id = 36,
+                            Id = new Guid("2041d761-3993-4b7f-ac6d-9246af5301f8"),
                             Name = "Электронный бизнес"
                         },
                         new
                         {
-                            Id = 37,
+                            Id = new Guid("28ee9963-1e42-462b-a544-a3660a0b5980"),
                             Name = "Корпоративные информационные системы"
                         },
                         new
                         {
-                            Id = 38,
+                            Id = new Guid("b6b85179-cea3-4686-9c9e-9abd3c6ef39c"),
                             Name = "Теория риска и моделирование рисковых ситуаций"
                         },
                         new
                         {
-                            Id = 39,
+                            Id = new Guid("c4758bab-4ddd-48b1-978c-0afafd910bec"),
                             Name = "Прогнозирование социальноэкономических процессов"
                         },
                         new
                         {
-                            Id = 40,
+                            Id = new Guid("0af3d2bd-75d1-4c6b-8835-3e218e09df28"),
                             Name = "Основы искусственного интеллекта"
                         },
                         new
                         {
-                            Id = 41,
+                            Id = new Guid("064fabad-a8f7-4557-95f6-50ea079939e9"),
                             Name = "Основы научных исследований"
                         },
                         new
                         {
-                            Id = 42,
+                            Id = new Guid("deee41c0-b76f-46a3-a63c-3bb215ecb188"),
                             Name = "Научно-исследовательская работа"
                         },
                         new
                         {
-                            Id = 43,
+                            Id = new Guid("078f32b1-48c0-4de3-b9bd-6d5e2706be08"),
                             Name = "Моделирование бизнеспроцессов"
                         },
                         new
                         {
-                            Id = 44,
+                            Id = new Guid("f0c3415b-470e-4c6e-ae12-9af082d772c6"),
                             Name = "Теория систем и системный анализ"
                         },
                         new
                         {
-                            Id = 45,
+                            Id = new Guid("ad2ae88a-1659-4647-b627-1cb2d2e52b82"),
                             Name = "Системы поддержки принятия решений"
                         },
                         new
                         {
-                            Id = 46,
+                            Id = new Guid("616f003d-c1f6-4219-9697-f87bd7c33d6f"),
                             Name = "Стандатизация, сертификация и управление качеством программного обеспечения"
                         },
                         new
                         {
-                            Id = 47,
+                            Id = new Guid("3fb201c8-43bb-4d94-a6e9-fa9aaca2d86a"),
                             Name = "Стандартизация и сертификация товаров и услуг"
                         },
                         new
                         {
-                            Id = 48,
+                            Id = new Guid("52569844-396b-4ccb-b529-d9ca85a94617"),
                             Name = "Физическая культура и спорт"
                         },
                         new
                         {
-                            Id = 49,
+                            Id = new Guid("c8e32c09-4f2e-44aa-a5f6-ac2df567e77a"),
                             Name = "Основы военной подготовки"
                         },
                         new
                         {
-                            Id = 50,
+                            Id = new Guid("d6fc0fac-954a-4086-b38b-895b62726500"),
                             Name = "Ознакомительная (учебная) практика"
                         },
                         new
                         {
-                            Id = 51,
+                            Id = new Guid("7a098b5b-b9ef-4972-bbd4-19fb9431b99e"),
                             Name = "Технологическая (учебная) практика"
                         },
                         new
                         {
-                            Id = 52,
+                            Id = new Guid("1762b005-c4d0-44b9-915c-32238e2a8210"),
                             Name = "Технологическая (производственная) практика"
                         },
                         new
                         {
-                            Id = 53,
+                            Id = new Guid("b3141e8f-04a4-4a11-b1bb-da23a5b63ac1"),
                             Name = "Преддипломная (производственная) практика"
                         },
                         new
                         {
-                            Id = 54,
+                            Id = new Guid("35112c50-da42-4a94-9693-9062cdac15fc"),
                             Name = "Подготовка к процедуре защиты и защита выпускной квалификационной работы"
                         });
                 });
 
-            modelBuilder.Entity("PortfolioShared.Models.DisciplineTeacher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("DisciplineId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TeacherId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DisciplineId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("DisciplineTeacher", (string)null);
-                });
-
             modelBuilder.Entity("PortfolioShared.Models.Dissertation", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("TeacherId")
+                    b.Property<Guid>("TeacherId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateOnly>("YearProtection")
@@ -401,14 +395,14 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Dissertations", (string)null);
+                    b.ToTable("Dissertations");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.ProfessionalDevelopment", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateOnly?>("DateСompletion")
                         .HasColumnType("date");
@@ -434,21 +428,21 @@ namespace PortfolioServer.Migrations
                     b.Property<string>("SeriaDocument")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("TeacherId")
+                    b.Property<Guid>("TeacherId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("ProfessionalDevelopments", (string)null);
+                    b.ToTable("ProfessionalDevelopments");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Publication", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("CoAuthor")
                         .HasColumnType("longtext");
@@ -466,21 +460,21 @@ namespace PortfolioServer.Migrations
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("TeacherId")
+                    b.Property<Guid>("TeacherId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Publications", (string)null);
+                    b.ToTable("Publications");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.ScienceProject", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateOnly>("BeginTimeWork")
                         .HasColumnType("date");
@@ -495,21 +489,21 @@ namespace PortfolioServer.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("TeacherId")
+                    b.Property<Guid>("TeacherId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("ScienceProjects", (string)null);
+                    b.ToTable("ScienceProjects");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.University", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -523,7 +517,7 @@ namespace PortfolioServer.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("TeacherId")
+                    b.Property<Guid>("TeacherId")
                         .HasColumnType("char(36)");
 
                     b.Property<int>("YearGraduation")
@@ -533,7 +527,7 @@ namespace PortfolioServer.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Universities", (string)null);
+                    b.ToTable("Universities");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.User", b =>
@@ -560,16 +554,15 @@ namespace PortfolioServer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
                     b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Work", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("char(36)");
 
                     b.Property<DateOnly>("BeginTimeWork")
                         .HasColumnType("date");
@@ -585,21 +578,21 @@ namespace PortfolioServer.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("TeacherId")
+                    b.Property<Guid>("TeacherId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Works", (string)null);
+                    b.ToTable("Works");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Student", b =>
                 {
                     b.HasBaseType("PortfolioShared.Models.User");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Teacher", b =>
@@ -618,14 +611,31 @@ namespace PortfolioServer.Migrations
                     b.Property<string>("Post")
                         .HasColumnType("longtext");
 
-                    b.ToTable("Teachers", (string)null);
+                    b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("DisciplineTeacher", b =>
+                {
+                    b.HasOne("PortfolioShared.Models.Discipline", null)
+                        .WithMany()
+                        .HasForeignKey("DisciplinesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PortfolioShared.Models.Teacher", null)
+                        .WithMany()
+                        .HasForeignKey("TeachersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Award", b =>
                 {
                     b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
                         .WithMany("Awards")
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });
@@ -634,7 +644,9 @@ namespace PortfolioServer.Migrations
                 {
                     b.HasOne("PortfolioShared.Models.Student", "Student")
                         .WithMany("AwardStudents")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
                         .WithMany("AwardStudents")
@@ -645,26 +657,13 @@ namespace PortfolioServer.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("PortfolioShared.Models.DisciplineTeacher", b =>
-                {
-                    b.HasOne("PortfolioShared.Models.Discipline", null)
-                        .WithMany()
-                        .HasForeignKey("DisciplineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PortfolioShared.Models.Teacher", null)
-                        .WithMany()
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("PortfolioShared.Models.Dissertation", b =>
                 {
                     b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
                         .WithMany("Dissertations")
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });
@@ -673,7 +672,9 @@ namespace PortfolioServer.Migrations
                 {
                     b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
                         .WithMany("ProfessionalDevelopments")
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });
@@ -682,7 +683,9 @@ namespace PortfolioServer.Migrations
                 {
                     b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
                         .WithMany("Publications")
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });
@@ -691,7 +694,9 @@ namespace PortfolioServer.Migrations
                 {
                     b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
                         .WithMany("ScienceProjects")
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });
@@ -700,7 +705,9 @@ namespace PortfolioServer.Migrations
                 {
                     b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
                         .WithMany("Universities")
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });
@@ -709,7 +716,9 @@ namespace PortfolioServer.Migrations
                 {
                     b.HasOne("PortfolioShared.Models.Teacher", "Teacher")
                         .WithMany("Works")
-                        .HasForeignKey("TeacherId");
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Teacher");
                 });

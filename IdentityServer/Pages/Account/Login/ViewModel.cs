@@ -2,7 +2,7 @@
 // See LICENSE in the project root for license information.
 
 
-namespace IdentityServerHost.Pages.Login;
+namespace IdentityServer.Pages.Account.Login;
 
 public class ViewModel
 {

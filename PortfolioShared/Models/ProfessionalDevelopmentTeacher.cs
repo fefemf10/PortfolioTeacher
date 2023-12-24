@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public Guid TeacherId { get; set; }
-        public int ProfessionalDevelopmentId { get; set; }
+        public Guid ProfessionalDevelopmentId { get; set; }
     }
 }

@@ -2,12 +2,12 @@
 {
     public class Work
     {
-        public int Id { get; set; }
-        public required string Name { get; set; }
-		public required string Post { get; set; }
-		public required DateOnly BeginTimeWork { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+		public string Post { get; set; }
+		public DateOnly BeginTimeWork { get; set; }
 		public DateOnly? EndTimeWork { get; set; }
-		public Guid? TeacherId { get; set; }
-		public Teacher? Teacher { get; set; }
+		public Guid TeacherId { get; set; }
+		public Teacher Teacher { get; set; } = null!;
 	}
 }

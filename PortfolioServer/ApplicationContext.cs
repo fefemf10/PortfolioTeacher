@@ -31,8 +31,9 @@ public class ApplicationContext : DbContext
 		modelBuilder.Entity<User>().HasKey(user => user.Id);
 		modelBuilder.Entity<User>().UseTptMappingStrategy();
 
-		modelBuilder.Entity<Discipline>().HasMany(discipline => discipline.Teachers).WithMany(teacher => teacher.Disciplines).UsingEntity<DisciplineTeacher>();
-
+		modelBuilder.Entity<Discipline>().HasMany(discipline => discipline.Teachers).WithMany(teacher => teacher.Disciplines);
+		modelBuilder.Entity<Work>().HasKey(work => work.Id);
+		modelBuilder.Entity<Work>().Property(work => work.Id).ValueGeneratedNever();
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.ScienceProjects).WithOne(scienceProject => scienceProject.Teacher).HasForeignKey(scienceProject => scienceProject.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Universities).WithOne(university => university.Teacher).HasForeignKey(university => university.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Works).WithOne(work => work.Teacher).HasForeignKey(work => work.TeacherId);
@@ -46,7 +47,7 @@ public class ApplicationContext : DbContext
 		{
 			using FileStream openStream = File.OpenRead("SeedData/Discipline.json");
 			if (openStream is not null)
-				disciplinesData = JsonSerializer.Deserialize<Discipline[]>(openStream);
+				disciplinesData = Array.ConvertAll(JsonSerializer.Deserialize<string[]>(openStream), name => new Discipline { Id = Guid.NewGuid(), Name = name });
 		}
 		if (disciplinesData is not null)
 			modelBuilder.Entity<Discipline>().HasData(disciplinesData);

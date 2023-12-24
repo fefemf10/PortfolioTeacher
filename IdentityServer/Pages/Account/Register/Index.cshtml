@@ -1,7 +1,8 @@
 ﻿@page
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @model IdentityServer.Pages.Account.Register.Index
-
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
 <div class="register-page">
 	<partial name="_ValidationSummary" />
 
@@ -9,36 +10,36 @@
 		<div class="col-sm-6">
 			<div class="card">
 				<div class="card-header">
-					<h2>Register</h2>
+					<h2>@localizer["Header"]</h2>
 				</div>
 				<div class="card-body">
 					<form asp-route="/Account/Register/Index">
 						<input type="hidden" asp-for="Input.ReturnUrl" />
 
 						<div class="form-group">
-							<label asp-for="Input.Email"></label>
-							<input type="email" class="form-control" placeholder="Email" asp-for="Input.Email" autofocus>
+							<label asp-for="Input.Email">@localizer["InputEmail"]</label>
+							<input type="email" class="form-control" placeholder="@localizer["InputEmail"]" asp-for="Input.Email" autofocus>
 						</div>
 						<div class="form-group">
-							<label asp-for="Input.Password"></label>
-							<input type="password" class="form-control" placeholder="Password"
+							<label asp-for="Input.Password">@localizer["InputPassword"]</label>
+							<input type="password" class="form-control" placeholder="@localizer["InputPassword"]"
 								   asp-for="Input.Password" autofocus>
 						</div>
 						<div class="form-group">
-							<label asp-for="Input.ConfirmPassword"></label>
-							<input type="password" class="form-control" placeholder="Confirm Password"
+							<label asp-for="Input.ConfirmPassword">@localizer["InputConfirmPassword"]</label>
+							<input type="password" class="form-control" placeholder="@localizer["InputConfirmPassword"]"
 								   asp-for="Input.ConfirmPassword" autofocus>
 						</div>
 						<div class="form-group">
-							<label asp-for="Input.RoleName"></label>
+							<label asp-for="Input.RoleName">@localizer["RoleName"]</label>
 							<select asp-for="Input.RoleName" class="form-control"
 									asp-items="@(new SelectList(Model.View.RolesList))"></select>
 						</div>
-						<button type="submit" class="btn btn-primary" name="Input.Button" value="register">Register</button>
+						<button type="submit" class="btn btn-primary" name="Input.Button" value="register">@localizer["ButtonRegister"]</button>
 					</form>
 				</div>
 				<div class="card-footer">
-					<a asp-page="../Login/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">Login</a>
+					<a asp-page="../Login/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">@localizer["ButtonLogin"]</a>
 				</div>
 			</div>
 		</div>

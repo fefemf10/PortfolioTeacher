@@ -117,15 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddWorkButton" xml:space="preserve">
-    <value>Add</value>
-  </data>
-  <data name="EditWorkButton" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="RemoveWorkButton" xml:space="preserve">
-    <value>Remove</value>
-  </data>
   <data name="TableColumnBeginTimeWork" xml:space="preserve">
     <value>Begin Time Work</value>
   </data>

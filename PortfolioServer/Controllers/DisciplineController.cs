@@ -18,7 +18,7 @@ namespace IdentityServer.Controllers
 			this.db = db;
 		}
 		[HttpGet]
-		public ActionResult<ResponseDiscipline[]> Get(int? id)
+		public ActionResult<ResponseDiscipline[]> Get(Guid? id)
 		{
 			if (id is null)
 				return Ok(db.Disciplines.Select(x => new ResponseDiscipline(x.Id, x.Name)).ToArray());
@@ -39,7 +39,7 @@ namespace IdentityServer.Controllers
 			return Ok(new ResponseDiscipline(discipline.Id, discipline.Name));
 		}
 		[HttpDelete]
-		public ActionResult DeleteById(int id)
+		public ActionResult DeleteById(Guid id)
 		{
 			Discipline? discipline = db.Disciplines.FirstOrDefault(x => x.Id == id);
 			if (discipline is null)

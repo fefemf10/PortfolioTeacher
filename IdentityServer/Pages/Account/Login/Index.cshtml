@@ -1,7 +1,8 @@
 @page
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@model IdentityServerHost.Pages.Login.Index
-
+@model IdentityServer.Pages.Account.Login.Index
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
 <div class="login-page">
 	<partial name="_ValidationSummary"/>
 
@@ -11,7 +12,7 @@
 			<div class="col-sm-6">
 				<div class="card">
 					<div class="card-header">
-						<h2>Login</h2>
+						<h2>@localizer["Header"]</h2>
 					</div>
 
 					<div class="card-body">
@@ -19,12 +20,12 @@
 							<input type="hidden" asp-for="Input.ReturnUrl"/>
 
 							<div class="form-group">
-								<label asp-for="Input.Email"></label>
-								<input type="email" class="form-control" placeholder="Email" asp-for="Input.Email" autofocus>
+								<label asp-for="Input.Email">@localizer["InputEmail"]</label>
+								<input type="email" class="form-control" placeholder="@localizer["InputEmail"]" asp-for="Input.Email" autofocus>
 							</div>
 							<div class="form-group">
-								<label asp-for="Input.Password"></label>
-								<input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off">
+								<label asp-for="Input.Password">@localizer["InputPassword"]</label>
+								<input type="password" class="form-control" placeholder="@localizer["InputPassword"]" asp-for="Input.Password" autocomplete="off">
 							</div>
 
 							@if (Model.View.AllowRememberLogin)
@@ -33,16 +34,16 @@
 									<div class="form-check">
 										<input class="form-check-input" asp-for="Input.RememberLogin">
 										<label class="form-check-label" asp-for="Input.RememberLogin">
-											Remember My Login
+											@localizer["RememberLogin"]
 										</label>
 									</div>
 								</div>
 							}
 							<a asp-page="../Register/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">
-								New User? Register
+								@localizer["ButtonNewUser"]
 							</a><br />
-							<button class="btn btn-primary" name="Input.Button" value="login">Login</button>
-							<button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
+							<button class="btn btn-primary" name="Input.Button" value="login">@localizer["ButtonLogin"]</button>
+							<button class="btn btn-secondary" name="Input.Button" value="cancel">@localizer["ButtonCancel"]</button>
 						</form>
 					</div>
 				</div>

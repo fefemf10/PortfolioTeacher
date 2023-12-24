@@ -1,7 +1,9 @@
 using Duende.IdentityServer.Services;
 using IdentityServer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var seed = args.Contains("/seed");
 if (seed)
@@ -10,10 +12,12 @@ if (seed)
 }
 seed = false;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddMvc();
 builder.Services.AddSignalR();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddControllers();
+builder.Services.AddControllersWithViews().AddDataAnnotationsLocalization().AddViewLocalization();
 string assembly = typeof(Program).Assembly.GetName().Name!;
 string connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
 ServerVersion serverVersion = ServerVersion.AutoDetect(connection);
@@ -57,7 +61,6 @@ builder.Services.AddIdentityServer()
 			AllowAll = true
 		};
 	}); ;
-
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("MyPolicy", builder =>
@@ -75,6 +78,17 @@ if (!app.Environment.IsDevelopment())
 	app.UseExceptionHandler("/Error", createScopeForErrors: true);
 	app.UseHsts();
 }
+var supportedCultures = new[]
+{
+	new CultureInfo("en"),
+	new CultureInfo("ru"),
+};
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+	DefaultRequestCulture = new RequestCulture("ru"),
+	SupportedCultures = supportedCultures,
+	SupportedUICultures = supportedCultures
+});
 app.UseCors("MyPolicy");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
