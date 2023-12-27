@@ -14,6 +14,7 @@
 		public List<AwardStudent> AwardStudents { get; set; } = new();
 		public List<Dissertation> Dissertations { get; set; } = new();
 		public List<ProfessionalDevelopment> ProfessionalDevelopments { get; set; } = new();
+		public List<PublicActivity> PublicActivities { get; set; } = new();
 		public byte[]? Image { get; set; }
     }
 }

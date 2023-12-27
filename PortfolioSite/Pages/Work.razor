@@ -1,5 +1,5 @@
 ﻿@page "/Work"
-@using PortfolioShared.ViewModels.Request.Work;
+@using PortfolioShared.ViewModels.Request;
 @using Blazorise.DataGrid;
 @using PortfolioSite.Shared.Localization;
 @inject IStringLocalizer<TableControls> tableControlsLocalizer
@@ -26,27 +26,27 @@
 		  RowRemoved="OnRowDeleted"
 		  @ref="@dataGrid">
 	<DataGridColumns>
-		<DataGridCommandColumn>
-			<NewCommandTemplate>
-				<Button Color="Color.Success" Clicked="@context.Clicked">@tableControlsLocalizer["AddRowButton"]</Button>
-			</NewCommandTemplate>
-			<EditCommandTemplate>
-				<Button Color="Color.Primary" Clicked="@context.Clicked">@tableControlsLocalizer["EditRowButton"]</Button>
-			</EditCommandTemplate>
-			<DeleteCommandTemplate>
-				<Button Color="Color.Danger" Clicked="@context.Clicked">@tableControlsLocalizer["RemoveRowButton"]</Button>
-			</DeleteCommandTemplate>
-			<SaveCommandTemplate>
-				<Button Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-			</SaveCommandTemplate>
-			<CancelCommandTemplate>
-				<Button Color="Color.Secondary" Clicked="@context.Clicked">@tableControlsLocalizer["CancelRowButton"]</Button>
-			</CancelCommandTemplate>
-		</DataGridCommandColumn>
 		<DataGridColumn Field="@nameof(RequestWork.Name)" Caption="@localizer["TableColumnName"]" Editable />
 		<DataGridColumn Field="@nameof(RequestWork.Post)" Caption="@localizer["TableColumnPost"]" Editable />
-		<DataGridDateColumn Field="@nameof(RequestWork.BeginTimeWork)" Caption="@localizer["TableColumnBeginTimeWork"]" Editable SortField="@nameof(RequestWork.BeginTimeWork)" SortDirection="SortDirection.Ascending"/>
+		<DataGridDateColumn Field="@nameof(RequestWork.BeginTimeWork)" Caption="@localizer["TableColumnBeginTimeWork"]" Editable SortField="@nameof(RequestWork.BeginTimeWork)" SortDirection="SortDirection.Ascending" />
 		<DataGridDateColumn Field="@nameof(RequestWork.EndTimeWork)" Caption="@localizer["TableColumnEndTimeWork"]" Editable />
+		<DataGridCommandColumn>
+			<NewCommandTemplate>
+				<Button Color="Color.Success" Clicked="@context.Clicked"><Icon Name="IconName.PlusSquare" IconSize="IconSize.Large" /></Button>
+			</NewCommandTemplate>
+			<EditCommandTemplate>
+				<Button Color="Color.Primary" Clicked="@context.Clicked"><Icon Name="IconName.Pen" IconSize="IconSize.Large" /></Button>
+			</EditCommandTemplate>
+			<DeleteCommandTemplate>
+				<Button Color="Color.Danger" Clicked="@context.Clicked"><Icon Name="IconName.Delete" IconSize="IconSize.Large" /></Button>
+			</DeleteCommandTemplate>
+			<SaveCommandTemplate>
+				<Button Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked"><Icon Name="IconName.Save" IconSize="IconSize.Large" /></Button>
+			</SaveCommandTemplate>
+			<CancelCommandTemplate>
+				<Button Color="Color.Secondary" Clicked="@context.Clicked"><Icon Name="IconName.Times" IconSize="IconSize.Large" /></Button>
+			</CancelCommandTemplate>
+		</DataGridCommandColumn>
 	</DataGridColumns>
 	<NextPageButtonTemplate><Icon Name="IconName.StepForward" /></NextPageButtonTemplate>
 	<PreviousPageButtonTemplate><Icon Name="IconName.StepBackward" /></PreviousPageButtonTemplate>

@@ -1,8 +1,95 @@
 ﻿@page "/Scienceprojects"
+@using PortfolioShared.ViewModels.Request
+@using PortfolioShared.ViewModels.Response
+@using Blazorise.DataGrid;
+@using PortfolioSite.Shared.Localization;
+@using PortfolioSite.Helpers;
+@inject IStringLocalizer<TableControls> tableControlsLocalizer
 @inject IStringLocalizer<ScienceProjects> localizer
+@inject IHttpClientFactory httpFactory
+@inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
 <Heading TextAlignment="TextAlignment.Center">@localizer["Title"]</Heading>
-
+<DataGrid TItem="@RequestScienceProject"
+		  Data="@userScienceProjects"
+		  Editable
+		  Responsive
+		  ShowPager
+		  ShowPageSizes
+		  Filterable
+		  FilterMode="DataGridFilterMode.Menu"
+		  UseValidation
+		  ValidationsHandlerType="ValidationHandlerType.DataAnnotation"
+		  Navigable
+		  PagerOptions="@(new() {PaginationPosition = PagerElementPosition.Center})"
+		  EditMode="DataGridEditMode.Cell"
+		  RowInserted="OnRowInserted"
+		  RowUpdated="OnRowUpdated"
+		  RowRemoved="OnRowDeleted"
+		  @ref="@dataGrid">
+	<DataGridColumns>
+		<DataGridColumn Field="@nameof(RequestScienceProject.Name)" Caption="@localizer["TableColumnName"]" Editable />
+		<DataGridDateColumn Field="@nameof(RequestScienceProject.BeginTimeWork)" Caption="@localizer["TableColumnBeginTimeWork"]" Editable SortField="@nameof(RequestScienceProject.BeginTimeWork)" SortDirection="SortDirection.Ascending" />
+		<DataGridDateColumn Field="@nameof(RequestScienceProject.EndTimeWork)" Caption="@localizer["TableColumnEndTimeWork"]" Editable />
+		<DataGridCheckColumn Field="@nameof(RequestScienceProject.Director)" Caption="@localizer["TableColumnDirector"]" Editable />
+		<DataGridCommandColumn>
+			<NewCommandTemplate>
+				<Button Color="Color.Success" Clicked="@context.Clicked"><Icon Name="IconName.PlusSquare" IconSize="IconSize.Large" /></Button>
+			</NewCommandTemplate>
+			<EditCommandTemplate>
+				<Button Color="Color.Primary" Clicked="@context.Clicked"><Icon Name="IconName.Pen" IconSize="IconSize.Large" /></Button>
+			</EditCommandTemplate>
+			<DeleteCommandTemplate>
+				<Button Color="Color.Danger" Clicked="@context.Clicked"><Icon Name="IconName.Delete" IconSize="IconSize.Large" /></Button>
+			</DeleteCommandTemplate>
+			<SaveCommandTemplate>
+				<Button Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked"><Icon Name="IconName.Save" IconSize="IconSize.Large" /></Button>
+			</SaveCommandTemplate>
+			<CancelCommandTemplate>
+				<Button Color="Color.Secondary" Clicked="@context.Clicked"><Icon Name="IconName.Times" IconSize="IconSize.Large" /></Button>
+			</CancelCommandTemplate>
+		</DataGridCommandColumn>
+	</DataGridColumns>
+	<NextPageButtonTemplate><Icon Name="IconName.StepForward" /></NextPageButtonTemplate>
+	<PreviousPageButtonTemplate><Icon Name="IconName.StepBackward" /></PreviousPageButtonTemplate>
+	<LastPageButtonTemplate><Icon Name="IconName.Forward" /></LastPageButtonTemplate>
+	<FirstPageButtonTemplate><Icon Name="IconName.Backward" /></FirstPageButtonTemplate>
+	<TotalItemsTemplate><Badge>@context.TotalItems total items</Badge></TotalItemsTemplate>
+	<TotalItemsShortTemplate><Badge>@context.TotalItems</Badge></TotalItemsShortTemplate>
+	<ItemsPerPageTemplate></ItemsPerPageTemplate>
+	<TotalItemsTemplate><Badge Color="Color.Success">@context.TotalItems</Badge></TotalItemsTemplate>
+	<TotalItemsShortTemplate><Badge Color="Color.Success">@context.TotalItems</Badge></TotalItemsShortTemplate>
+</DataGrid>
+<SnackbarStack @ref="@snackbarStack" DefaultInterval="3000.0" Location="SnackbarStackLocation.BottomEnd" TextWeight="TextWeight.Bold" TextSize="TextSize.ExtraLarge" />
 @code {
-
+	SnackbarStack snackbarStack;
+	List<RequestScienceProject>? userScienceProjects;
+	DataGrid<RequestScienceProject> dataGrid;
+	HttpClient webapi;
+	Guid guid;
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		webapi = httpFactory.CreateClient("PortfolioServer");
+		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
+			userScienceProjects = await webapi.GetFromJsonAsync<List<RequestScienceProject>>($"Teacher/{guid.ToString()}/GetScienceProject");
+	}
+	private void OnRowInserted(SavedRowItem<RequestScienceProject, Dictionary<string, object>> e)
+	{
+		JsonContent jc = JsonContent.Create<RequestScienceProject>(e.NewItem);
+		webapi.PostAsync($"Teacher/{guid.ToString()}/AddScienceProject", jc);
+		snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
+	}
+	private void OnRowUpdated(SavedRowItem<RequestScienceProject, Dictionary<string, object>> e)
+	{
+		JsonContent jc = JsonContent.Create<RequestScienceProject>(e.NewItem);
+		webapi.PutAsync($"Teacher/{guid.ToString()}/UpdateScienceProject", jc);
+		snackbarStack.PushAsync(tableControlsLocalizer["UpdateRowNotification"], SnackbarColor.Warning);
+	}
+	private void OnRowDeleted(RequestScienceProject e)
+	{
+		webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteScienceProject/{e.Id}");
+		snackbarStack.PushAsync(tableControlsLocalizer["RemoveRowNotification"], SnackbarColor.Danger);
+	}
 }

@@ -26,26 +26,26 @@
 		  RowRemoved="OnRowDeleted"
 		  @ref="@dataGrid">
 	<DataGridColumns>
-		<DataGridCommandColumn>
-			<NewCommandTemplate>
-				<Button Color="Color.Success" Clicked="@context.Clicked">@tableControlsLocalizer["AddRowButton"]</Button>
-			</NewCommandTemplate>
-			<EditCommandTemplate>
-				<Button Color="Color.Primary" Clicked="@context.Clicked">@tableControlsLocalizer["EditRowButton"]</Button>
-			</EditCommandTemplate>
-			<DeleteCommandTemplate>
-				<Button Color="Color.Danger" Clicked="@context.Clicked">@tableControlsLocalizer["RemoveRowButton"]</Button>
-			</DeleteCommandTemplate>
-			<SaveCommandTemplate>
-				<Button Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked">@context.LocalizationString</Button>
-			</SaveCommandTemplate>
-			<CancelCommandTemplate>
-				<Button Color="Color.Secondary" Clicked="@context.Clicked">@tableControlsLocalizer["CancelRowButton"]</Button>
-			</CancelCommandTemplate>
-		</DataGridCommandColumn>
 		<DataGridColumn Field="@nameof(RequestAward.Name)" Caption="@localizer["TableColumnName"]" Editable />
 		<DataGridColumn Field="@nameof(RequestAward.NameOrganization)" Caption="@localizer["TableColumnNameOrganization"]" Editable />
 		<DataGridDateColumn Field="@nameof(RequestAward.DateAward)" Caption="@localizer["TableColumnDateAward"]" Editable SortField="@nameof(RequestAward.DateAward)" SortDirection="SortDirection.Descending" />
+		<DataGridCommandColumn>
+			<NewCommandTemplate>
+				<Button Color="Color.Success" Clicked="@context.Clicked"><Icon Name="IconName.PlusSquare" IconSize="IconSize.Large" /></Button>
+			</NewCommandTemplate>
+			<EditCommandTemplate>
+				<Button Color="Color.Primary" Clicked="@context.Clicked"><Icon Name="IconName.Pen" IconSize="IconSize.Large" /></Button>
+			</EditCommandTemplate>
+			<DeleteCommandTemplate>
+				<Button Color="Color.Danger" Clicked="@context.Clicked"><Icon Name="IconName.Delete" IconSize="IconSize.Large" /></Button>
+			</DeleteCommandTemplate>
+			<SaveCommandTemplate>
+				<Button Type="ButtonType.Submit" PreventDefaultOnSubmit Color="Color.Primary" Clicked="@context.Clicked"><Icon Name="IconName.Save" IconSize="IconSize.Large" /></Button>
+			</SaveCommandTemplate>
+			<CancelCommandTemplate>
+				<Button Color="Color.Secondary" Clicked="@context.Clicked"><Icon Name="IconName.Times" IconSize="IconSize.Large" /></Button>
+			</CancelCommandTemplate>
+		</DataGridCommandColumn>
 	</DataGridColumns>
 	<NextPageButtonTemplate><Icon Name="IconName.StepForward" /></NextPageButtonTemplate>
 	<PreviousPageButtonTemplate><Icon Name="IconName.StepBackward" /></PreviousPageButtonTemplate>

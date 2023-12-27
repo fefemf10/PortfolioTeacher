@@ -13,6 +13,7 @@ public class ApplicationContext : DbContext
 	public DbSet<Publication> Publications { get; set; }
 	public DbSet<Dissertation> Dissertations { get; set; }
 	public DbSet<ProfessionalDevelopment> ProfessionalDevelopments { get; set; }
+	public DbSet<PublicActivity> PublicActivities { get; set; }
 	public DbSet<Teacher> Teachers { get; set; }
 	public DbSet<Student> Students { get; set; }
 	
@@ -41,6 +42,7 @@ public class ApplicationContext : DbContext
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Awards).WithOne(award => award.Teacher).HasForeignKey(award => award.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Dissertations).WithOne(dissertation => dissertation.Teacher).HasForeignKey(dissertation => dissertation.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.ProfessionalDevelopments).WithOne(professionalDevelopment => professionalDevelopment.Teacher).HasForeignKey(professionalDevelopment => professionalDevelopment.TeacherId);
+		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.PublicActivities).WithOne(publicActivity => publicActivity.Teacher).HasForeignKey(publicActivity => publicActivity.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.AwardStudents).WithOne(awardStudent => awardStudent.Teacher).HasForeignKey(awardStudent => awardStudent.TeacherId);
 		modelBuilder.Entity<Student>().HasMany(student => student.AwardStudents).WithOne(awardStudent => awardStudent.Student).HasForeignKey(awardStudent => awardStudent.StudentId);
 		if (disciplinesData is null)

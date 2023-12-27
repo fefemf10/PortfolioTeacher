@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="TableColumnDateСompletion" xml:space="preserve">
+    <value>Date completion</value>
+  </data>
+  <data name="TableColumnListeningTime" xml:space="preserve">
+    <value>Listening time</value>
+  </data>
+  <data name="TableColumnName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="TableColumnNameDocument" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="TableColumnNameOrganization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
+  <data name="TableColumnNumberDocument" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="TableColumnSeriaDocument" xml:space="preserve">
+    <value>Seria</value>
+  </data>
   <data name="Title" xml:space="preserve">
     <value>Professional developments</value>
   </data>

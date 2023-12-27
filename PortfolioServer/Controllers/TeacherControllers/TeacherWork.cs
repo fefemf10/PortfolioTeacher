@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PortfolioShared.Models;
-using PortfolioShared.ViewModels.Request.Work;
+using PortfolioShared.ViewModels.Request;
 using System.ComponentModel.DataAnnotations;
 
 namespace PortfolioServer.Controllers.TeacherControllers
 {
-	public partial class TeacherController
+    public partial class TeacherController
 	{
 		[HttpGet("{guid:guid}/[action]")]
 		public ActionResult<RequestWork[]> GetWork(Guid guid)
