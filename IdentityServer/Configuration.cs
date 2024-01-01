@@ -1,7 +1,5 @@
 ﻿using Duende.IdentityServer;
 using Duende.IdentityServer.Models;
-using IdentityModel;
-using System.Security.Claims;
 
 namespace IdentityServer
 {
@@ -12,104 +10,43 @@ namespace IdentityServer
 			new Client
 			{
 				ClientId = "m2m",
-				ClientSecrets = { new Secret("client_secret".ToSha256()) },
+				ClientSecrets = { new Secret("client_secret") },
 				AllowedGrantTypes = GrantTypes.ClientCredentials,
 				AllowedScopes =
 				{
 					IdentityServerConstants.StandardScopes.OpenId,
 					IdentityServerConstants.StandardScopes.Profile,
-					"PortfolioServer",
+					"PortfolioSite",
 				},
 			},
 			new Client
 			{
 				ClientId = "PortfolioSite",
-				ClientSecrets = { new Secret("client_secret".ToSha256()) },
 				AllowedGrantTypes = GrantTypes.Code,
 				AllowedScopes =
 				{
 					IdentityServerConstants.StandardScopes.OpenId,
 					IdentityServerConstants.StandardScopes.Profile,
-					"PortfolioServer",
+					"PortfolioSite",
 				},
 				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
 				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
-				AccessTokenLifetime = 3600,
-				AllowOfflineAccess = true
-			},
-			new Client
-			{
-				ClientId = "PortfolioSiteNoClientSecret",
-				ClientSecrets = { new Secret("client_secret".ToSha256()) },
-				AllowedGrantTypes = GrantTypes.Code,
-				AllowedScopes =
-				{
-					IdentityServerConstants.StandardScopes.OpenId,
-					IdentityServerConstants.StandardScopes.Profile,
-					"PortfolioServer",
-				},
-				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
-				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
-				RequireClientSecret = false,
-				AccessTokenLifetime = 3600,
-				AllowOfflineAccess = true
-			},
-			new Client
-			{
-				ClientId = "PortfolioSiteNoPkce",
-				ClientSecrets = { new Secret("client_secret".ToSha256()) },
-				AllowedGrantTypes = GrantTypes.Code,
-				AllowedScopes =
-				{
-					IdentityServerConstants.StandardScopes.OpenId,
-					IdentityServerConstants.StandardScopes.Profile,
-					"PortfolioServer",
-				},
-				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
-				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
-				RequirePkce = false,
-				AccessTokenLifetime = 3600,
-				AllowOfflineAccess = true
-			},
-			new Client
-			{
-				ClientId = "PortfolioSiteNoPkceNoClientSecret",
-				ClientSecrets = { new Secret("client_secret".ToSha256()) },
-				AllowedGrantTypes = GrantTypes.Code,
-				AllowedScopes =
-				{
-					IdentityServerConstants.StandardScopes.OpenId,
-					IdentityServerConstants.StandardScopes.Profile,
-					"PortfolioServer",
-				},
-				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
-				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
-				RequireClientSecret = false,
-				RequirePkce = false,
-				AccessTokenLifetime = 3600,
-				AllowOfflineAccess = true
+				RequireClientSecret = false
 			}
 		};
-
 		public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
 		{
-			new ApiResource("PortfolioServer")
+			new ApiResource("PortfolioSite")
 		};
-
 		public static IEnumerable<IdentityResource> IdentityResources => new IdentityResource[]
 		{
 			new IdentityResources.OpenId(),
 			new IdentityResources.Profile(),
-			new IdentityResource
-				{
-					Name = ClaimTypes.Role,
-					UserClaims = new List<string> { ClaimTypes.Role }
-				},
-
+			new IdentityResources.Email()
 		};
 		public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
 		{
-			new ApiScope("PortfolioServer")
+			new ApiScope("PortfolioSite")
 		};
 	}
 }

@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  IdentityServer:
+    image: ${DOCKER_REGISTRY-}identityserver
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+    build:
+      context: .
+      dockerfile: IdentityServer/Dockerfile
+  PortfolioServer:
+    image: ${DOCKER_REGISTRY-}PortfolioServer
+    ports:
+      - "6000:6000"
+      - "6001:6001"
+    build:
+      context: .
+      dockerfile: PortfolioServer/Dockerfile
+  PortfolioSite:
+    image: ${DOCKER_REGISTRY-}PortfolioSite
+    ports:
+      - "80:80"
+      - "443:443"
+    build:
+      context: .
+      dockerfile: PortfolioSite/Dockerfile
+  Database:
+    image: mysql:latest
+    volumes:
+      - /var/lib/mysql/data/
+    environment:
+      - DBPortfolioServer=portfolio
+      - DBPortfolioServerUser=root
+      - DBPortfolioServerPassword=1234
+      - DBIdentityServer=portfolioidentity
+      - DBIdentityServerUser=root
+      - DBIdentityServerPassword=1234
+    ports:
+      - "3306:3306"
+      

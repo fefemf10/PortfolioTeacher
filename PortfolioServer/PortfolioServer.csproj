@@ -7,6 +7,8 @@
     <InvariantGlobalization>true</InvariantGlobalization>
     <UserSecretsId>ea083ba0-b79b-41c4-8eff-b3e3dc4913ff</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <RuntimeIdentifiers>linux-x64</RuntimeIdentifiers>
+    <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,6 +35,12 @@
 
   <ItemGroup>
     <Folder Include="Areas\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ContainerEnvironmentVariable Include="ASPNETCORE_HTTPS_PORTS">
+      <Value>8081</Value>
+    </ContainerEnvironmentVariable>
   </ItemGroup>
 
 </Project>

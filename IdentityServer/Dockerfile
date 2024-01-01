@@ -3,24 +3,24 @@
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
-EXPOSE 6000
-EXPOSE 6001
+EXPOSE 7000
+EXPOSE 7001
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["PortfolioServer/PortfolioServer.csproj", "PortfolioServer/"]
+COPY ["IdentityServer/IdentityServer.csproj", "IdentityServer/"]
 COPY ["PortfolioShared/PortfolioShared.csproj", "PortfolioShared/"]
-RUN dotnet restore "./PortfolioServer/PortfolioServer.csproj"
+RUN dotnet restore "./IdentityServer/IdentityServer.csproj"
 COPY . .
-WORKDIR "/src/PortfolioServer"
-RUN dotnet build "./PortfolioServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/IdentityServer"
+RUN dotnet build "./IdentityServer.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./PortfolioServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./IdentityServer.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "PortfolioServer.dll"]
+ENTRYPOINT ["dotnet", "IdentityServer.dll"]

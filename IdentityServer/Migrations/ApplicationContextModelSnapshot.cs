@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace IdentityServer.Migrations.Application
+namespace IdentityServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
@@ -16,7 +16,7 @@ namespace IdentityServer.Migrations.Application
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0-rc.1.23419.6")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -44,6 +44,50 @@ namespace IdentityServer.Migrations.Application
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("7b10dd43-405d-4240-b45c-7fbb28a363ab"),
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("a8ca9b79-a5d6-4363-9b84-1f2eea28834e"),
+                            Name = "Moderator",
+                            NormalizedName = "MODERATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("a309c2d7-6dcb-47d8-8fff-103de3881365"),
+                            Name = "Dean",
+                            NormalizedName = "DEAN"
+                        },
+                        new
+                        {
+                            Id = new Guid("ebf0c108-cc79-45fd-b565-741776d45c34"),
+                            Name = "Deputy",
+                            NormalizedName = "DEPUTY"
+                        },
+                        new
+                        {
+                            Id = new Guid("b798c73a-a3f7-4feb-94b1-04639d61baf5"),
+                            Name = "Teacher",
+                            NormalizedName = "TEACHER"
+                        },
+                        new
+                        {
+                            Id = new Guid("c25bf2e5-7dbe-4292-8726-822dfb28de77"),
+                            Name = "Student",
+                            NormalizedName = "STUDENT"
+                        },
+                        new
+                        {
+                            Id = new Guid("acc8e4f3-176a-4287-83d5-00fa9886a696"),
+                            Name = "IdentityServer",
+                            NormalizedName = "IDENTITYSERVER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

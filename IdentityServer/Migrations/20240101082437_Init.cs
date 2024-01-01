@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace IdentityServer.Migrations.Application
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
+namespace IdentityServer.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialIdentityServerMigration : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -187,6 +189,20 @@ namespace IdentityServer.Migrations.Application
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { new Guid("7b10dd43-405d-4240-b45c-7fbb28a363ab"), null, "Administrator", "ADMINISTRATOR" },
+                    { new Guid("a309c2d7-6dcb-47d8-8fff-103de3881365"), null, "Dean", "DEAN" },
+                    { new Guid("a8ca9b79-a5d6-4363-9b84-1f2eea28834e"), null, "Moderator", "MODERATOR" },
+                    { new Guid("acc8e4f3-176a-4287-83d5-00fa9886a696"), null, "IdentityServer", "IDENTITYSERVER" },
+                    { new Guid("b798c73a-a3f7-4feb-94b1-04639d61baf5"), null, "Teacher", "TEACHER" },
+                    { new Guid("c25bf2e5-7dbe-4292-8726-822dfb28de77"), null, "Student", "STUDENT" },
+                    { new Guid("ebf0c108-cc79-45fd-b565-741776d45c34"), null, "Deputy", "DEPUTY" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

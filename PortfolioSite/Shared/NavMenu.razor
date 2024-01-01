@@ -1,5 +1,8 @@
-﻿@inject IStringLocalizer<NavMenu> localizer
-
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.Extensions.Options
+@inject IStringLocalizer<NavMenu> localizer
+@inject NavigationManager navigationManager
+@inject IOptionsSnapshot<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> RemoteAuthOptions
 <Bar @bind-Visible="@topbarVisible"
 	 Breakpoint="Breakpoint.Widescreen"
 	 ThemeContrast="ThemeContrast.Light"
@@ -13,7 +16,7 @@
 			</BarLink>
 		</BarItem>
 	</BarBrand>
-	<BarToggler/>
+	<BarToggler />
 	<BarMenu>
 		<BarStart>
 			<BarItem>
@@ -64,6 +67,12 @@
 					@localizer["PublicActivities"]
 				</BarLink>
 			</BarItem>
+			<BarItem>
+				<BarLink To="Authentication/Logout" Clicked="@BeginSignOut">
+					<BarIcon IconName="@("fa-right-from-bracket")" Padding="Padding.Is2.FromEnd" />
+					@localizer["Logout"]
+				</BarLink>
+			</BarItem>
 		</BarStart>
 	</BarMenu>
 </Bar>
@@ -72,6 +81,10 @@
 	private bool topbarVisible = false;
 	private bool isDesktop = false;
 	private BarMode barMode => isDesktop ? BarMode.Horizontal : BarMode.VerticalInline;
+	private void BeginSignOut()
+	{
+		navigationManager.NavigateToLogout(RemoteAuthOptions.Get(Options.DefaultName).AuthenticationPaths.LogOutPath, RemoteAuthOptions.Get(Options.DefaultName).AuthenticationPaths.LogInPath);
+	}
 }
 @* <div class="top-row navbar navbar-dark">
 	<div class="container-fluid">

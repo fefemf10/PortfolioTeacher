@@ -1,6 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Microsoft.Extensions.Options
+@using PortfolioShared.Models
 @inject IStringLocalizer<NavMenu> localizer
-@inject SignOutSessionStateManager SignOutManager
+@inject NavigationManager navigationManager
+@inject IOptionsSnapshot<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> RemoteAuthOptions
 <Bar
 ThemeContrast="ThemeContrast.Light"
 Mode="BarMode.VerticalInline">
@@ -62,6 +65,16 @@ Mode="BarMode.VerticalInline">
 					@localizer["PublicActivities"]
 				</BarLink>
 			</BarItem>
+			<AuthorizeView Roles="@Roles.Administrator.ToString()">
+				<Authorized>
+					@foreach(var claim in @context.User.Claims)
+					{
+						<BarItem>
+							@claim.Type = @claim.Value
+						</BarItem>
+					}
+				</Authorized>
+			</AuthorizeView>
 		</BarStart>
 		<BarEnd>
 			<BarItem>
@@ -76,8 +89,8 @@ Mode="BarMode.VerticalInline">
 <MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="@isDesktop" />
 @code {
 	private bool isDesktop = false;
-	private async Task BeginSignOut(MouseEventArgs args)
+	private void BeginSignOut()
 	{
-		await SignOutManager.SetSignOutState();
+		navigationManager.NavigateToLogout(RemoteAuthOptions.Get(Options.DefaultName).AuthenticationPaths.LogOutPath, RemoteAuthOptions.Get(Options.DefaultName).AuthenticationPaths.LogInPath);
 	}
 }

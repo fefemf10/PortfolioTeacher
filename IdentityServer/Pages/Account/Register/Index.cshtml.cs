@@ -20,10 +20,12 @@ public class Index : PageModel
 	private readonly IAuthenticationSchemeProvider schemeProvider;
 	private readonly IHubContext<RegistrationHub> hubContext;
 	private readonly SignInManager<IdentityUser<Guid>> signInManager;
+	private readonly RoleManager<IdentityRole<Guid>> roleManager;
 	private readonly UserManager<IdentityUser<Guid>> userManager;
 
-	public Index(IIdentityServerInteractionService interaction, IClientStore clientStore, IAuthenticationSchemeProvider schemeProvider, IIdentityProviderStore identityProviderStore, IEventService events, IHubContext<RegistrationHub> hubContext, UserManager<IdentityUser<Guid>> userManager, SignInManager<IdentityUser<Guid>> signInManager)
+	public Index(IIdentityServerInteractionService interaction, IClientStore clientStore, IAuthenticationSchemeProvider schemeProvider, IIdentityProviderStore identityProviderStore, IEventService events, IHubContext<RegistrationHub> hubContext, RoleManager<IdentityRole<Guid>> roleManager, UserManager<IdentityUser<Guid>> userManager, SignInManager<IdentityUser<Guid>> signInManager)
 	{
+		this.roleManager = roleManager;
 		this.userManager = userManager;
 		this.signInManager = signInManager;
 		this.interaction = interaction;
@@ -56,19 +58,14 @@ public class Index : PageModel
 			{
 				UserName = Input.Email,
 				Email = Input.Email,
-				EmailConfirmed = true,
-
+				EmailConfirmed = true
 			};
 
 			var result = await userManager.CreateAsync(user, Input.Password);
 
 			if (result.Succeeded)
 			{
-				await userManager.AddClaimsAsync(user, new Claim[] {
-					new Claim(JwtClaimTypes.Name, Input.Email),
-					new Claim(JwtClaimTypes.Email, Input.Email),
-					new Claim(JwtClaimTypes.Role, Input.RoleName)
-				});
+				await userManager.AddToRoleAsync(user, Input.RoleName);
 
 				var loginresult = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: true);
 

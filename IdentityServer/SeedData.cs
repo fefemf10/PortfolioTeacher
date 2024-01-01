@@ -5,6 +5,9 @@ using PortfolioShared.Models;
 using Duende.IdentityServer.EntityFramework.Storage;
 using Duende.IdentityServer.EntityFramework.DbContexts;
 using Duende.IdentityServer.EntityFramework.Mappers;
+using PortfolioShared.Authentication;
+using Microsoft.AspNetCore.SignalR;
+using IdentityModel;
 
 namespace IdentityServer
 {
@@ -16,35 +19,27 @@ namespace IdentityServer
 			services.AddLogging();
 			services.AddDbContext<ApplicationContext>(options => options.UseMySql(connection, serverVersion));
 
-			services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(options =>
-			{
-				options.Password.RequiredLength = 5;
-				options.Password.RequireNonAlphanumeric = false;
-				options.Password.RequireLowercase = false;
-				options.Password.RequireUppercase = false;
-				options.Password.RequireDigit = false;
-				options.User.RequireUniqueEmail = true;
-			})
+			services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(AuthenticationOptions.GetIdentityOptions)
 			.AddEntityFrameworkStores<ApplicationContext>()
 			.AddDefaultTokenProviders();
 
-			services.AddOperationalDbContext(options =>
-			{
-				options.ConfigureDbContext = db => db.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(typeof(SeedData).Assembly.FullName));
-			});
-			services.AddConfigurationDbContext(options =>
-			{
-				options.ConfigureDbContext = db => db.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(typeof(SeedData).Assembly.FullName));
-			});
+			//services.AddOperationalDbContext(options =>
+			//{
+			//	options.ConfigureDbContext = db => db.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(typeof(SeedData).Assembly.FullName));
+			//});
+			//services.AddConfigurationDbContext(options =>
+			//{
+			//	options.ConfigureDbContext = db => db.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(typeof(SeedData).Assembly.FullName));
+			//});
 
 			var serviceProvider = services.BuildServiceProvider();
 
 			using var scope = serviceProvider.GetRequiredService<IServiceScopeFactory>().CreateScope();
-			scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
+			//scope.ServiceProvider.GetService<PersistedGrantDbContext>().Database.Migrate();
 
-			ConfigurationDbContext context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
-			context.Database.Migrate();
-			EnsureSeedData(context);
+			//ConfigurationDbContext context = scope.ServiceProvider.GetService<ConfigurationDbContext>();
+			//context.Database.Migrate();
+			//EnsureSeedData(context);
 			var ctx = scope.ServiceProvider.GetService<ApplicationContext>();
 			ctx.Database.Migrate();
 			EnsureUsers(scope);
@@ -53,7 +48,7 @@ namespace IdentityServer
 		private static void EnsureUsers(IServiceScope scope)
 		{
 			var userMgr = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser<Guid>>>();
-
+			var roleMgr = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 			var user = userMgr.FindByEmailAsync("admin@admin.com").Result;
 			if (user is null)
 			{
@@ -64,10 +59,9 @@ namespace IdentityServer
 					EmailConfirmed = true,
 				};
 				userMgr.CreateAsync(user, "admin").Wait();
-				userMgr.AddClaimAsync(user, new Claim(ClaimTypes.Role, Roles.Administrator.ToString())).Wait();
+				userMgr.AddToRoleAsync(user, Roles.Administrator.ToString()).Wait();
 			}
 		}
-		
 		private static void EnsureSeedData(ConfigurationDbContext db)
 		{
 			if (!db.Clients.Any())

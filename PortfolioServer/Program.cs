@@ -5,10 +5,8 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PortfolioServer;
+using MySqlConnector;
 using PortfolioShared.Models;
-using System.Security.Claims;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 HubConnection connection;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
@@ -41,8 +39,11 @@ builder.Services.AddSwaggerGen(options =>
 });
 builder.Services.AddDbContext<ApplicationContext>(options =>
 	{
-		string connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
-		ServerVersion version = ServerVersion.AutoDetect(connection);
+        var connectionStringBuilder = new MySqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection")!);
+        connectionStringBuilder.UserID = builder.Configuration["DBUser"];
+        connectionStringBuilder.Password = builder.Configuration["DBPassword"];
+        string connection = connectionStringBuilder.ConnectionString;
+        ServerVersion version = ServerVersion.AutoDetect(connection);
 		options.UseMySql(connection, version);
 	});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -62,32 +63,6 @@ builder.Services.AddAuthorization(options =>
 		new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
 		.RequireAuthenticatedUser()
 		.Build();
-	options.AddPolicy("IdentityServer", pBuilder =>
-	{
-		pBuilder.RequireClaim(JwtClaimTypes.Issuer, builder.Configuration["IdentityServer:Url"]!).RequireClaim(JwtClaimTypes.Role, Roles.IdentityServer.ToString());
-	});
-	options.AddPolicy(Roles.Administrator.ToString(), builder =>
-	{
-		builder.RequireClaim(JwtClaimTypes.Role, Roles.Administrator.ToString());
-	});
-	options.AddPolicy(Roles.Moderator.ToString(), builder =>
-	{
-		builder.RequireAssertion(x => x.User.HasClaim(JwtClaimTypes.Role, Roles.Administrator.ToString())
-		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Moderator.ToString()));
-	});
-	options.AddPolicy(Roles.Teacher.ToString(), builder =>
-	{
-		builder.RequireAssertion(x => x.User.HasClaim(JwtClaimTypes.Role, Roles.Administrator.ToString())
-		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Moderator.ToString())
-		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Teacher.ToString()));
-	});
-	options.AddPolicy(Roles.Student.ToString(), builder =>
-	{
-		builder.RequireAssertion(x => x.User.HasClaim(JwtClaimTypes.Role, Roles.Administrator.ToString())
-		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Moderator.ToString())
-		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Teacher.ToString())
-		|| x.User.HasClaim(JwtClaimTypes.Role, Roles.Student.ToString()));
-	});
 });
 
 builder.Services.AddCors(options =>
@@ -102,7 +77,7 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
-connection = new HubConnectionBuilder().WithAutomaticReconnect().WithUrl("https://localhost:7001/RegistrationHub").Build();
+connection = new HubConnectionBuilder().WithAutomaticReconnect().WithUrl(builder.Configuration["IdentityServer:Url"] + "/RegistrationHub").Build();
 connection.On<Guid, string, Roles>("Receive", (Id, Email, Role) =>
 {
 	using (var scope = app.Services.CreateAsyncScope())

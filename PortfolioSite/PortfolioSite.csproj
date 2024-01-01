@@ -36,4 +36,10 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\.dockerignore" Link=".dockerignore">
+      <DependentUpon>$(DockerDefaultDockerfile)</DependentUpon>
+    </None>
+  </ItemGroup>
+
 </Project>

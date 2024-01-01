@@ -3,9 +3,11 @@ using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
+using IdentityModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using PortfolioShared.Models;
 using PortfolioSite;
 using PortfolioSite.Extensions;
 using PortfolioSite.Handlers;
@@ -32,6 +34,8 @@ builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddOidcAuthentication(options =>
 {
     builder.Configuration.Bind("Oidc", options.ProviderOptions);
+    options.UserOptions.NameClaim = JwtClaimTypes.Name;
+    options.UserOptions.RoleClaim = JwtClaimTypes.Role;
 });
 
 builder.Services.AddBlazorise(options =>
@@ -49,6 +53,7 @@ builder.Services.AddAuthorizationCore(options =>
             .RequireAuthenticatedUser()
             .Build();
 });
+builder.Services.AddCascadingAuthenticationState();
 var app = builder.Build();
 await app.SetDefaultCulture();
 await app.RunAsync();

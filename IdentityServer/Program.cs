@@ -1,8 +1,14 @@
+using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
+using Duende.IdentityServer.Test;
 using IdentityServer;
+using IdentityServer.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
+using PortfolioShared.Authentication;
 using System.Globalization;
 
 var seed = args.Contains("/seed");
@@ -15,11 +21,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddMvc();
 builder.Services.AddSignalR();
+builder.Services.AddTransient<RegistrationHub>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddControllersWithViews().AddDataAnnotationsLocalization().AddViewLocalization();
 string assembly = typeof(Program).Assembly.GetName().Name!;
-string connection = builder.Configuration.GetConnectionString("DefaultConnection")!;
+var connectionStringBuilder = new MySqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection")!);
+connectionStringBuilder.UserID = builder.Configuration["DBUser"];
+connectionStringBuilder.Password = builder.Configuration["DBPassword"];
+string connection = connectionStringBuilder.ConnectionString;
 ServerVersion serverVersion = ServerVersion.AutoDetect(connection);
 
 if (seed)
@@ -28,30 +38,30 @@ if (seed)
 }
 
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(assembly)));
-builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(options =>
-{
-	options.Password.RequiredLength = 5;
-	options.Password.RequireNonAlphanumeric = false;
-	options.Password.RequireLowercase = false;
-	options.Password.RequireUppercase = false;
-	options.Password.RequireDigit = false;
-	options.User.RequireUniqueEmail = true;
-})
+builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(AuthenticationOptions.GetIdentityOptions)
 	.AddSignInManager<SignInManager<IdentityUser<Guid>>>()
 	.AddUserManager<UserManager<IdentityUser<Guid>>>()
+	.AddRoles<IdentityRole<Guid>>()
+	.AddRoleManager<RoleManager<IdentityRole<Guid>>>()
 	.AddEntityFrameworkStores<ApplicationContext>()
+	.AddClaimsPrincipalFactory<ClaimsPrincipalFactory>()
 	.AddDefaultTokenProviders();
 
 builder.Services.AddIdentityServer()
 	.AddAspNetIdentity<IdentityUser<Guid>>()
-	.AddConfigurationStore(options =>
-	{
-		options.ConfigureDbContext = b => b.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(assembly));
-	})
-	.AddOperationalStore(options =>
-	{
-		options.ConfigureDbContext = b => b.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(assembly));
-	})
+	.AddInMemoryApiScopes(builder.Configuration.GetSection("IdentityServer:ApiScopes"))
+	.AddInMemoryApiResources(builder.Configuration.GetSection("IdentityServer:ApiResources"))
+	.AddInMemoryIdentityResources(Configuration.IdentityResources)
+	.AddInMemoryClients(builder.Configuration.GetSection("IdentityServer:Clients"))
+	//.AddConfigurationStore(options =>
+	//{
+	//	options.ConfigureDbContext = b => b.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(assembly));
+	//})
+	//.AddOperationalStore(options =>
+	//{
+	//	options.ConfigureDbContext = b => b.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(assembly));
+	//})
+	.AddProfileService<ProfileService>()
 	.AddDeveloperSigningCredential();
 
 	builder.Services.AddScoped<ICorsPolicyService>(sp => {
@@ -60,7 +70,7 @@ builder.Services.AddIdentityServer()
 		{
 			AllowAll = true
 		};
-	}); ;
+	});
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("MyPolicy", builder =>
