@@ -13,6 +13,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "IdentityS
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5350098F-BCB1-40C7-9DC9-3982793B2C80}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1", "..\BlazorApp1\BlazorApp1\BlazorApp1.csproj", "{88137FA9-D65E-4416-89BA-6815C79AB70B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp1.Client", "..\BlazorApp1\BlazorApp1.Client\BlazorApp1.Client.csproj", "{55676BA4-9934-4DAE-B345-3AE9ADEF2695}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{5350098F-BCB1-40C7-9DC9-3982793B2C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5350098F-BCB1-40C7-9DC9-3982793B2C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5350098F-BCB1-40C7-9DC9-3982793B2C80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88137FA9-D65E-4416-89BA-6815C79AB70B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88137FA9-D65E-4416-89BA-6815C79AB70B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88137FA9-D65E-4416-89BA-6815C79AB70B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88137FA9-D65E-4416-89BA-6815C79AB70B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55676BA4-9934-4DAE-B345-3AE9ADEF2695}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55676BA4-9934-4DAE-B345-3AE9ADEF2695}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55676BA4-9934-4DAE-B345-3AE9ADEF2695}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55676BA4-9934-4DAE-B345-3AE9ADEF2695}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

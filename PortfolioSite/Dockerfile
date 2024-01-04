@@ -14,7 +14,8 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./PortfolioSite.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-FROM nginx:alpine AS final
-WORKDIR /usr/share/nginx/html
-COPY --from=publish /app/publish/wwwroot .
-COPY nginx.conf /etc/nginx/nginx.conf
+FROM nginx AS final
+ARG Environment
+COPY --from=publish /src/PortfolioSite/nginx.conf /etc/nginx/nginx.conf
+RUN sed -i "s/replaceme/${Environment}/" /etc/nginx/nginx.conf
+COPY --from=publish /app/publish/wwwroot /usr/share/nginx/html

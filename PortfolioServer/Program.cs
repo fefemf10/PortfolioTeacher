@@ -42,6 +42,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
         var connectionStringBuilder = new MySqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection")!);
         connectionStringBuilder.UserID = builder.Configuration["DBUser"];
         connectionStringBuilder.Password = builder.Configuration["DBPassword"];
+        connectionStringBuilder.Server = builder.Configuration["DBHost"];
         string connection = connectionStringBuilder.ConnectionString;
         ServerVersion version = ServerVersion.AutoDetect(connection);
 		options.UseMySql(connection, version);

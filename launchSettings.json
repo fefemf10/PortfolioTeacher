@@ -4,7 +4,10 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "identityserver": "StartDebugging"
+        "identityserver": "StartWithoutDebugging",
+        "database": "StartWithoutDebugging",
+        "portfolioserver": "StartWithoutDebugging",
+        "portfoliosite": "StartWithoutDebugging"
       }
     }
   }
