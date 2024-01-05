@@ -29,7 +29,8 @@ string assembly = typeof(Program).Assembly.GetName().Name!;
 var connectionStringBuilder = new MySqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection")!);
 connectionStringBuilder.UserID = builder.Configuration["DBUser"];
 connectionStringBuilder.Password = builder.Configuration["DBPassword"];
-connectionStringBuilder.Server = builder.Configuration["DBHost"];
+if (builder.Configuration["DBHost"] is not null)
+	connectionStringBuilder.Server = builder.Configuration["DBHost"];
 string connection = connectionStringBuilder.ConnectionString;
 ServerVersion serverVersion = ServerVersion.AutoDetect(connection);
 

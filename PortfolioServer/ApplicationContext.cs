@@ -14,6 +14,8 @@ public class ApplicationContext : DbContext
 	public DbSet<Dissertation> Dissertations { get; set; }
 	public DbSet<ProfessionalDevelopment> ProfessionalDevelopments { get; set; }
 	public DbSet<PublicActivity> PublicActivities { get; set; }
+	public DbSet<Department> Departments { get; set; }
+	public DbSet<Faculty> Faculties { get; set; }
 	public DbSet<Teacher> Teachers { get; set; }
 	public DbSet<Student> Students { get; set; }
 	
@@ -35,6 +37,8 @@ public class ApplicationContext : DbContext
 		modelBuilder.Entity<Discipline>().HasMany(discipline => discipline.Teachers).WithMany(teacher => teacher.Disciplines);
 		modelBuilder.Entity<Work>().HasKey(work => work.Id);
 		modelBuilder.Entity<Work>().Property(work => work.Id).ValueGeneratedNever();
+		modelBuilder.Entity<Department>().HasMany(department => department.Teachers).WithOne(teacher => teacher.Department).HasForeignKey(teacher => teacher.DepartmentId);
+		modelBuilder.Entity<Faculty>().HasMany(faculty => faculty.Departments).WithOne(department => department.Faculty).HasForeignKey(department => department.FacultyId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.ScienceProjects).WithOne(scienceProject => scienceProject.Teacher).HasForeignKey(scienceProject => scienceProject.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Universities).WithOne(university => university.Teacher).HasForeignKey(university => university.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.Works).WithOne(work => work.Teacher).HasForeignKey(work => work.TeacherId);
@@ -49,7 +53,7 @@ public class ApplicationContext : DbContext
 		{
 			using FileStream openStream = File.OpenRead("SeedData/Discipline.json");
 			if (openStream is not null)
-				disciplinesData = Array.ConvertAll(JsonSerializer.Deserialize<string[]>(openStream), name => new Discipline { Id = Guid.NewGuid(), Name = name });
+				disciplinesData = Array.ConvertAll(JsonSerializer.Deserialize<string[]>(openStream), name => new Discipline() { Id = Guid.NewGuid(), Name = name });
 		}
 		if (disciplinesData is not null)
 			modelBuilder.Entity<Discipline>().HasData(disciplinesData);
