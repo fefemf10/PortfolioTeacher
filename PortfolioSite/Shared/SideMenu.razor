@@ -67,12 +67,32 @@ Mode="BarMode.VerticalInline">
 			</BarItem>
 			<AuthorizeView Roles="@Roles.Administrator.ToString()">
 				<Authorized>
-					@foreach(var claim in @context.User.Claims)
-					{
-						<BarItem>
-							@claim.Type = @claim.Value
-						</BarItem>
-					}
+					<BarItem>
+						<BarLink To="admin">
+							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+							@localizer["Admin"]
+						</BarLink>
+					</BarItem>
+				</Authorized>
+			</AuthorizeView>
+			<AuthorizeView Roles="@Roles.Dean.ToString()">
+				<Authorized>
+					<BarItem>
+						<BarLink To="dean">
+							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+							@localizer["Dean"]
+						</BarLink>
+					</BarItem>
+				</Authorized>
+			</AuthorizeView>
+			<AuthorizeView Roles="@Roles.Deputy.ToString()">
+				<Authorized>
+					<BarItem>
+						<BarLink To="deputy">
+							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+							@localizer["Deputy"]
+						</BarLink>
+					</BarItem>
 				</Authorized>
 			</AuthorizeView>
 		</BarStart>

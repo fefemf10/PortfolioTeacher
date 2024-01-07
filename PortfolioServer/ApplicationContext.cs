@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PortfolioShared.Models;
+using System.Text.Encodings.Web;
 using System.Text.Json;
+using System.Text.Unicode;
 
 public class ApplicationContext : DbContext
 {
@@ -19,7 +21,9 @@ public class ApplicationContext : DbContext
 	public DbSet<Teacher> Teachers { get; set; }
 	public DbSet<Student> Students { get; set; }
 	
-	private static Discipline[] disciplinesData;
+	public static Discipline[] disciplinesData;
+	public static Faculty[] facultiesData;
+	public static Department[] departmentData;
 
 	public ApplicationContext() : base()
 	{
@@ -35,8 +39,6 @@ public class ApplicationContext : DbContext
 		modelBuilder.Entity<User>().UseTptMappingStrategy();
 
 		modelBuilder.Entity<Discipline>().HasMany(discipline => discipline.Teachers).WithMany(teacher => teacher.Disciplines);
-		modelBuilder.Entity<Work>().HasKey(work => work.Id);
-		modelBuilder.Entity<Work>().Property(work => work.Id).ValueGeneratedNever();
 		modelBuilder.Entity<Department>().HasMany(department => department.Teachers).WithOne(teacher => teacher.Department).HasForeignKey(teacher => teacher.DepartmentId);
 		modelBuilder.Entity<Faculty>().HasMany(faculty => faculty.Departments).WithOne(department => department.Faculty).HasForeignKey(department => department.FacultyId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.ScienceProjects).WithOne(scienceProject => scienceProject.Teacher).HasForeignKey(scienceProject => scienceProject.TeacherId);
@@ -49,13 +51,8 @@ public class ApplicationContext : DbContext
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.PublicActivities).WithOne(publicActivity => publicActivity.Teacher).HasForeignKey(publicActivity => publicActivity.TeacherId);
 		modelBuilder.Entity<Teacher>().HasMany(teacher => teacher.AwardStudents).WithOne(awardStudent => awardStudent.Teacher).HasForeignKey(awardStudent => awardStudent.TeacherId);
 		modelBuilder.Entity<Student>().HasMany(student => student.AwardStudents).WithOne(awardStudent => awardStudent.Student).HasForeignKey(awardStudent => awardStudent.StudentId);
-		if (disciplinesData is null)
-		{
-			using FileStream openStream = File.OpenRead("SeedData/Discipline.json");
-			if (openStream is not null)
-				disciplinesData = Array.ConvertAll(JsonSerializer.Deserialize<string[]>(openStream), name => new Discipline() { Id = Guid.NewGuid(), Name = name });
-		}
-		if (disciplinesData is not null)
-			modelBuilder.Entity<Discipline>().HasData(disciplinesData);
-	}
+        modelBuilder.Entity<Discipline>().HasData(disciplinesData);
+        modelBuilder.Entity<Faculty>().HasData(facultiesData);
+        modelBuilder.Entity<Department>().HasData(departmentData);
+    }
 }

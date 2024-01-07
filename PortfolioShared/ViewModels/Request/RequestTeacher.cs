@@ -12,20 +12,15 @@ namespace PortfolioShared.ViewModels.Request
     {
         [Required]
         [EmailAddress]
-        public string? Email { get; set; }
-        [Required]
+        public string Email { get; set; }
         public string? FirstName { get; set; }
-        [Required]
         public string? MiddleName { get; set; }
-        [Required]
         public string? LastName { get; set; }
-        [Required]
         public DateOnly? DateBirthday { get; set; }
-        [Required]
         public string? Post { get; set; }
-        [Required]
         public string? AcademicDegree { get; set; }
-        [Required]
         public string? AcademicTitle { get; set; }
-    }
+		[Required]
+		public Guid DepartmentId { get; set; }
+	}
 }

@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using Microsoft.Extensions.Options
+@using PortfolioShared.Models
 @inject IStringLocalizer<NavMenu> localizer
 @inject NavigationManager navigationManager
 @inject IOptionsSnapshot<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> RemoteAuthOptions
@@ -67,6 +68,36 @@
 					@localizer["PublicActivities"]
 				</BarLink>
 			</BarItem>
+			<AuthorizeView Roles="@Roles.Administrator.ToString()">
+				<Authorized>
+					<BarItem>
+						<BarLink To="admin">
+							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+							@localizer["Admin"]
+						</BarLink>
+					</BarItem>
+				</Authorized>
+			</AuthorizeView>
+			<AuthorizeView Roles="@Roles.Dean.ToString()">
+				<Authorized>
+					<BarItem>
+						<BarLink To="dean">
+							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+							@localizer["Dean"]
+						</BarLink>
+					</BarItem>
+				</Authorized>
+			</AuthorizeView>
+			<AuthorizeView Roles="@Roles.Deputy.ToString()">
+				<Authorized>
+					<BarItem>
+						<BarLink To="deputy">
+							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+							@localizer["Deputy"]
+						</BarLink>
+					</BarItem>
+				</Authorized>
+			</AuthorizeView>
 			<BarItem>
 				<BarLink To="Authentication/Logout" Clicked="@BeginSignOut">
 					<BarIcon IconName="@("fa-right-from-bracket")" Padding="Padding.Is2.FromEnd" />

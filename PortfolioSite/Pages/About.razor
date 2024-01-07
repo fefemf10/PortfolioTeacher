@@ -44,6 +44,19 @@
 				</Validation>
 			</Field>
 			<Field>
+				<Select TValue="Guid" @bind-SelectedValue="@departmentId">
+					@foreach (var faculty in requestFacultyDepartments)
+					{
+						<SelectGroup Label="@faculty.Name">
+							@foreach (var department in faculty.Departments)
+							{
+								 <SelectItem Value="@department.Id">@department.Name</SelectItem>								
+							}
+						</SelectGroup>
+					}
+				</Select>
+			</Field>
+			<Field>
 				<DateEdit TValue="DateOnly?" @bind-Date="@dateBirthday" />
 			</Field>
 		</Grid>
@@ -55,12 +68,14 @@
 	HttpClient webapi;
 	Guid guid;
 	ResponseTeacher responseUser;
+	List<RequestFacultyDepartment> requestFacultyDepartments;
 	string firstName;
 	string middleName;
 	string lastName;
 	string post;
 	string academicDegree;
 	string academicTitle;
+	Guid departmentId;
 	DateOnly? dateBirthday;
 	protected override async Task OnInitializedAsync()
 	{
@@ -70,6 +85,7 @@
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 		{
 			responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
+			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
 			firstName = responseUser.FirstName;
 			middleName = responseUser.MiddleName;
 			lastName = responseUser.LastName;
@@ -77,6 +93,7 @@
 			post = responseUser.Post;
 			academicDegree = responseUser.AcademicDegree;
 			academicTitle = responseUser.AcademicTitle;
+			departmentId = responseUser.DepartmentId;
 		}
 	}
 	private void AddInfo()
@@ -90,7 +107,8 @@
 				DateBirthday = dateBirthday,
 				Post = post,
 				AcademicDegree = academicDegree,
-				AcademicTitle = academicTitle
+				AcademicTitle = academicTitle,
+				DepartmentId = departmentId
 			});
 		webapi.PutAsync($"Teacher/{guid.ToString()}/AddInfo", js);
 	}

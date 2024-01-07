@@ -50,8 +50,6 @@ public class Index : PageModel
 
 	public async Task<IActionResult> OnPost()
 	{
-		var context = await interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
-
 		if (ModelState.IsValid)
 		{
 			var user = new IdentityUser<Guid>()

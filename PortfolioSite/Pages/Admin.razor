@@ -1,0 +1,72 @@
+﻿@page "/admin"
+@attribute [Authorize(Roles = nameof(Roles.Administrator))]
+@using Blazorise.DataGrid;
+@using PortfolioShared.ViewModels.Request
+@using PortfolioShared.ViewModels.Response
+@using PortfolioShared.Models
+@inject IStringLocalizer<Admin> localizer
+@inject IHttpClientFactory httpFactory
+@inject AuthenticationStateProvider authenticationStateProvider
+<PageTitle>@localizer["Title"]</PageTitle>
+<Container>
+	<Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
+		<Field>
+			<Validation Validator="ValidationRule.IsNotEmpty">
+				<TextEdit Placeholder=@localizer["FieldEmail"] @bind-Text="@email" />
+			</Validation>
+		</Field>
+		<Field>
+			<Validation Validator="ValidationRule.IsNotEmpty">
+				<TextEdit Placeholder=@localizer["FieldPassword"] @bind-Text="@password" />
+			</Validation>
+		</Field>
+		<Field>
+			<Select TValue="string" @bind-bind-SelectedValue="@role">
+				<SelectItem Value="@Roles.Dean.ToString()">@Roles.Dean.ToString()</SelectItem>
+				<SelectItem Value="@Roles.Deputy.ToString()">@Roles.Deputy.ToString()</SelectItem>
+				<SelectItem Value="@Roles.Teacher.ToString()">@Roles.Teacher.ToString()</SelectItem>
+			</Select>
+		</Field>
+		<Field>
+			<Select TValue="Guid" @bind-SelectedValue="@departmentId">
+				@foreach (var faculty in requestFacultyDepartments)
+				{
+					<SelectGroup Label="@faculty.Name">
+						@foreach (var department in faculty.Departments)
+						{
+							<SelectItem Value="@department.Id">@department.Name</SelectItem>
+						}
+					</SelectGroup>
+				}
+			</Select>
+		</Field>
+	</Grid>
+	<Button Color="Color.Success" Clicked="@AddNewUser">@localizer["SaveChangesButton"]</Button>
+</Container>
+@code {
+	List<RequestFacultyDepartment> requestFacultyDepartments;
+	HttpClient webapi;
+	HttpClient identityapi;
+	Guid guid;
+	string email;
+	string password;
+	string role = @Roles.Dean.ToString();
+	Guid departmentId;
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		webapi = httpFactory.CreateClient("PortfolioServer");
+		identityapi = httpFactory.CreateClient("IdentityServer");
+		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+		identityapi.DefaultRequestHeaders.Authorization = webapi.DefaultRequestHeaders.Authorization;
+		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
+		{
+			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
+		}
+	}
+	private void AddNewUser()
+	{
+		JsonContent js = JsonContent.Create(new RequestAddUser(){ Email = email, Password = password, Role = role, DepartmentId = departmentId });
+		identityapi.PostAsync($"User/Add", js);
+	}
+}

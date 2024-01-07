@@ -7,7 +7,6 @@ using System.Xml.Linq;
 
 namespace IdentityServer.Controllers
 {
-	[Authorize]
 	[Route("[controller]/[action]")]
 	[ApiController]
 	public class DisciplineController : ControllerBase
@@ -39,13 +38,14 @@ namespace IdentityServer.Controllers
 			return Ok(new ResponseDiscipline(discipline.Id, discipline.Name));
 		}
 		[HttpDelete]
-		public ActionResult DeleteById(Guid id)
+		public async Task<ActionResult> DeleteByIdAsync(Guid id)
 		{
-			Discipline? discipline = db.Disciplines.FirstOrDefault(x => x.Id == id);
+			Discipline? discipline = await db.Disciplines.FindAsync(id);
 			if (discipline is null)
-				return BadRequest();
+				return NotFound();
+
 			db.Disciplines.Remove(discipline);
-			db.SaveChanges();
+			await db.SaveChangesAsync();
 			return Ok();
 		}
 	}

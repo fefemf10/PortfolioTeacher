@@ -22,15 +22,15 @@ namespace PortfolioServer.Controllers.TeacherControllers
         [HttpGet("{guid:guid}/[action]")]
         public ActionResult<ResponseTeacher> GetInfo(Guid guid)
         {
-            Teacher? teacher = db.Teachers.SingleOrDefault(user => user.Id == guid);
+            Teacher? teacher = db.Teachers.Find(guid);
             if (teacher is null)
                 return BadRequest();
-            return Ok(new ResponseTeacher(teacher.Id, teacher.Email, teacher.FirstName, teacher.MiddleName, teacher.LastName, teacher.DateBirthday, teacher.Post, teacher.AcademicDegree, teacher.AcademicTitle));
+            return Ok(new ResponseTeacher(teacher.Id, teacher.Email, teacher.FirstName, teacher.MiddleName, teacher.LastName, teacher.DateBirthday, teacher.Post, teacher.AcademicDegree, teacher.AcademicTitle, teacher.DepartmentId));
         }
         [HttpPut("{guid:guid}/[action]")]
-        public ActionResult<ResponseTeacher> AddInfo(Guid guid, [Required][FromBody] RequestTeacher requestTeacher)
+        public ActionResult AddInfo(Guid guid, [Required][FromBody] RequestTeacher requestTeacher)
         {
-            Teacher? teacher = db.Teachers.SingleOrDefault(user => user.Id == guid);
+            Teacher? teacher = db.Teachers.Find(guid);
             if (teacher is null)
                 return BadRequest();
             teacher.Email = requestTeacher.Email;
@@ -41,8 +41,9 @@ namespace PortfolioServer.Controllers.TeacherControllers
             teacher.Post = requestTeacher.Post;
             teacher.AcademicDegree = requestTeacher.AcademicDegree;
             teacher.AcademicTitle = requestTeacher.AcademicTitle;
+            teacher.DepartmentId = requestTeacher.DepartmentId;
             db.SaveChanges();
-            return Ok(new ResponseTeacher(teacher.Id, teacher.Email, teacher.FirstName, teacher.MiddleName, teacher.LastName, teacher.DateBirthday, teacher.Post, teacher.AcademicDegree, teacher.AcademicTitle));
+            return Ok();
         }
     }
 }

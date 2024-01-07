@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text.Json.Serialization;
 
 namespace PortfolioShared.Models
 {
@@ -10,8 +6,10 @@ namespace PortfolioShared.Models
 	{
 		public Guid Id { get; set; }
 		public string Name { get; set; }
-		public Guid FacultyId { get; set; }
+        public Guid FacultyId { get; set; }
+		[JsonIgnore]
 		public Faculty Faculty { get; set; }
-		public List<Teacher> Teachers { get; set; } = new();
+        [JsonIgnore]
+        public List<Teacher> Teachers { get; set; } = new();
 	}
 }

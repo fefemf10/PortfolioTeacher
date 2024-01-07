@@ -120,8 +120,17 @@
   <data name="About" xml:space="preserve">
     <value>Обо мне</value>
   </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
   <data name="Awards" xml:space="preserve">
     <value>Награды</value>
+  </data>
+  <data name="Dean" xml:space="preserve">
+    <value>Декан</value>
+  </data>
+  <data name="Deputy" xml:space="preserve">
+    <value>Зам. Кафедры</value>
   </data>
   <data name="Disciplines" xml:space="preserve">
     <value>Дисциплины</value>

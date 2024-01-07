@@ -19,15 +19,15 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped<IResizeListener, ResizeListener>();
 
 builder.Services.AddScoped<ApiAuthorizationMessageHandler>();
+builder.Services.AddScoped<IdentityAuthorizationMessageHandler>();
 builder.Services.AddHttpClient("PortfolioServer", httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.Configuration["PortfolioServer:Url"]!);
 }).AddHttpMessageHandler<ApiAuthorizationMessageHandler>();
-//.ConfigureHttpClient(httpClient =>
-//{
-
-//    httpClient.GetJsonWebKeySetAsync();
-//});
+builder.Services.AddHttpClient("IdentityServer", httpClient =>
+{
+	httpClient.BaseAddress = new Uri(builder.Configuration["IdentityServer:Url"]!);
+}).AddHttpMessageHandler<IdentityAuthorizationMessageHandler>();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddBlazoredLocalStorage();

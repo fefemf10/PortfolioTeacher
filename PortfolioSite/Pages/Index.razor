@@ -1,14 +1,24 @@
 ﻿@page "/"
+@using PortfolioShared.ViewModels.Response;
 @inject IStringLocalizer<Index> localizer
+@inject IHttpClientFactory httpFactory
+@inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
 <AuthorizeView>
     <Authorized>
-        <Heading>Hello @context.User.Identity.Name !!</Heading>
-
-        Welcome to your new app.
-
+        <Heading>@localizer["WelcomeTitle"] @teacher.LastName @teacher.FirstName @teacher.MiddleName</Heading>
     </Authorized>
 </AuthorizeView>
 @code{
-
+	HttpClient webapi;
+	Guid guid;
+	ResponseTeacher teacher;
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		webapi = httpFactory.CreateClient("PortfolioServer");
+		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
+			teacher = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
+	}
 }

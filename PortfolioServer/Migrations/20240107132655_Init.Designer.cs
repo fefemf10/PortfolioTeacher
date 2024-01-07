@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PortfolioServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240105001128_Init")]
+    [Migration("20240107132655_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -109,6 +109,158 @@ namespace PortfolioServer.Migrations
                     b.HasIndex("FacultyId");
 
                     b.ToTable("Departments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("8104c9b6-05b4-45c4-8b25-317414740310"),
+                            FacultyId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
+                            Name = "Геотехнологий и безопасности производств"
+                        },
+                        new
+                        {
+                            Id = new Guid("979cabfa-c56d-4770-b1c3-5c876567dc54"),
+                            FacultyId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
+                            Name = "Горных энергомеханических систем"
+                        },
+                        new
+                        {
+                            Id = new Guid("62831566-6eb9-44a7-9481-323164b741b4"),
+                            FacultyId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
+                            Name = "Экологии и безопасности жизнедеятельности"
+                        },
+                        new
+                        {
+                            Id = new Guid("dd0c290c-b7c4-4e64-bddd-99b32622a934"),
+                            FacultyId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
+                            Name = "Металлургических технологий"
+                        },
+                        new
+                        {
+                            Id = new Guid("0de1c062-0a18-43b0-8626-78c4570056ce"),
+                            FacultyId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
+                            Name = "Технологии и организации машиностроительного производства"
+                        },
+                        new
+                        {
+                            Id = new Guid("eb0f963d-0691-4c84-b093-697e8fb2b5c1"),
+                            FacultyId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
+                            Name = "Машин металлургического комплекса"
+                        },
+                        new
+                        {
+                            Id = new Guid("c8ba340f-3e02-47b7-ad4d-5a3c750e2210"),
+                            FacultyId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
+                            Name = "Физического воспитания и спорта"
+                        },
+                        new
+                        {
+                            Id = new Guid("d695edb2-9d4c-45f8-8a4b-e6a71c668fc5"),
+                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
+                            Name = "Электрических машин и аппаратов"
+                        },
+                        new
+                        {
+                            Id = new Guid("d23201aa-46ed-4ea4-9dde-8e895901b913"),
+                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
+                            Name = "Электроники и радиофизики"
+                        },
+                        new
+                        {
+                            Id = new Guid("2ac044d9-8ba2-442c-abfd-217231c784e9"),
+                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
+                            Name = "Автоматизированных электромеханических систем имени проф. А.Б. Зеленова"
+                        },
+                        new
+                        {
+                            Id = new Guid("2a416a4e-d08b-4e3d-a837-8e75f6770324"),
+                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
+                            Name = "Специализированных компьютерных систем"
+                        },
+                        new
+                        {
+                            Id = new Guid("70bdc85c-b82c-4af7-b3b6-da4d84ca7e05"),
+                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
+                            Name = "Автоматизированного управления технологическими процессами"
+                        },
+                        new
+                        {
+                            Id = new Guid("cb2d93ba-258a-4178-a6d1-c5343309ee15"),
+                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            Name = "Высшей математики"
+                        },
+                        new
+                        {
+                            Id = new Guid("3cb7b753-2655-4931-80ca-ec591bf88871"),
+                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            Name = "Архитектурного дизайна и строительных конструкций"
+                        },
+                        new
+                        {
+                            Id = new Guid("91a675f9-38a3-40c8-9406-317260c857a8"),
+                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            Name = "Инженерной механики и строительства"
+                        },
+                        new
+                        {
+                            Id = new Guid("ca42d0d8-d0ab-4ee5-b9b0-6acbc7387885"),
+                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            Name = "Социально-гуманитарных дисциплин"
+                        },
+                        new
+                        {
+                            Id = new Guid("933b1fc2-624c-43fb-b118-2ecffa5ce63a"),
+                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            Name = "Языковой подготовки специалистов"
+                        },
+                        new
+                        {
+                            Id = new Guid("4acc78ce-009f-4e24-a288-b66a79372e78"),
+                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            Name = "Информационных технологий"
+                        },
+                        new
+                        {
+                            Id = new Guid("b44db6d6-388d-45d6-9790-155adf52b3b7"),
+                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            Name = "Управления инновациями в промышленности"
+                        },
+                        new
+                        {
+                            Id = new Guid("2d49b107-3731-40aa-8d26-04f244c178b7"),
+                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            Name = "Промышленного строительства"
+                        },
+                        new
+                        {
+                            Id = new Guid("ff819604-b34c-4eb8-a9b0-39426a00eedc"),
+                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
+                            Name = "Экономики и управления"
+                        },
+                        new
+                        {
+                            Id = new Guid("ad968ac8-8ce7-4a12-a23a-59875e3b43b1"),
+                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
+                            Name = "Государственного аудита"
+                        },
+                        new
+                        {
+                            Id = new Guid("6c06bf14-1f60-493d-9fa3-afc6c857c873"),
+                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
+                            Name = "Финансов"
+                        },
+                        new
+                        {
+                            Id = new Guid("a782c774-4557-4168-b12d-d667db3eae29"),
+                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
+                            Name = "Менеджмента"
+                        },
+                        new
+                        {
+                            Id = new Guid("0530b037-7b07-452e-a950-53840e398c26"),
+                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
+                            Name = "Теории и практики перевода и общего языкознания"
+                        });
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Discipline", b =>
@@ -128,272 +280,272 @@ namespace PortfolioServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("fb69aff8-4b7a-4100-ae80-f5ab69e5da32"),
+                            Id = new Guid("61a3adc9-a530-4a26-adbe-56a658163c7a"),
                             Name = "История России"
                         },
                         new
                         {
-                            Id = new Guid("d4ecfcd1-4a05-4d8c-a0d0-b25970a3a030"),
+                            Id = new Guid("d31ee0cb-ada8-4f1f-aec2-2fccca84c0df"),
                             Name = "Основы российской государственности"
                         },
                         new
                         {
-                            Id = new Guid("d4159673-8d3b-49d8-9298-90e6ff0eb319"),
+                            Id = new Guid("f020a22f-ba11-43dd-8918-d656a9eab567"),
                             Name = "Иностранный язык"
                         },
                         new
                         {
-                            Id = new Guid("33c5fac8-428c-4661-82ad-19fac03663e6"),
+                            Id = new Guid("afec8530-e85e-4b36-957a-538445a0d567"),
                             Name = "Философия"
                         },
                         new
                         {
-                            Id = new Guid("10b81fcb-6374-4667-95cd-1a1a15c85341"),
+                            Id = new Guid("beb24be4-3811-4627-adf0-dadcdcbc93a0"),
                             Name = "Безопасность жизнедеятельности"
                         },
                         new
                         {
-                            Id = new Guid("4f777a7f-d6e8-4905-ac98-bbf039505600"),
+                            Id = new Guid("2e338091-7461-4782-8ec2-241ccad86837"),
                             Name = "Русский язык и культура речи"
                         },
                         new
                         {
-                            Id = new Guid("d059640c-4cab-40cb-b42c-898873df86ec"),
+                            Id = new Guid("a268a2e2-a465-4dbc-a0d6-03dc18a6d3fe"),
                             Name = "Высшая математика"
                         },
                         new
                         {
-                            Id = new Guid("147d16f6-bd4e-47ce-8c9b-dc560db9025f"),
+                            Id = new Guid("f77d9167-5751-4e92-b286-3b7486d77343"),
                             Name = "Информатика"
                         },
                         new
                         {
-                            Id = new Guid("b33cf226-2b4a-4aaf-b0f2-82786e56e325"),
+                            Id = new Guid("af5c7f49-c006-41b6-884c-e172a829ba46"),
                             Name = "Развитие информационного общества"
                         },
                         new
                         {
-                            Id = new Guid("df1b3e87-231d-4da5-9ce2-c62379ed292d"),
+                            Id = new Guid("fb73543d-a472-489a-9de0-56acefb7076c"),
                             Name = "Основы алгоритмизации"
                         },
                         new
                         {
-                            Id = new Guid("e5c71e1c-56c1-431d-a2af-9cb2d18e1a4c"),
+                            Id = new Guid("0e945009-06c8-49b9-a59b-60bd0ddcc9f7"),
                             Name = "Основы программирования"
                         },
                         new
                         {
-                            Id = new Guid("0604e92f-f3a6-48e4-86c5-9f9374ce4c74"),
+                            Id = new Guid("ddcbe6bd-d123-48a6-963e-c634658f9376"),
                             Name = "Программная инженерия"
                         },
                         new
                         {
-                            Id = new Guid("b1752f48-13d9-4474-8dfa-80a08a5ac512"),
+                            Id = new Guid("2bd5f1af-32e2-4072-8db6-9e1bade151c2"),
                             Name = "Операционные системы"
                         },
                         new
                         {
-                            Id = new Guid("9a3f825b-cc87-453e-a819-ae45850f05ef"),
+                            Id = new Guid("d91b95b2-7aa8-4737-8b9d-3e354e47ef78"),
                             Name = "Экономика"
                         },
                         new
                         {
-                            Id = new Guid("6a26f1bd-369a-48f0-9bcc-8765c0b7b1f3"),
+                            Id = new Guid("6de75f33-9c83-4ecb-aa91-c79a7dd4c75d"),
                             Name = "Правоведение"
                         },
                         new
                         {
-                            Id = new Guid("3ae027ea-9670-4235-a637-fbe5c3a3f81a"),
+                            Id = new Guid("e23e9ede-0739-4a19-853b-e6e8e3e0f922"),
                             Name = "Социология"
                         },
                         new
                         {
-                            Id = new Guid("3525b34f-7ce5-4f15-a82b-76e58d2153bc"),
+                            Id = new Guid("b5d9fafd-f8fa-46e1-bcee-9a230d116657"),
                             Name = "Психология"
                         },
                         new
                         {
-                            Id = new Guid("a502079d-edb3-47cd-abaf-f93e42fccabb"),
+                            Id = new Guid("4f08a32f-5b34-4e5b-a55d-2073e1613094"),
                             Name = "Технологии разработки программного продукта"
                         },
                         new
                         {
-                            Id = new Guid("e139d310-eb90-464b-b91d-ee2f2d06b6f0"),
+                            Id = new Guid("e32128b2-becc-4fcf-a3e7-11f5c06d3613"),
                             Name = "Интернет технологии"
                         },
                         new
                         {
-                            Id = new Guid("0a1f7076-d782-44f8-8c0e-1c02bb4a1468"),
+                            Id = new Guid("5833745a-fa76-40c1-97b0-d4dbe0487f1d"),
                             Name = "Информационная безопасность"
                         },
                         new
                         {
-                            Id = new Guid("a9a16ccd-8f75-4906-977a-7122fcdd85df"),
+                            Id = new Guid("f252d969-2de7-496b-9d7b-e2bb2a87571a"),
                             Name = "Численные методы"
                         },
                         new
                         {
-                            Id = new Guid("b534a3d3-150a-4e7b-b751-63c6d7b5e37c"),
+                            Id = new Guid("5c92f52e-65cd-4b40-a587-b5e2009aec03"),
                             Name = "Исследование операций"
                         },
                         new
                         {
-                            Id = new Guid("25a86e06-d1de-404f-b5b6-f428878a3061"),
+                            Id = new Guid("2245f749-8535-4349-8497-20d3aef36ac9"),
                             Name = "Дискретная математика"
                         },
                         new
                         {
-                            Id = new Guid("badd7e73-a6f7-4713-a90a-f8110fcbe200"),
+                            Id = new Guid("c97eeead-57e4-4de6-8aa0-5ea765028e53"),
                             Name = "Математика криптографии"
                         },
                         new
                         {
-                            Id = new Guid("74492d42-bfe3-4063-a3c1-bb1a06ce9b47"),
+                            Id = new Guid("bf530cb5-d4f5-4e68-ac9d-5b7d1861cf14"),
                             Name = "Математические методы принятия решений"
                         },
                         new
                         {
-                            Id = new Guid("7a9b80e7-13e2-4b6e-8e62-4bd763ae6b82"),
+                            Id = new Guid("f370e8e0-5eaf-48e1-a100-9efd30744619"),
                             Name = "Математический инструментарий и модели оценки бизнеса"
                         },
                         new
                         {
-                            Id = new Guid("6f087119-3318-474a-9c9d-6b38b3175171"),
+                            Id = new Guid("7edd1aea-dff7-44ba-a07a-322110c834bf"),
                             Name = "Анализ данных"
                         },
                         new
                         {
-                            Id = new Guid("9e59dce9-0da1-403b-a732-84767fbffa35"),
+                            Id = new Guid("787db592-8295-4b76-9a1e-7ff38b605a8b"),
                             Name = "Базы данных"
                         },
                         new
                         {
-                            Id = new Guid("07317a96-d5ea-42f6-81de-f36b28945061"),
+                            Id = new Guid("b17daf86-5e63-49cf-8377-f5b6ff26122a"),
                             Name = "Управление жизненным циклом информационных систем"
                         },
                         new
                         {
-                            Id = new Guid("060d49a5-3f67-4dff-b483-6abb79fc1f5c"),
+                            Id = new Guid("28721d05-499c-449e-99b0-a82f6aaacb27"),
                             Name = "ИТ инфраструкту рапредприятия"
                         },
                         new
                         {
-                            Id = new Guid("581d2a5e-66dc-45e6-8313-4e8049f727da"),
+                            Id = new Guid("52fab53c-00eb-4c46-85fa-98ff9f0d5247"),
                             Name = "Управление проектами"
                         },
                         new
                         {
-                            Id = new Guid("ad17ccdc-e5f3-4e2a-9742-7817cde7c314"),
+                            Id = new Guid("b58b525e-b3db-4b83-a4dc-5fe50828a213"),
                             Name = "Физическая культура и спорт"
                         },
                         new
                         {
-                            Id = new Guid("094910c6-138e-4673-8348-10fc960ccf25"),
+                            Id = new Guid("9e4ee716-7fb5-46a5-9001-547c6d73a4d1"),
                             Name = "Информационные системы и технологии в управленческой деятельности"
                         },
                         new
                         {
-                            Id = new Guid("929864e7-8ea6-4021-9c8e-87c99db70077"),
+                            Id = new Guid("501560c0-d542-4e85-9687-ed26b5850453"),
                             Name = "Специальные главы высшей математики"
                         },
                         new
                         {
-                            Id = new Guid("52953462-3be4-4349-a086-2c3dc321d8ea"),
+                            Id = new Guid("f35d3718-ade5-47af-83b9-71adfd636b42"),
                             Name = "Вычислительные системы, сети, телекоммуникации"
                         },
                         new
                         {
-                            Id = new Guid("8ba8eb53-87f4-41a0-8875-44cdefc15c61"),
+                            Id = new Guid("156d07e5-b424-4931-9b4e-7451f20ee951"),
                             Name = "Электронный бизнес"
                         },
                         new
                         {
-                            Id = new Guid("5695a9c2-da4f-4952-9442-ef99ad24fe9e"),
+                            Id = new Guid("2ae7c7e0-cbbe-4e7c-b627-8a40b7de549a"),
                             Name = "Корпоративные информационные системы"
                         },
                         new
                         {
-                            Id = new Guid("441a5fab-5bb6-491d-a8c9-8dd941f7404f"),
+                            Id = new Guid("b64b70f6-206d-4152-b0a4-204426e98d75"),
                             Name = "Теория риска и моделирование рисковых ситуаций"
                         },
                         new
                         {
-                            Id = new Guid("e448b0e9-b3e7-433a-9bbc-df342ee681ba"),
+                            Id = new Guid("9310df47-05c0-448f-983a-3e6880be1d79"),
                             Name = "Прогнозирование социальноэкономических процессов"
                         },
                         new
                         {
-                            Id = new Guid("27dfcbd8-59d5-4518-8fa1-09986aa75433"),
+                            Id = new Guid("98fca2d4-6879-4ffc-b43c-7ca5fb48eae5"),
                             Name = "Основы искусственного интеллекта"
                         },
                         new
                         {
-                            Id = new Guid("1fb68c0a-4793-4832-930e-c1c73732faef"),
+                            Id = new Guid("fa0f8fb0-201f-416b-a1cc-ef5f1c016077"),
                             Name = "Основы научных исследований"
                         },
                         new
                         {
-                            Id = new Guid("224ca286-ed1e-4eca-adfd-7a55dc2298f1"),
+                            Id = new Guid("56087a6c-94db-44dd-8f01-fd33fd3f1da7"),
                             Name = "Научно-исследовательская работа"
                         },
                         new
                         {
-                            Id = new Guid("99b2b4d8-828c-4fee-a583-f8b8abfec73c"),
+                            Id = new Guid("e1fc57cd-e0b5-453d-b462-b97f2c8a7bc6"),
                             Name = "Моделирование бизнеспроцессов"
                         },
                         new
                         {
-                            Id = new Guid("0e806e83-ff69-428b-8812-8de01180bffe"),
+                            Id = new Guid("541b28ee-dada-4b81-8b17-719ce864efbe"),
                             Name = "Теория систем и системный анализ"
                         },
                         new
                         {
-                            Id = new Guid("af17d1ee-1f42-44b8-a7fa-ecc2e85cae94"),
+                            Id = new Guid("00c9b7fd-f930-4ce9-b4a7-a791c5264689"),
                             Name = "Системы поддержки принятия решений"
                         },
                         new
                         {
-                            Id = new Guid("13d4551d-ed46-43af-b8e6-bffb66fb4ae0"),
+                            Id = new Guid("38e80190-e719-4f2a-8bac-b5f9f7659cc9"),
                             Name = "Стандатизация, сертификация и управление качеством программного обеспечения"
                         },
                         new
                         {
-                            Id = new Guid("26890444-848d-4c2d-8f12-da010ad8d84f"),
+                            Id = new Guid("04c69e8f-f8c6-4cc9-b071-eb9e351e3c5e"),
                             Name = "Стандартизация и сертификация товаров и услуг"
                         },
                         new
                         {
-                            Id = new Guid("7c8d30d8-9a67-49e5-84de-61c453789236"),
+                            Id = new Guid("a5031ede-935d-41ad-85cc-eb28d4158a76"),
                             Name = "Физическая культура и спорт"
                         },
                         new
                         {
-                            Id = new Guid("007fc26a-b566-4986-ad13-49a9a483a2a8"),
+                            Id = new Guid("25f0c58e-3d10-4051-8960-9a69362bbfa9"),
                             Name = "Основы военной подготовки"
                         },
                         new
                         {
-                            Id = new Guid("e393525c-b3ad-43ac-91bb-5fec30fb2e23"),
+                            Id = new Guid("d53f9cc7-63fa-4265-8751-78c80ae6b142"),
                             Name = "Ознакомительная (учебная) практика"
                         },
                         new
                         {
-                            Id = new Guid("fdf37719-0e2e-4e7b-a967-4f16420288c1"),
+                            Id = new Guid("5a0b53be-ad89-4234-8f7a-e7b166228fd8"),
                             Name = "Технологическая (учебная) практика"
                         },
                         new
                         {
-                            Id = new Guid("1cda4323-e379-4ff2-aa0c-e0d218f26c1b"),
+                            Id = new Guid("e0d2114d-cf5b-4c8a-81f7-a72aabcef611"),
                             Name = "Технологическая (производственная) практика"
                         },
                         new
                         {
-                            Id = new Guid("7815f1d3-818e-4396-8105-54c8edbe8900"),
+                            Id = new Guid("7c588855-b26b-418b-915a-bed8be779fac"),
                             Name = "Преддипломная (производственная) практика"
                         },
                         new
                         {
-                            Id = new Guid("cc602659-f846-4ee5-b67c-dfc55a4cd776"),
+                            Id = new Guid("36ef629f-dc81-43de-ad5e-e8279da39440"),
                             Name = "Подготовка к процедуре защиты и защита выпускной квалификационной работы"
                         });
                 });
@@ -427,6 +579,10 @@ namespace PortfolioServer.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -434,6 +590,38 @@ namespace PortfolioServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Faculties");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
+                            FullName = "Горный",
+                            Name = "Горный"
+                        },
+                        new
+                        {
+                            Id = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
+                            FullName = "Металлургического и Машиностроительного Производства",
+                            Name = "ММП"
+                        },
+                        new
+                        {
+                            Id = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
+                            FullName = "Автоматизации Производственных Процессов",
+                            Name = "АПП"
+                        },
+                        new
+                        {
+                            Id = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            FullName = "Фундаментального Инженерного Образования и Инноваций",
+                            Name = "ФИОИ"
+                        },
+                        new
+                        {
+                            Id = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
+                            FullName = "Экономики и Бизнеса",
+                            Name = "ЭБ"
+                        });
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.ProfessionalDevelopment", b =>
@@ -620,6 +808,7 @@ namespace PortfolioServer.Migrations
             modelBuilder.Entity("PortfolioShared.Models.Work", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
                     b.Property<DateOnly>("BeginTimeWork")

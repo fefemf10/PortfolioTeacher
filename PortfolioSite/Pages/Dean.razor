@@ -1,17 +1,17 @@
-﻿@page "/Deputy"
+﻿@page "/dean"
 @using Blazorise.DataGrid;
 @using PortfolioShared.ViewModels.Request
 @using PortfolioShared.ViewModels.Response
 @using PortfolioSite.Shared.Localization;
-@inject IStringLocalizer<Deputy> localizer
+@inject IStringLocalizer<Dean> localizer
 @inject IStringLocalizer<TeacherInfos> teacherInfosLocalizer
 @inject IHttpClientFactory httpFactory
 @inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
-<Heading TextAlignment="TextAlignment.Center">@localizer["Title"]</Heading>
 
 <DataGrid TItem="RequestTeacher"
           Data="@requestTeachers"
+          Groupable
 		  ShowPager
 		  ShowPageSizes
           @ref="@dataGrid">
@@ -21,20 +21,10 @@
     <DataGridColumn Field="@nameof(RequestTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] Editable />
     <DataGridColumn Field="@nameof(RequestTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] Editable />
 </DataGrid>
+
 @code {
     List<RequestTeacher>? requestTeachers;
     DataGrid<RequestTeacher> dataGrid;
     HttpClient webapi;
     Guid guid;
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-        webapi = httpFactory.CreateClient("PortfolioServer");
-        var state = await authenticationStateProvider.GetAuthenticationStateAsync();
-        if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-        {
-            ResponseTeacher user = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
-            requestTeachers = await webapi.GetFromJsonAsync<List<RequestTeacher>>($"Department/{user.DepartmentId}/GetTeacher");
-        }
-    }
 }
