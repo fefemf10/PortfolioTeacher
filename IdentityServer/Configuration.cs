@@ -10,14 +10,15 @@ namespace IdentityServer
 			new Client
 			{
 				ClientId = "m2m",
-				ClientSecrets = { new Secret("client_secret") },
+				ClientSecrets = { new Secret("client_secret".Sha256()) },
 				AllowedGrantTypes = GrantTypes.ClientCredentials,
 				AllowedScopes =
 				{
 					IdentityServerConstants.StandardScopes.OpenId,
 					IdentityServerConstants.StandardScopes.Profile,
-					"PortfolioSite",
-				},
+					IdentityServerConstants.LocalApi.ScopeName,
+					"PortfolioServer",
+				}
 			},
 			new Client
 			{
@@ -27,7 +28,8 @@ namespace IdentityServer
 				{
 					IdentityServerConstants.StandardScopes.OpenId,
 					IdentityServerConstants.StandardScopes.Profile,
-					"PortfolioSite",
+					IdentityServerConstants.LocalApi.ScopeName,
+					"PortfolioServer",
 				},
 				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
 				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
@@ -36,7 +38,7 @@ namespace IdentityServer
 		};
 		public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
 		{
-			new ApiResource("PortfolioSite")
+			new ApiResource("PortfolioServer")
 		};
 		public static IEnumerable<IdentityResource> IdentityResources => new IdentityResource[]
 		{
@@ -46,7 +48,8 @@ namespace IdentityServer
 		};
 		public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
 		{
-			new ApiScope("PortfolioSite")
+			new ApiScope("PortfolioServer"),
+			new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
 		};
 	}
 }

@@ -4,9 +4,11 @@ using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
 using BlazorPro.BlazorSize;
 using IdentityModel;
+using IdentityModel.Client;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using PortfolioShared.Models;
 using PortfolioSite;
 using PortfolioSite.Extensions;
@@ -27,8 +29,22 @@ builder.Services.AddHttpClient("PortfolioServer", httpClient =>
 builder.Services.AddHttpClient("IdentityServer", httpClient =>
 {
 	httpClient.BaseAddress = new Uri(builder.Configuration["IdentityServer:Url"]!);
+ //   var response1 = await httpClient.RequestAuthorizationCodeTokenAsync(new AuthorizationCodeTokenRequest
+ //   {
+	//	Address = "https://localhost:7001/connect/token",
+	//	ClientId = "PortfolioSite",
+	//	ClientCredentialStyle = ClientCredentialStyle.PostBody,
+	//});
+	//var response2 = await httpClient.RequestBackchannelAuthenticationTokenAsync(new BackchannelAuthenticationTokenRequest
+	//{
+	//	Address = "https://localhost:7001/connect/token",
+	//	ClientId = "PortfolioSite",
+ //       GrantType = GrantTypes.AuthorizationCode,
+ //       AuthenticationRequestId
+	//	ClientCredentialStyle = ClientCredentialStyle.PostBody,
+	//});
+	//httpClient.SetBearerToken(response2.AccessToken);
 }).AddHttpMessageHandler<IdentityAuthorizationMessageHandler>();
-
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddOidcAuthentication(options =>

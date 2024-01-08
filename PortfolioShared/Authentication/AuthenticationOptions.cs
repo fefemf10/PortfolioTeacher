@@ -5,8 +5,9 @@ namespace PortfolioShared.Authentication
 {
 	public static class AuthenticationOptions
 	{
-		public static IdentityOptions identityOptions = new IdentityOptions { User = userOptions!, Password = passwordOptions! };
+		public static IdentityOptions identityOptions = new IdentityOptions { User = userOptions!, Password = passwordOptions!, SignIn = signInOptions! };
 		private static UserOptions userOptions = new UserOptions { RequireUniqueEmail = true };
+		private static SignInOptions signInOptions = new SignInOptions { RequireConfirmedAccount = true };
 		private static PasswordOptions passwordOptions = new PasswordOptions
 		{
 			RequiredLength = 5,

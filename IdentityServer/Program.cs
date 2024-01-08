@@ -1,12 +1,18 @@
+using Duende.IdentityServer.Hosting.LocalApiAuthentication;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Test;
+using IdentityModel.Client;
 using IdentityServer;
 using IdentityServer.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MySqlConnector;
 using PortfolioShared.Authentication;
 using System.Globalization;
@@ -24,7 +30,35 @@ builder.Services.AddSignalR();
 builder.Services.AddTransient<RegistrationHub>();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddControllers();
 builder.Services.AddControllersWithViews().AddDataAnnotationsLocalization().AddViewLocalization();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+	options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme()
+	{
+		Name = "Authorization",
+		Type = SecuritySchemeType.ApiKey,
+		Scheme = JwtBearerDefaults.AuthenticationScheme,
+		BearerFormat = "JWT",
+		In = ParameterLocation.Header,
+		Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+	});
+	options.AddSecurityRequirement(new OpenApiSecurityRequirement
+	{
+		{
+			new OpenApiSecurityScheme
+			 {
+				 Reference = new OpenApiReference
+				 {
+					 Type = ReferenceType.SecurityScheme,
+					 Id = JwtBearerDefaults.AuthenticationScheme
+				 }
+			 },
+			 new string[] {}
+		}
+	});
+});
 string assembly = typeof(Program).Assembly.GetName().Name!;
 var connectionStringBuilder = new MySqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection")!);
 connectionStringBuilder.UserID = builder.Configuration["DBUser"];
@@ -38,7 +72,18 @@ if (seed)
 {
 	SeedData.EnsureSeedData(connection, serverVersion);
 }
-
+builder.Services.AddHttpClient("PortfolioServer", httpClient =>
+{
+	httpClient.BaseAddress = new Uri(builder.Configuration["PortfolioServer:Url"]!);
+	var response = httpClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+	{
+		Address = "https://localhost:7001/connect/token",
+		ClientId = "m2m",
+		ClientSecret = "client_secret",
+		ClientCredentialStyle = ClientCredentialStyle.PostBody,
+	}).GetAwaiter().GetResult();
+	httpClient.SetBearerToken(response.AccessToken);
+});
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(assembly)));
 builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(AuthenticationOptions.GetIdentityOptions)
 	.AddSignInManager<SignInManager<IdentityUser<Guid>>>()
@@ -73,6 +118,9 @@ builder.Services.AddIdentityServer()
 			AllowAll = true
 		};
 	});
+JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+builder.Services.AddLocalApiAuthentication();
+
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("MyPolicy", builder =>
@@ -89,7 +137,10 @@ if (!app.Environment.IsDevelopment())
 {
 	app.UseExceptionHandler("/Error", createScopeForErrors: true);
 	app.UseHsts();
+	
 }
+app.UseSwagger();
+app.UseSwaggerUI();
 var supportedCultures = new[]
 {
 	new CultureInfo("en"),
@@ -106,9 +157,11 @@ app.UseCors("MyPolicy");
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAntiforgery();
-app.UseIdentityServer();
+app.UseAuthentication();
 app.UseAuthorization();
+app.UseIdentityServer();
 app.MapControllers();
+app.MapDefaultControllerRoute();
 app.MapRazorPages();
 app.MapHub<RegistrationHub>("/RegistrationHub");
 app.Run();

@@ -25,5 +25,6 @@ public class InputModel
 	[Required(ErrorMessageResourceName = "RoleRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
 	[EnumDataType(typeof(Roles))]
     public string RoleName { get; set; }
+    public Guid DepartmentId { get; set; }
 	public string Button { get; set; }
 }

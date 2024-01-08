@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.VisualBasic;
 using MySqlConnector;
 using PortfolioShared.Models;
 using System.Text.Encodings.Web;
@@ -22,31 +23,60 @@ var builder = WebApplication.CreateBuilder(args);
 }
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen(options =>
+//{
+//	options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+//	{
+//		Type = SecuritySchemeType.OAuth2,
+//		Flows = new OpenApiOAuthFlows
+//		{
+//			AuthorizationCode = new OpenApiOAuthFlow
+//			{
+//				AuthorizationUrl = new Uri(builder.Configuration["IdentityServer:Url"] + "/connect/authorize"),
+//				TokenUrl = new Uri(builder.Configuration["IdentityServer:Url"] + "/connect/token"),
+//				Scopes = new Dictionary<string, string>
+//				{
+//					{"PortfolioServer", "PortfolioServer"}
+//				}
+//			},
+//		}
+//	});
+//	options.AddSecurityRequirement(new OpenApiSecurityRequirement
+//	{
+//		{
+//			new OpenApiSecurityScheme
+//			{
+//				Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+//			},
+//			new[] { "PortfolioServer" }
+//		}
+//	});
+//});
 builder.Services.AddSwaggerGen(options =>
 {
-    options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme()
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.ApiKey,
-        Scheme = JwtBearerDefaults.AuthenticationScheme,
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
-    });
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-             {
-                 Reference = new OpenApiReference
-                 {
-                     Type = ReferenceType.SecurityScheme,
-                     Id = JwtBearerDefaults.AuthenticationScheme
-                 }
-             },
-             new string[] {}
-        }
-    });
+	options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme()
+	{
+		Name = "Authorization",
+		Type = SecuritySchemeType.ApiKey,
+		Scheme = JwtBearerDefaults.AuthenticationScheme,
+		BearerFormat = "JWT",
+		In = ParameterLocation.Header,
+		Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+	});
+	options.AddSecurityRequirement(new OpenApiSecurityRequirement
+	{
+		{
+			new OpenApiSecurityScheme
+			 {
+				 Reference = new OpenApiReference
+				 {
+					 Type = ReferenceType.SecurityScheme,
+					 Id = JwtBearerDefaults.AuthenticationScheme
+				 }
+			 },
+			 new string[] {}
+		}
+	});
 });
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
@@ -64,19 +94,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
         options.Authority = builder.Configuration["IdentityServer:Url"];
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateAudience = false,
-            ValidTypes = new[] { "at+jwt" }
-        };
+        options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
     });
 
 builder.Services.AddAuthorization(options =>
 {
-    options.DefaultPolicy =
-        new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
-        .RequireAuthenticatedUser()
-        .Build();
+	options.AddPolicy("ApiScope", policy =>
+	{
+        policy.RequireAuthenticatedUser();
+		policy.RequireClaim("scope", builder.Configuration["IdentityServer:Scope"]!);
+	});
 });
 
 builder.Services.AddCors(options =>
@@ -122,7 +150,7 @@ connection.On<Guid, string, Guid, Roles>("Receive2", (Id, Email, DepartmentId, R
 			case Roles.Dean:
 			case Roles.Deputy:
 			case Roles.Teacher:
-				db.Teachers.Add(new Teacher() { Id = Id, Email = Email, DepartmentId = DepartmentId });
+				db.Teachers.Add(new Teacher() { Id = Id, Email = Email, Department = db.Departments.Find(DepartmentId) });
 				db.SaveChanges();
 				break;
 			case Roles.Student:
@@ -137,12 +165,15 @@ app.UseCors("MyPolicy");
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+	app.UseSwaggerUI(options =>
+	{
+		//options.OAuthUsePkce();
+	});
 }
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapDefaultControllerRoute();
+app.MapDefaultControllerRoute().RequireAuthorization("ApiScope");
 
 app.Run();

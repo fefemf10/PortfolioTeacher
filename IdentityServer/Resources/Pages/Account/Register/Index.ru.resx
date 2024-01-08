@@ -123,6 +123,9 @@
   <data name="ButtonRegister" xml:space="preserve">
     <value>Зарегистрироваться</value>
   </data>
+  <data name="Department" xml:space="preserve">
+    <value>Кафедра</value>
+  </data>
   <data name="Header" xml:space="preserve">
     <value>Регистрация</value>
   </data>

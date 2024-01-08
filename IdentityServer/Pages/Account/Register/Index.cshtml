@@ -33,7 +33,14 @@
 						<div class="form-group">
 							<label asp-for="Input.RoleName">@localizer["RoleName"]</label>
 							<select asp-for="Input.RoleName" class="form-control"
-									asp-items="@(new SelectList(Model.View.RolesList))"></select>
+									asp-items="@(new SelectList(Model.View.RolesList))">
+								select</select>
+						</div>
+						<div class="form-group">
+							<label asp-for="Input.DepartmentId">@localizer["Department"]</label>
+							<select asp-for="Input.DepartmentId" class="form-control"
+									asp-items="@Model.View.FacultyDepartments">
+							</select>
 						</div>
 						<button type="submit" class="btn btn-primary" name="Input.Button" value="register">@localizer["ButtonRegister"]</button>
 					</form>

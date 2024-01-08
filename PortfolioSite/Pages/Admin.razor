@@ -4,8 +4,11 @@
 @using PortfolioShared.ViewModels.Request
 @using PortfolioShared.ViewModels.Response
 @using PortfolioShared.Models
+@using IdentityModel.Client
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @inject IStringLocalizer<Admin> localizer
 @inject IHttpClientFactory httpFactory
+@inject IAccessTokenProvider tokenProvider
 @inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
 <Container>
@@ -21,7 +24,7 @@
 			</Validation>
 		</Field>
 		<Field>
-			<Select TValue="string" @bind-bind-SelectedValue="@role">
+			<Select TValue="string" @bind-SelectedValue="@role">
 				<SelectItem Value="@Roles.Dean.ToString()">@Roles.Dean.ToString()</SelectItem>
 				<SelectItem Value="@Roles.Deputy.ToString()">@Roles.Deputy.ToString()</SelectItem>
 				<SelectItem Value="@Roles.Teacher.ToString()">@Roles.Teacher.ToString()</SelectItem>
@@ -48,20 +51,24 @@
 	HttpClient webapi;
 	HttpClient identityapi;
 	Guid guid;
-	string email;
-	string password;
-	string role = @Roles.Dean.ToString();
+	string email = "Abob2@yandex.ru";
+	string password = "12345";
+	string role;
 	Guid departmentId;
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		identityapi = httpFactory.CreateClient("IdentityServer");
+		AccessTokenResult accessTokenResult = await tokenProvider.RequestAccessToken();
+		AccessToken accessToken;
+		accessTokenResult.TryGetToken(out accessToken);
+		identityapi.SetBearerToken(accessToken.Value);
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
-		identityapi.DefaultRequestHeaders.Authorization = webapi.DefaultRequestHeaders.Authorization;
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 		{
 			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
+			departmentId = requestFacultyDepartments.First().Departments.First().Id;
 		}
 	}
 	private void AddNewUser()

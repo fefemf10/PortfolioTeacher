@@ -5,24 +5,26 @@ using Microsoft.AspNetCore.SignalR;
 using PortfolioShared.Models;
 using PortfolioShared.ViewModels.Request;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Http;
+using static Duende.IdentityServer.IdentityServerConstants;
 
 namespace IdentityServer.Controllers
 {
-	[Authorize(Roles = nameof(Roles.Administrator))]
+	[Authorize(LocalApi.PolicyName, Roles = nameof(Roles.Administrator))]
 	[Route("[controller]/[action]")]
 	[ApiController]
 	public class UserController : ControllerBase
 	{
 		private readonly ApplicationContext db;
-		private readonly SignInManager<IdentityUser<Guid>> signInManager;
 		private readonly UserManager<IdentityUser<Guid>> userManager;
-		private readonly IHubContext<RegistrationHub> hubContext;
-		public UserController(ApplicationContext db, SignInManager<IdentityUser<Guid>> signInManager, UserManager<IdentityUser<Guid>> userManager, IHubContext<RegistrationHub> hubContext)
+		private readonly RoleManager<IdentityRole<Guid>> roleManager;
+		private readonly IHttpClientFactory httpClientFactory;
+		public UserController(ApplicationContext db, UserManager<IdentityUser<Guid>> userManager, RoleManager<IdentityRole<Guid>> roleManager, IHttpClientFactory httpClientFactory)
 		{
 			this.db = db;
-			this.signInManager = signInManager;
 			this.userManager = userManager;
-			this.hubContext = hubContext;
+			this.roleManager = roleManager;
+			this.httpClientFactory = httpClientFactory;
 		}
 		[HttpPost]
 		public async Task<ActionResult> Add([Required][FromBody] RequestAddUser requestAddUser)
@@ -38,10 +40,18 @@ namespace IdentityServer.Controllers
 
 			if (result.Succeeded)
 			{
-				await userManager.AddToRoleAsync(user, requestAddUser.Role);
-				await hubContext.Clients.All.SendAsync("Receive2", user.Id, user.Email, requestAddUser.DepartmentId, Enum.Parse<Roles>(requestAddUser.Role));
+				if (await roleManager.RoleExistsAsync(requestAddUser.Role))
+				{
+					await userManager.AddToRoleAsync(user, requestAddUser.Role);
+					HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
+					JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = requestAddUser.Role, DepartmentId = requestAddUser.DepartmentId });
+					HttpResponseMessage httpResponse = await httpClient.PostAsync("Teacher/AddTeacher", js);
+					if (httpResponse.IsSuccessStatusCode)
+						return Ok();
+				}
+				await userManager.DeleteAsync(user);
 			}
-			return Ok();
+			return BadRequest();
 		}
 	}
 }

@@ -18,6 +18,8 @@
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.0-preview.3" />
     <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="7.0.0-preview.3" />
     <PackageReference Include="IdentityModel" Version="6.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="8.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -31,6 +33,7 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.6-Preview.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="8.0.0-beta.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Handlers\" />
     <Folder Include="Resources\Pages\Account\Logout\" />
   </ItemGroup>
 

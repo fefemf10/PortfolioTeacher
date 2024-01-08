@@ -45,5 +45,14 @@ namespace PortfolioServer.Controllers.TeacherControllers
             db.SaveChanges();
             return Ok();
         }
+        [HttpPost("[action]")]
+        public ActionResult AddTeacher([Required][FromBody] RequestAddTeacher requestAddTeacher)
+        {
+            Teacher teacher = new() { Id = requestAddTeacher.Id, Email = requestAddTeacher.Email };
+			teacher.DepartmentId = requestAddTeacher.DepartmentId;
+			db.Teachers.Add(teacher);
+            db.SaveChanges();
+            return Ok();
+        }
     }
 }

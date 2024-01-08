@@ -9,7 +9,9 @@ namespace PortfolioSite.Handlers
 		public IdentityAuthorizationMessageHandler(IConfiguration configuration, IAccessTokenProvider provider, NavigationManager navigation) : base(provider, navigation)
 		{
 			this.configuration = configuration;
-			ConfigureHandler(new[] { configuration["IdentityServer:Url"]! }, new[] { configuration["IdentityServer:Scope"]! });
+			List<string> scopes = new();
+			configuration.Bind("IdentityServer:Scopes", scopes);
+			ConfigureHandler(new[] { configuration["IdentityServer:Url"]! }, scopes);
 		}
 	}
 }
