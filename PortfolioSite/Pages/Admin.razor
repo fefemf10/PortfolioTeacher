@@ -6,7 +6,9 @@
 @using PortfolioShared.Models
 @using IdentityModel.Client
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using PortfolioSite.Shared.Localization
 @inject IStringLocalizer<Admin> localizer
+@inject IStringLocalizer<TableControls> tableControlsLocalizer
 @inject IHttpClientFactory httpFactory
 @inject IAccessTokenProvider tokenProvider
 @inject AuthenticationStateProvider authenticationStateProvider
@@ -46,7 +48,9 @@
 	</Grid>
 	<Button Color="Color.Success" Clicked="@AddNewUser">@localizer["SaveChangesButton"]</Button>
 </Container>
+<SnackbarStack @ref="@snackbarStack" DefaultInterval="3000.0" Location="SnackbarStackLocation.BottomEnd" TextWeight="TextWeight.Bold" TextSize="TextSize.ExtraLarge" />
 @code {
+	SnackbarStack snackbarStack;
 	List<RequestFacultyDepartment> requestFacultyDepartments;
 	HttpClient webapi;
 	HttpClient identityapi;
@@ -71,9 +75,13 @@
 			departmentId = requestFacultyDepartments.First().Departments.First().Id;
 		}
 	}
-	private void AddNewUser()
+	private async void AddNewUser()
 	{
 		JsonContent js = JsonContent.Create(new RequestAddUser(){ Email = email, Password = password, Role = role, DepartmentId = departmentId });
-		identityapi.PostAsync($"User/Add", js);
+		HttpResponseMessage httpResponse = await identityapi.PostAsync($"User/Add", js);
+		if (httpResponse.IsSuccessStatusCode)
+			snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
+		else
+			snackbarStack.PushAsync(tableControlsLocalizer["ErrorRowNotification"], SnackbarColor.Danger);
 	}
 }

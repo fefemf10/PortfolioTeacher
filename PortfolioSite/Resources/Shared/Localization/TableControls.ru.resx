@@ -126,6 +126,9 @@
   <data name="EditRowButton" xml:space="preserve">
     <value>Изменить</value>
   </data>
+  <data name="ErrorRowNotification" xml:space="preserve">
+    <value>Ошибка повторите снова</value>
+  </data>
   <data name="InsertRowNotification" xml:space="preserve">
     <value>Запись добавлена</value>
   </data>
