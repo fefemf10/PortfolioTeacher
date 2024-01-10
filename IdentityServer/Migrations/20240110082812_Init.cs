@@ -195,13 +195,13 @@ namespace IdentityServer.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("7b10dd43-405d-4240-b45c-7fbb28a363ab"), null, "Administrator", "ADMINISTRATOR" },
-                    { new Guid("a309c2d7-6dcb-47d8-8fff-103de3881365"), null, "Dean", "DEAN" },
-                    { new Guid("a8ca9b79-a5d6-4363-9b84-1f2eea28834e"), null, "Moderator", "MODERATOR" },
-                    { new Guid("acc8e4f3-176a-4287-83d5-00fa9886a696"), null, "IdentityServer", "IDENTITYSERVER" },
-                    { new Guid("b798c73a-a3f7-4feb-94b1-04639d61baf5"), null, "Teacher", "TEACHER" },
-                    { new Guid("c25bf2e5-7dbe-4292-8726-822dfb28de77"), null, "Student", "STUDENT" },
-                    { new Guid("ebf0c108-cc79-45fd-b565-741776d45c34"), null, "Deputy", "DEPUTY" }
+                    { new Guid("0a3a1d76-f0e3-402b-a667-e059e3db051b"), null, "Administrator", "ADMINISTRATOR" },
+                    { new Guid("2d44e1fd-f180-41bd-a127-61e6c371be04"), null, "Dean", "DEAN" },
+                    { new Guid("39730f15-c360-4df0-8ca2-f3c2e1b9dae1"), null, "Deputy", "DEPUTY" },
+                    { new Guid("5d8a204c-67ed-4b6a-89de-5e2cf0f84d0c"), null, "Teacher", "TEACHER" },
+                    { new Guid("6dc6aa32-0a5b-477e-874c-d6420440c74f"), null, "Student", "STUDENT" },
+                    { new Guid("73032a24-53d1-4337-b478-f0b60b8c2e1a"), null, "IdentityServer", "IDENTITYSERVER" },
+                    { new Guid("bb1f491c-d92a-448b-999e-31523baeb5f9"), null, "Moderator", "MODERATOR" }
                 });
 
             migrationBuilder.CreateIndex(

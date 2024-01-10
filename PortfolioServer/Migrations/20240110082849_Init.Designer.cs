@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PortfolioServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240107132655_Init")]
+    [Migration("20240110082849_Init")]
     partial class Init
     {
         /// <inheritdoc />
