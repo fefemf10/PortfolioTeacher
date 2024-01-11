@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PortfolioShared.Models;
 using PortfolioShared.ViewModels.Request;
+using PortfolioShared.ViewModels.Response;
 using System.Security.Claims;
 
 namespace IdentityServer.Pages.Account.Register;
@@ -24,7 +25,7 @@ public class Index : PageModel
 	private readonly UserManager<IdentityUser<Guid>> userManager;
 	private readonly IHttpClientFactory httpClientFactory;
 
-	public Index(IIdentityServerInteractionService interaction, IClientStore clientStore, IAuthenticationSchemeProvider schemeProvider, IIdentityProviderStore identityProviderStore, IEventService events, IHttpClientFactory httpClientFactory, RoleManager<IdentityRole<Guid>> roleManager, UserManager<IdentityUser<Guid>> userManager, SignInManager<IdentityUser<Guid>> signInManager)
+    public Index(IIdentityServerInteractionService interaction, IClientStore clientStore, IAuthenticationSchemeProvider schemeProvider, IIdentityProviderStore identityProviderStore, IEventService events, IHttpClientFactory httpClientFactory, RoleManager<IdentityRole<Guid>> roleManager, UserManager<IdentityUser<Guid>> userManager, SignInManager<IdentityUser<Guid>> signInManager)
 	{
 		this.roleManager = roleManager;
 		this.userManager = userManager;
@@ -66,7 +67,18 @@ public class Index : PageModel
 			{
 				await userManager.AddToRoleAsync(user, Input.RoleName);
 				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-				JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = Input.RoleName, DepartmentId = Input.DepartmentId });
+                List<RequestFacultyDepartment> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
+				Guid facultyId = requestFacultyDepartments.First().Id;
+				foreach (var faculty in requestFacultyDepartments)
+				{
+					var department = faculty.Departments.FirstOrDefault(y => y.Id == Input.DepartmentId);
+                    if (department is not null)
+					{
+						facultyId = faculty.Id;
+						break;
+					}
+				}
+                JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = Input.RoleName, FacultyId = facultyId, DepartmentId = Input.DepartmentId });
 				HttpResponseMessage httpResponse = await httpClient.PostAsync("Teacher/AddTeacher", js);
 				if (httpResponse.IsSuccessStatusCode)
 				{
@@ -105,7 +117,7 @@ public class Index : PageModel
 	{
 		HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
 		Input = new InputModel { ReturnUrl = returnUrl };
-		var requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
+        List<RequestFacultyDepartment> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
 		List<SelectListGroup> facultyList = requestFacultyDepartments.Select(x => new SelectListGroup { Name = x.Name }).ToList();
 		View = new ViewModel
 		{

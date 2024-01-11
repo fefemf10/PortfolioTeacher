@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace PortfolioServer.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240110082849_Init")]
+    [Migration("20240111071457_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -703,8 +703,8 @@ namespace PortfolioServer.Migrations
                     b.Property<string>("OutputData")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
+                    b.Property<uint>("Size")
+                        .HasColumnType("int unsigned");
 
                     b.Property<Guid>("TeacherId")
                         .HasColumnType("char(36)");
@@ -852,7 +852,10 @@ namespace PortfolioServer.Migrations
                     b.Property<string>("AcademicTitle")
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("DepartmentId")
+                    b.Property<Guid?>("DepartmentId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("FacultyId")
                         .HasColumnType("char(36)");
 
                     b.Property<byte[]>("Image")
@@ -862,6 +865,8 @@ namespace PortfolioServer.Migrations
                         .HasColumnType("longtext");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("FacultyId");
 
                     b.ToTable("Teachers");
                 });
@@ -1010,7 +1015,11 @@ namespace PortfolioServer.Migrations
                 {
                     b.HasOne("PortfolioShared.Models.Department", "Department")
                         .WithMany("Teachers")
-                        .HasForeignKey("DepartmentId")
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("PortfolioShared.Models.Faculty", "Faculty")
+                        .WithMany()
+                        .HasForeignKey("FacultyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1021,6 +1030,8 @@ namespace PortfolioServer.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+
+                    b.Navigation("Faculty");
                 });
 
             modelBuilder.Entity("PortfolioShared.Models.Department", b =>

@@ -135,6 +135,9 @@
   <data name="Disciplines" xml:space="preserve">
     <value>Disciplines</value>
   </data>
+  <data name="Dissertations" xml:space="preserve">
+    <value>Dissertations</value>
+  </data>
   <data name="Language" xml:space="preserve">
     <value>Language</value>
   </data>
@@ -146,6 +149,9 @@
   </data>
   <data name="PublicActivities" xml:space="preserve">
     <value>Public Activities</value>
+  </data>
+  <data name="Publications" xml:space="preserve">
+    <value>Publications</value>
   </data>
   <data name="ScienceProjects" xml:space="preserve">
     <value>Science Projects</value>

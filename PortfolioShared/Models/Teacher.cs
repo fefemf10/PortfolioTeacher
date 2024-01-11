@@ -5,7 +5,9 @@
         public string? Post { get; set; }
         public string? AcademicDegree { get; set; }
         public string? AcademicTitle { get; set; }
-		public Guid DepartmentId { get; set; }
+		public Guid FacultyId { get; set; }
+		public Faculty? Faculty { get; set; }
+		public Guid? DepartmentId { get; set; }
 		public Department? Department { get; set; }
 		public List<Work> Works { get; set; } = new();
 		public List<University> Universities { get; set; } = new();

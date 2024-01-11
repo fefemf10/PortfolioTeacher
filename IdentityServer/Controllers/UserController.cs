@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using PortfolioShared.Models;
 using PortfolioShared.ViewModels.Request;
+using PortfolioShared.ViewModels.Response;
 using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using static Duende.IdentityServer.IdentityServerConstants;
@@ -15,13 +16,11 @@ namespace IdentityServer.Controllers
 	[ApiController]
 	public class UserController : ControllerBase
 	{
-		private readonly ApplicationContext db;
 		private readonly UserManager<IdentityUser<Guid>> userManager;
 		private readonly RoleManager<IdentityRole<Guid>> roleManager;
 		private readonly IHttpClientFactory httpClientFactory;
-		public UserController(ApplicationContext db, UserManager<IdentityUser<Guid>> userManager, RoleManager<IdentityRole<Guid>> roleManager, IHttpClientFactory httpClientFactory)
+		public UserController(UserManager<IdentityUser<Guid>> userManager, RoleManager<IdentityRole<Guid>> roleManager, IHttpClientFactory httpClientFactory)
 		{
-			this.db = db;
 			this.userManager = userManager;
 			this.roleManager = roleManager;
 			this.httpClientFactory = httpClientFactory;
@@ -29,6 +28,28 @@ namespace IdentityServer.Controllers
 		[HttpPost]
 		public async Task<ActionResult> Add([Required][FromBody] RequestAddUser requestAddUser)
 		{
+			if (requestAddUser.Role == Roles.Dean.ToString())
+			{
+				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
+				var usersInRole = await userManager.GetUsersInRoleAsync(requestAddUser.Role);
+				foreach (var userInRole in usersInRole)
+				{
+					ResponseTeacher? responseTeacher = await httpClient.GetFromJsonAsync<ResponseTeacher>($"Teacher/{userInRole.Id}/GetInfo");
+					if (requestAddUser.FacultyId == responseTeacher.Faculty.Id)
+						return BadRequest();
+				}
+			}
+			else if (requestAddUser.Role == Roles.Deputy.ToString() && requestAddUser.DepartmentId.HasValue)
+			{
+				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
+				var usersInRole = await userManager.GetUsersInRoleAsync(requestAddUser.Role);
+				foreach (var userInRole in usersInRole)
+				{
+					List<ResponseTeacher>? responseTeachers = await httpClient.GetFromJsonAsync<List<ResponseTeacher>>($"Department/{requestAddUser.DepartmentId}/GetTeacher");
+					if (responseTeachers.SingleOrDefault(x => x.Id == userInRole.Id) != null)
+						return BadRequest();
+				}
+			}
 			var user = new IdentityUser<Guid>()
 			{
 				UserName = requestAddUser.Email,
@@ -44,7 +65,7 @@ namespace IdentityServer.Controllers
 				{
 					await userManager.AddToRoleAsync(user, requestAddUser.Role);
 					HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-					JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = requestAddUser.Role, DepartmentId = requestAddUser.DepartmentId });
+					JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = requestAddUser.Role, FacultyId = requestAddUser.FacultyId, DepartmentId = requestAddUser.DepartmentId });
 					HttpResponseMessage httpResponse = await httpClient.PostAsync("Teacher/AddTeacher", js);
 					if (httpResponse.IsSuccessStatusCode)
 						return Ok();

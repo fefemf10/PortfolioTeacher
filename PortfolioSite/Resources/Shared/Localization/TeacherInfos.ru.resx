@@ -126,6 +126,9 @@
   <data name="Department" xml:space="preserve">
     <value>Кафедра</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>Почта</value>
+  </data>
   <data name="Faculty" xml:space="preserve">
     <value>Факультет</value>
   </data>
@@ -140,5 +143,8 @@
   </data>
   <data name="Post" xml:space="preserve">
     <value>Должность</value>
+  </data>
+  <data name="PublicationCount" xml:space="preserve">
+    <value>Кол-во публикаций</value>
   </data>
 </root>

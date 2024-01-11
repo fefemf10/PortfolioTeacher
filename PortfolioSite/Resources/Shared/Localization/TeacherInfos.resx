@@ -126,6 +126,9 @@
   <data name="Department" xml:space="preserve">
     <value>Department</value>
   </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
   <data name="Faculty" xml:space="preserve">
     <value>Faculty</value>
   </data>
@@ -140,5 +143,8 @@
   </data>
   <data name="Post" xml:space="preserve">
     <value>Post</value>
+  </data>
+  <data name="PublicationCount" xml:space="preserve">
+    <value>Count of Publication</value>
   </data>
 </root>

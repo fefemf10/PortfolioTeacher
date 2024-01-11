@@ -9,14 +9,17 @@ namespace PortfolioShared.ViewModels.Request
 {
 	public class RequestAddUser
 	{
-		[Required]
-		[EmailAddress]
+		[Required(ErrorMessageResourceName = "EmailRequired", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]
+		[EmailAddress(ErrorMessageResourceName = "EmailError", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]
 		public string Email { get; set; }
-		[Required]
+		[Required(ErrorMessageResourceName = "PasswordRequired", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]
+		[MinLength(5, ErrorMessageResourceName = "PasswordLength", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]
+		[DataType(DataType.Password)]
 		public string Password { get; set; }
 		[Required]
 		public string Role { get; set; }
 		[Required]
-		public Guid DepartmentId { get; set; }
+		public Guid FacultyId { get; set; }
+		public Guid? DepartmentId { get; set; }
 	}
 }

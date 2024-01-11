@@ -117,7 +117,8 @@ namespace PortfolioServer.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     AcademicTitle = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DepartmentId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    FacultyId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    DepartmentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
                     Image = table.Column<byte[]>(type: "longblob", nullable: true)
                 },
                 constraints: table =>
@@ -127,6 +128,11 @@ namespace PortfolioServer.Migrations
                         name: "FK_Teachers_Departments_DepartmentId",
                         column: x => x.DepartmentId,
                         principalTable: "Departments",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Teachers_Faculties_FacultyId",
+                        column: x => x.FacultyId,
+                        principalTable: "Faculties",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -300,7 +306,7 @@ namespace PortfolioServer.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     OutputData = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Size = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<uint>(type: "int unsigned", nullable: false),
                     CoAuthor = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     TeacherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
@@ -551,6 +557,11 @@ namespace PortfolioServer.Migrations
                 name: "IX_Teachers_DepartmentId",
                 table: "Teachers",
                 column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teachers_FacultyId",
+                table: "Teachers",
+                column: "FacultyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Universities_TeacherId",

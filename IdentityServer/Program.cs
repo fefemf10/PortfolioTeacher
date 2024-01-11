@@ -22,7 +22,7 @@ if (seed)
 {
 	args = args.Except(new[] { "/seed" }).ToArray();
 }
-seed = false;
+seed = true;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddMvc();

@@ -12,6 +12,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\**" />
+    <Content Remove="Areas\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <None Remove="Areas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DateOnlyTimeOnly.AspNet" Version="2.1.1" />
     <PackageReference Include="DateOnlyTimeOnly.AspNet.Swashbuckle" Version="2.1.1" />
     <PackageReference Include="Duende.AccessTokenManagement" Version="2.1.0-preview.1" />
@@ -33,10 +40,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PortfolioShared\PortfolioShared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Areas\" />
   </ItemGroup>
 
   <ItemGroup>

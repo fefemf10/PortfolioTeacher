@@ -44,17 +44,7 @@
 				</Validation>
 			</Field>
 			<Field>
-				<Select TValue="Guid" @bind-SelectedValue="@departmentId">
-					@foreach (var faculty in requestFacultyDepartments)
-					{
-						<SelectGroup Label="@faculty.Name">
-							@foreach (var department in faculty.Departments)
-							{
-								 <SelectItem Value="@department.Id">@department.Name</SelectItem>								
-							}
-						</SelectGroup>
-					}
-				</Select>
+				<TextEdit Disabled="true" @bind-Text="@departmentName" />
 			</Field>
 			<Field>
 				<DateEdit TValue="DateOnly?" @bind-Date="@dateBirthday" />
@@ -75,7 +65,9 @@
 	string post;
 	string academicDegree;
 	string academicTitle;
-	Guid departmentId;
+	string departmentName;
+	Guid facultyId;
+	RequestDepartment? department;
 	DateOnly? dateBirthday;
 	protected override async Task OnInitializedAsync()
 	{
@@ -85,7 +77,6 @@
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 		{
 			responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
-			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
 			firstName = responseUser.FirstName;
 			middleName = responseUser.MiddleName;
 			lastName = responseUser.LastName;
@@ -93,7 +84,10 @@
 			post = responseUser.Post;
 			academicDegree = responseUser.AcademicDegree;
 			academicTitle = responseUser.AcademicTitle;
-			departmentId = responseUser.DepartmentId;
+			facultyId = responseUser.Faculty.Id;
+			department = responseUser.Department;
+			if (department is not null)
+				departmentName = department.Name;
 		}
 	}
 	private void AddInfo()
@@ -108,7 +102,8 @@
 				Post = post,
 				AcademicDegree = academicDegree,
 				AcademicTitle = academicTitle,
-				DepartmentId = departmentId
+				FacultyId = facultyId,
+				DepartmentId = (department is not null) ? department.Id : null
 			});
 		webapi.PutAsync($"Teacher/{guid.ToString()}/AddInfo", js);
 	}

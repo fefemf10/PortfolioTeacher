@@ -61,6 +61,24 @@ namespace PortfolioShared.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Check the email address.
+        /// </summary>
+        public static string EmailError {
+            get {
+                return ResourceManager.GetString("EmailError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter a email.
+        /// </summary>
+        public static string EmailRequired {
+            get {
+                return ResourceManager.GetString("EmailRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enter the name of the organization.
         /// </summary>
         public static string NameOrganizationRequired {
@@ -75,6 +93,24 @@ namespace PortfolioShared.Resources.Localization {
         public static string NameRequired {
             get {
                 return ResourceManager.GetString("NameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The password must consist of 5 or more characters.
+        /// </summary>
+        public static string PasswordLength {
+            get {
+                return ResourceManager.GetString("PasswordLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter a password.
+        /// </summary>
+        public static string PasswordRequired {
+            get {
+                return ResourceManager.GetString("PasswordRequired", resourceCulture);
             }
         }
         
@@ -111,6 +147,15 @@ namespace PortfolioShared.Resources.Localization {
         public static string YearGraduationRequired {
             get {
                 return ResourceManager.GetString("YearGraduationRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter the year protection.
+        /// </summary>
+        public static string YearProtectionRequired {
+            get {
+                return ResourceManager.GetString("YearProtectionRequired", resourceCulture);
             }
         }
     }

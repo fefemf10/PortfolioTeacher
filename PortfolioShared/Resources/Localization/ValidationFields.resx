@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EmailError" xml:space="preserve">
+    <value>Check the email address</value>
+  </data>
+  <data name="EmailRequired" xml:space="preserve">
+    <value>Enter a email</value>
+  </data>
   <data name="NameOrganizationRequired" xml:space="preserve">
     <value>Enter the name of the organization</value>
   </data>
   <data name="NameRequired" xml:space="preserve">
     <value>Enter a name</value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>The password must consist of 5 or more characters</value>
+  </data>
+  <data name="PasswordRequired" xml:space="preserve">
+    <value>Enter a password</value>
   </data>
   <data name="PostRequired" xml:space="preserve">
     <value>Enter the position</value>
@@ -134,5 +146,8 @@
   </data>
   <data name="YearGraduationRequired" xml:space="preserve">
     <value>Enter the year graduate</value>
+  </data>
+  <data name="YearProtectionRequired" xml:space="preserve">
+    <value>Enter the year protection</value>
   </data>
 </root>

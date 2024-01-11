@@ -1,7 +1,9 @@
 ﻿@page "/deputy"
+@attribute [Authorize(Roles = nameof(Roles.Deputy))]
 @using Blazorise.DataGrid;
 @using PortfolioShared.ViewModels.Request
 @using PortfolioShared.ViewModels.Response
+@using PortfolioShared.Models
 @using PortfolioSite.Shared.Localization;
 @inject IStringLocalizer<Deputy> localizer
 @inject IStringLocalizer<TeacherInfos> teacherInfosLocalizer
@@ -16,10 +18,12 @@
 		  ShowPageSizes
           @ref="@dataGrid">
     <DataGridCommandColumn />
+    <DataGridColumn Field="@nameof(RequestTeacher.Email)" Caption=@teacherInfosLocalizer["Email"] Editable />
     <DataGridColumn Field="@nameof(RequestTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] Editable />
     <DataGridColumn Field="@nameof(RequestTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] Editable />
     <DataGridColumn Field="@nameof(RequestTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] Editable />
     <DataGridColumn Field="@nameof(RequestTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] Editable />
+    <DataGridColumn Field="@nameof(RequestTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] Editable />
 </DataGrid>
 @code {
     List<RequestTeacher>? requestTeachers;
@@ -34,7 +38,7 @@
         if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
         {
             ResponseTeacher user = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
-            requestTeachers = await webapi.GetFromJsonAsync<List<RequestTeacher>>($"Department/{user.DepartmentId}/GetTeacher");
+            requestTeachers = await webapi.GetFromJsonAsync<List<RequestTeacher>>($"Department/{user.Department.Id}/GetTeacher");
         }
     }
 }

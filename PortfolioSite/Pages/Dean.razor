@@ -1,30 +1,46 @@
-﻿@page "/dean"
+﻿@page "/Dean"
+@attribute [Authorize(Roles = nameof(Roles.Dean))]
 @using Blazorise.DataGrid;
 @using PortfolioShared.ViewModels.Request
 @using PortfolioShared.ViewModels.Response
 @using PortfolioSite.Shared.Localization;
+@using PortfolioShared.Models
 @inject IStringLocalizer<Dean> localizer
 @inject IStringLocalizer<TeacherInfos> teacherInfosLocalizer
 @inject IHttpClientFactory httpFactory
 @inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
 
-<DataGrid TItem="RequestTeacher"
+<DataGrid TItem="ResponseTeacher"
           Data="@requestTeachers"
           Groupable
 		  ShowPager
 		  ShowPageSizes
           @ref="@dataGrid">
     <DataGridCommandColumn />
-    <DataGridColumn Field="@nameof(RequestTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] Editable />
-    <DataGridColumn Field="@nameof(RequestTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] Editable />
-    <DataGridColumn Field="@nameof(RequestTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] Editable />
-    <DataGridColumn Field="@nameof(RequestTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] Editable />
+    <DataGridColumn Field="@nameof(ResponseTeacher.Email)" Caption=@teacherInfosLocalizer["LastName"] Editable />
+    <DataGridColumn Field="@nameof(ResponseTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] Editable />
+    <DataGridColumn Field="@nameof(ResponseTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] Editable />
+    <DataGridColumn Field="@nameof(ResponseTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] Editable />
+    <DataGridColumn Field="@nameof(ResponseTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] Editable />
+    <DataGridNumericColumn Field="@nameof(ResponseTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] Editable />
+    <DataGridColumn Field="@nameof(ResponseTeacher.Department.Name)" Caption=@teacherInfosLocalizer["Department"] Editable Groupable Grouping />
 </DataGrid>
 
 @code {
-    List<RequestTeacher>? requestTeachers;
-    DataGrid<RequestTeacher> dataGrid;
+    List<ResponseTeacher>? requestTeachers;
+    DataGrid<ResponseTeacher> dataGrid;
     HttpClient webapi;
     Guid guid;
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+		webapi = httpFactory.CreateClient("PortfolioServer");
+		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
+		{
+			ResponseTeacher responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
+            requestTeachers = await webapi.GetFromJsonAsync<List<ResponseTeacher>>($"Faculty/{responseUser.Faculty.Id}/GetTeacher");
+		}
+	}
 }

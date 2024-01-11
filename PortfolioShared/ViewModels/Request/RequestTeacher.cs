@@ -20,7 +20,8 @@ namespace PortfolioShared.ViewModels.Request
         public string? Post { get; set; }
         public string? AcademicDegree { get; set; }
         public string? AcademicTitle { get; set; }
-		[Required]
-		public Guid DepartmentId { get; set; }
+		public Guid FacultyId { get; set; }
+		public Guid? DepartmentId { get; set; }
+		public uint PublicationCount { get; set; }
 	}
 }

@@ -1,4 +1,4 @@
-﻿@page "/admin"
+﻿@page "/Admin"
 @attribute [Authorize(Roles = nameof(Roles.Administrator))]
 @using Blazorise.DataGrid;
 @using PortfolioShared.ViewModels.Request
@@ -8,57 +8,62 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using PortfolioSite.Shared.Localization
 @inject IStringLocalizer<Admin> localizer
+@inject IStringLocalizer<RoleNames> roleLocalizer
 @inject IStringLocalizer<TableControls> tableControlsLocalizer
 @inject IHttpClientFactory httpFactory
 @inject IAccessTokenProvider tokenProvider
 @inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
 <Container>
-	<Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
-		<Field>
-			<Validation Validator="ValidationRule.IsNotEmpty">
-				<TextEdit Placeholder=@localizer["FieldEmail"] @bind-Text="@email" />
-			</Validation>
-		</Field>
-		<Field>
-			<Validation Validator="ValidationRule.IsNotEmpty">
-				<TextEdit Placeholder=@localizer["FieldPassword"] @bind-Text="@password" />
-			</Validation>
-		</Field>
-		<Field>
-			<Select TValue="string" @bind-SelectedValue="@role">
-				<SelectItem Value="@Roles.Dean.ToString()">@Roles.Dean.ToString()</SelectItem>
-				<SelectItem Value="@Roles.Deputy.ToString()">@Roles.Deputy.ToString()</SelectItem>
-				<SelectItem Value="@Roles.Teacher.ToString()">@Roles.Teacher.ToString()</SelectItem>
-			</Select>
-		</Field>
-		<Field>
-			<Select TValue="Guid" @bind-SelectedValue="@departmentId">
-				@foreach (var faculty in requestFacultyDepartments)
-				{
-					<SelectGroup Label="@faculty.Name">
-						@foreach (var department in faculty.Departments)
-						{
-							<SelectItem Value="@department.Id">@department.Name</SelectItem>
-						}
-					</SelectGroup>
-				}
-			</Select>
-		</Field>
-	</Grid>
-	<Button Color="Color.Success" Clicked="@AddNewUser">@localizer["SaveChangesButton"]</Button>
+	<Validations Mode="ValidationMode.Auto" Model="@addUser">
+		<Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
+			<Field>
+				<Validation Validator="ValidationRule.IsEmail">
+					<TextEdit Placeholder=@localizer["FieldEmail"] @bind-Text="@addUser.Email" />
+				</Validation>
+			</Field>
+			<Field>
+				<Validation Validator="ValidationRule.IsNotEmpty">
+					<TextEdit Placeholder=@localizer["FieldPassword"] @bind-Text="@addUser.Password" />
+				</Validation>
+			</Field>
+			<Field>
+				<Select TValue="string" SelectedValueChanged="@ChangeRole">
+					<SelectItem Value="@Roles.Dean.ToString()">@roleLocalizer[@Roles.Dean.ToString()]</SelectItem>
+					<SelectItem Value="@Roles.Deputy.ToString()">@roleLocalizer[@Roles.Deputy.ToString()]</SelectItem>
+					<SelectItem Value="@Roles.Teacher.ToString()">@roleLocalizer[@Roles.Teacher.ToString()]</SelectItem>
+				</Select>
+			</Field>
+			<Field>
+				<Select TValue="Guid" SelectedValueChanged="@ChangeFaculty">
+					@foreach (var faculty in requestFaculties)
+					{
+						<SelectItem Value="@faculty.Id">@faculty.Name</SelectItem>
+					}
+				</Select>
+			</Field>
+			<Field>
+				<Select TValue="Guid?" @bind-SelectedValue="@addUser.DepartmentId">
+					@foreach (var department in requestDepartments)
+					{ 
+						<SelectItem Value="@department.Id">@department.Name</SelectItem>
+					}
+				</Select>
+			</Field>
+		</Grid>
+	</Validations>
+	<Button Color="Color.Success" Clicked="@AddNewUser">@localizer["AddUserButton"]</Button>
 </Container>
 <SnackbarStack @ref="@snackbarStack" DefaultInterval="3000.0" Location="SnackbarStackLocation.BottomEnd" TextWeight="TextWeight.Bold" TextSize="TextSize.ExtraLarge" />
 @code {
 	SnackbarStack snackbarStack;
 	List<RequestFacultyDepartment> requestFacultyDepartments;
+	List<RequestFaculty> requestFaculties;
+	List<RequestDepartment> requestDepartments;
 	HttpClient webapi;
 	HttpClient identityapi;
+	RequestAddUser addUser = new();
 	Guid guid;
-	string email = "Abob2@yandex.ru";
-	string password = "12345";
-	string role = Roles.Dean.ToString();
-	Guid departmentId;
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
@@ -71,17 +76,48 @@
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 		{
+			addUser.Role = Roles.Dean.ToString();
 			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
-			departmentId = requestFacultyDepartments.First().Departments.First().Id;
+			requestFaculties = requestFacultyDepartments.Select(x => new RequestFaculty(x.Id, x.Name)).ToList();
+			addUser.DepartmentId = null;
+			addUser.FacultyId = requestFacultyDepartments.First().Id;
+			requestDepartments = requestFacultyDepartments.First().Departments;
 		}
 	}
 	private async void AddNewUser()
 	{
-		JsonContent js = JsonContent.Create(new RequestAddUser(){ Email = email, Password = password, Role = role, DepartmentId = departmentId });
+		Guid facultyId = requestFacultyDepartments.First().Id;
+		foreach (var faculty in requestFacultyDepartments)
+		{
+			var department = faculty.Departments.FirstOrDefault(y => y.Id == addUser.DepartmentId);
+			if (department is not null)
+			{
+				facultyId = faculty.Id;
+				break;
+			}
+		}
+		JsonContent js = JsonContent.Create(addUser);
 		HttpResponseMessage httpResponse = await identityapi.PostAsync($"User/Add", js);
 		if (httpResponse.IsSuccessStatusCode)
 			snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
 		else
 			snackbarStack.PushAsync(tableControlsLocalizer["ErrorRowNotification"], SnackbarColor.Danger);
+	}
+
+	Task ChangeFaculty(Guid value)
+	{
+		addUser.FacultyId = value;
+		// if (addUser.Role != Roles.Dean.ToString())
+		// 	addUser.DepartmentId = null;
+		requestDepartments = requestFacultyDepartments.Single(x => x.Id == value).Departments;
+		return Task.CompletedTask;
+	}
+	Task ChangeRole(string value)
+	{
+		addUser.Role = value;
+		if (addUser.Role == Roles.Dean.ToString())
+			addUser.DepartmentId = null;
+		// requestDepartments = requestFacultyDepartments.Single(x => x.Id == addUser.FacultyId).Departments;
+		return Task.CompletedTask;
 	}
 }

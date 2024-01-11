@@ -7,17 +7,19 @@ using System.Threading.Tasks;
 
 namespace PortfolioShared.ViewModels.Request
 {
-	public class RequestAddTeacher
+	public class RequestPublication
 	{
 		[Required]
 		public Guid Id { get; set; }
 		[Required]
-		[EmailAddress]
-		public string Email { get; set; }
+		public required string Name { get; set; }
 		[Required]
-		public string Role { get; set; }
+		public string? Form { get; set; }
 		[Required]
-		public Guid FacultyId { get; set; }
-		public Guid? DepartmentId { get; set; }
+		public string? OutputData { get; set; }
+		[Required]
+		public uint Size { get; set; }
+		[Required]
+		public string? CoAuthor { get; set; }
 	}
 }

@@ -16,7 +16,7 @@ namespace PortfolioServer.Controllers.DepartmentControllers
             if (department is null)
                 return NotFound();
 
-            return Ok(department.Teachers.Select(x => new ResponseTeacher(x.Id, x.Email, x.FirstName, x.MiddleName, x.LastName, x.DateBirthday, x.Post, x.AcademicDegree, x.AcademicTitle, x.DepartmentId)));
+            return Ok(department.Teachers.Select(x => new ResponseTeacher(x.Id, x.Email, x.FirstName, x.MiddleName, x.LastName, x.DateBirthday, x.Post, x.AcademicDegree, x.AcademicTitle, new RequestFaculty(x.Department.Faculty.Id, x.Department.Faculty.Name), new RequestDepartment(x.Department.Id, x.Department.Name), (uint)x.Publications.Count())));
         }
         [HttpGet("{departmentId:guid}/[action]/{TeacherId:guid}")]
         public async Task<ActionResult<ResponseTeacher>> GetTeacherById(Guid departmentId, Guid teacherId)
@@ -28,7 +28,7 @@ namespace PortfolioServer.Controllers.DepartmentControllers
             if (teacher is null)
                 return NotFound();
 
-            return Ok(new ResponseTeacher(teacher.Id, teacher.Email, teacher.FirstName, teacher.MiddleName, teacher.LastName, teacher.DateBirthday, teacher.Post, teacher.AcademicDegree, teacher.AcademicTitle, teacher.DepartmentId));
+            return Ok(new ResponseTeacher(teacher.Id, teacher.Email, teacher.FirstName, teacher.MiddleName, teacher.LastName, teacher.DateBirthday, teacher.Post, teacher.AcademicDegree, teacher.AcademicTitle, new RequestFaculty(teacher.Department.Faculty.Id, teacher.Department.Faculty.Name), new RequestDepartment(teacher.Department.Id, teacher.Department.Name), (uint)teacher.Publications.Count()));
         }
     }
 }
