@@ -18,13 +18,21 @@
 	<Validations Mode="ValidationMode.Auto" Model="@addUser">
 		<Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
 			<Field>
-				<Validation Validator="ValidationRule.IsEmail">
-					<TextEdit Placeholder=@localizer["FieldEmail"] @bind-Text="@addUser.Email" />
+				<Validation>
+					<TextEdit Placeholder=@localizer["FieldEmail"] @bind-Text="@addUser.Email">
+						 <Feedback>
+							<ValidationError />
+						</Feedback>
+					</TextEdit>
 				</Validation>
 			</Field>
 			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder=@localizer["FieldPassword"] @bind-Text="@addUser.Password" />
+				<Validation>
+					<TextEdit Placeholder=@localizer["FieldPassword"] @bind-Text="@addUser.Password">
+						<Feedback>
+							<ValidationError />
+						</Feedback>
+					</TextEdit>
 				</Validation>
 			</Field>
 			<Field>
@@ -43,12 +51,15 @@
 				</Select>
 			</Field>
 			<Field>
-				<Select TValue="Guid?" @bind-SelectedValue="@addUser.DepartmentId">
-					@foreach (var department in requestDepartments)
-					{ 
-						<SelectItem Value="@department.Id">@department.Name</SelectItem>
-					}
-				</Select>
+				<SelectList TItem="@RequestDepartment"
+					TValue="Guid?"
+					Data="@requestDepartments"
+					TextField="@((item)=>item.Name)"
+					ValueField="@((item)=>item.Id)"
+					@bind-SelectedValue="@addUser.DepartmentId"
+					DefaultItemText=""
+					DefaultItemValue="@null"
+					@ref="@selectList"/>
 			</Field>
 		</Grid>
 	</Validations>
@@ -64,6 +75,7 @@
 	HttpClient identityapi;
 	RequestAddUser addUser = new();
 	Guid guid;
+	SelectList<RequestDepartment, Guid?> selectList;
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
@@ -79,8 +91,8 @@
 			addUser.Role = Roles.Dean.ToString();
 			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
 			requestFaculties = requestFacultyDepartments.Select(x => new RequestFaculty(x.Id, x.Name)).ToList();
-			addUser.DepartmentId = null;
 			addUser.FacultyId = requestFacultyDepartments.First().Id;
+			addUser.DepartmentId = null;
 			requestDepartments = requestFacultyDepartments.First().Departments;
 		}
 	}
@@ -107,8 +119,6 @@
 	Task ChangeFaculty(Guid value)
 	{
 		addUser.FacultyId = value;
-		// if (addUser.Role != Roles.Dean.ToString())
-		// 	addUser.DepartmentId = null;
 		requestDepartments = requestFacultyDepartments.Single(x => x.Id == value).Departments;
 		return Task.CompletedTask;
 	}
@@ -116,7 +126,16 @@
 	{
 		addUser.Role = value;
 		if (addUser.Role == Roles.Dean.ToString())
+		{
+			selectList.DefaultItemHidden = false;
 			addUser.DepartmentId = null;
+		}
+		else
+		{
+			selectList.DefaultItemHidden = true;
+			addUser.DepartmentId = requestDepartments.First().Id;
+		}
+
 		// requestDepartments = requestFacultyDepartments.Single(x => x.Id == addUser.FacultyId).Departments;
 		return Task.CompletedTask;
 	}
