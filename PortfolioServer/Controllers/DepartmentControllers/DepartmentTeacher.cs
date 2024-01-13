@@ -12,7 +12,7 @@ namespace PortfolioServer.Controllers.DepartmentControllers
         [HttpGet("{departmentId:guid}/[action]")]
         public async Task<ActionResult<IEnumerable<ResponseTeacher>>> GetTeacher(Guid departmentId)
         {
-            Department? department = await db.Departments.Include(x => x.Teachers).SingleOrDefaultAsync(x => x.Id == departmentId);
+            Department? department = await db.Departments.Include(x => x.Teachers).ThenInclude(y => y.Faculty).SingleOrDefaultAsync(x => x.Id == departmentId);
             if (department is null)
                 return NotFound();
 

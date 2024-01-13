@@ -48,43 +48,43 @@ namespace IdentityServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("4c74604e-3983-4f18-8ceb-1d5efa725a88"),
+                            Id = new Guid("f5d0912b-4a85-4623-9e17-15f5236f10df"),
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = new Guid("bb7966a0-8212-4ebe-a253-1b253f489eff"),
+                            Id = new Guid("b4a8fe7f-8634-489c-ae16-1db1f97cd42b"),
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
-                            Id = new Guid("2cb12d4d-fb13-4fbe-92b9-58b576cb354c"),
+                            Id = new Guid("ba13b3bf-563a-4533-8763-ebd4115e9fb8"),
                             Name = "Dean",
                             NormalizedName = "DEAN"
                         },
                         new
                         {
-                            Id = new Guid("bb0fc49b-22da-4617-888f-bd571bf129b0"),
+                            Id = new Guid("8567d7cb-a740-495c-847d-c79a3e072773"),
                             Name = "Deputy",
                             NormalizedName = "DEPUTY"
                         },
                         new
                         {
-                            Id = new Guid("8f565f34-ef3c-4db7-a7bd-140efdcfc0c5"),
+                            Id = new Guid("ea4bb0fc-73cd-4f10-9522-e4a649f73e03"),
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = new Guid("168204a5-0f56-4c2a-8dac-e026c9709634"),
+                            Id = new Guid("0f639534-a707-4980-b05c-91fc2c972982"),
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = new Guid("67f7ce69-1954-4df3-b035-33582d99229b"),
+                            Id = new Guid("9816b782-767a-4816-9a11-ae4ec50b4dd7"),
                             Name = "IdentityServer",
                             NormalizedName = "IDENTITYSERVER"
                         });

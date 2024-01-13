@@ -64,6 +64,7 @@
 		</Grid>
 	</Validations>
 	<Button Color="Color.Success" Clicked="@AddNewUser">@localizer["AddUserButton"]</Button>
+	<Button Color="Color.Success" Clicked="@AddTestUsers">Add 1000 test users</Button>
 </Container>
 <SnackbarStack @ref="@snackbarStack" DefaultInterval="3000.0" Location="SnackbarStackLocation.BottomEnd" TextWeight="TextWeight.Bold" TextSize="TextSize.ExtraLarge" />
 @code {
@@ -138,5 +139,13 @@
 
 		// requestDepartments = requestFacultyDepartments.Single(x => x.Id == addUser.FacultyId).Departments;
 		return Task.CompletedTask;
+	}
+	private async void AddTestUsers()
+	{
+		HttpResponseMessage httpResponse = await identityapi.PostAsync($"User/AddTestUsers", null);
+		if (httpResponse.IsSuccessStatusCode)
+			snackbarStack.PushAsync("Added 1000 test users", SnackbarColor.Success);
+		else
+			snackbarStack.PushAsync("Error", SnackbarColor.Danger);
 	}
 }

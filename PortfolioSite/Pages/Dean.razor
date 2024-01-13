@@ -18,13 +18,13 @@
 		  ShowPageSizes
           @ref="@dataGrid">
     <DataGridCommandColumn />
-    <DataGridColumn Field="@nameof(ResponseTeacher.Email)" Caption=@teacherInfosLocalizer["LastName"] Editable />
+    <DataGridColumn Field="@nameof(ResponseTeacher.Email)" Caption=@teacherInfosLocalizer["Email"] Editable />
     <DataGridColumn Field="@nameof(ResponseTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] Editable />
     <DataGridColumn Field="@nameof(ResponseTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] Editable />
     <DataGridColumn Field="@nameof(ResponseTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] Editable />
     <DataGridColumn Field="@nameof(ResponseTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] Editable />
     <DataGridNumericColumn Field="@nameof(ResponseTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] Editable />
-    <DataGridColumn Field="@nameof(ResponseTeacher.Department.Name)" Caption=@teacherInfosLocalizer["Department"] Editable Groupable Grouping />
+    <DataGridColumn Field="Department.Name" Caption=@teacherInfosLocalizer["Department"] Editable Groupable Grouping />
 </DataGrid>
 
 @code {
