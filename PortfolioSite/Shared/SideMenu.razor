@@ -95,6 +95,12 @@ Mode="BarMode.VerticalInline">
 							@localizer["Dean"]
 						</BarLink>
 					</BarItem>
+					<BarItem>
+						<BarLink To="Stats">
+							<BarIcon IconName="IconName.Star" Padding="Padding.Is2.FromEnd" />
+							@localizer["Stats"]
+						</BarLink>
+					</BarItem>
 				</Authorized>
 			</AuthorizeView>
 			<AuthorizeView Roles="@Roles.Deputy.ToString()">
@@ -103,6 +109,12 @@ Mode="BarMode.VerticalInline">
 						<BarLink To="deputy">
 							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
 							@localizer["Deputy"]
+						</BarLink>
+					</BarItem>
+					<BarItem>
+						<BarLink To="Stats">
+							<BarIcon IconName="IconName.Star" Padding="Padding.Is2.FromEnd" />
+							@localizer["Stats"]
 						</BarLink>
 					</BarItem>
 				</Authorized>

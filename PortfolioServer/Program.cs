@@ -1,17 +1,11 @@
-using IdentityModel;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Microsoft.VisualBasic;
 using MySqlConnector;
 using PortfolioShared.Models;
-using System.Text.Encodings.Web;
 using System.Text.Json;
-using System.Text.Unicode;
-HubConnection connection;
+
 var builder = WebApplication.CreateBuilder(args);
 {
     using FileStream disciplineStream = File.OpenRead("SeedData/Discipline.json");
@@ -119,48 +113,6 @@ builder.Services.AddCors(options =>
 });
 var app = builder.Build();
 
-connection = new HubConnectionBuilder().WithAutomaticReconnect().WithUrl(builder.Configuration["IdentityServer:Url"] + "/RegistrationHub").Build();
-connection.On<Guid, string, Roles>("Receive", (Id, Email, Role) =>
-{
-    using (var scope = app.Services.CreateAsyncScope())
-    {
-        var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-        switch (Role)
-        {
-			case Roles.Dean:
-			case Roles.Deputy:
-			case Roles.Teacher:
-                db.Teachers.Add(new Teacher() { Id = Id, Email = Email, Department = db.Departments.First() });
-                db.SaveChanges();
-                break;
-            case Roles.Student:
-                db.Students.Add(new Student() { Id = Id, Email = Email });
-                db.SaveChanges();
-                break;
-        }
-    }
-});
-connection.On<Guid, string, Guid, Roles>("Receive2", (Id, Email, DepartmentId, Role) =>
-{
-	using (var scope = app.Services.CreateAsyncScope())
-	{
-		var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-		switch (Role)
-		{
-			case Roles.Dean:
-			case Roles.Deputy:
-			case Roles.Teacher:
-				db.Teachers.Add(new Teacher() { Id = Id, Email = Email, Department = db.Departments.Find(DepartmentId) });
-				db.SaveChanges();
-				break;
-			case Roles.Student:
-				db.Students.Add(new Student() { Id = Id, Email = Email });
-				db.SaveChanges();
-				break;
-		}
-	}
-});
-connection.StartAsync();
 app.UseCors("MyPolicy");
 if (app.Environment.IsDevelopment())
 {

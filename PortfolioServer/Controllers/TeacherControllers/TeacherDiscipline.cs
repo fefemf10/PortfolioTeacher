@@ -18,7 +18,7 @@ namespace PortfolioServer.Controllers.TeacherControllers
 		[HttpGet("{guid:guid}/[action]/{disciplineId:guid}")]
 		public ActionResult<ResponseDiscipline> GetDiscipline(Guid guid, Guid disciplineId)
 		{
-			Teacher? teacher = db.Teachers.Include(x => x.Disciplines).SingleOrDefault(user => user.Id == guid);
+			Teacher? teacher = db.Teachers.AsNoTracking().Include(x => x.Disciplines).SingleOrDefault(user => user.Id == guid);
 			if (teacher is null)
 				return BadRequest();
 			Discipline? discipline = teacher.Disciplines.SingleOrDefault(discipline => discipline.Id == disciplineId);

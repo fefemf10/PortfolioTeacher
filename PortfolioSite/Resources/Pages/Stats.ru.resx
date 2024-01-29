@@ -117,55 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>Обо мне</value>
+  <data name="AvarageAgeTeacherFaculty" xml:space="preserve">
+    <value>Средний возраст преподавателей на факультете</value>
   </data>
-  <data name="Admin" xml:space="preserve">
-    <value>Администратор</value>
-  </data>
-  <data name="Awards" xml:space="preserve">
-    <value>Награды</value>
-  </data>
-  <data name="Dean" xml:space="preserve">
-    <value>Декан</value>
-  </data>
-  <data name="Deputy" xml:space="preserve">
-    <value>Зам. Кафедры</value>
-  </data>
-  <data name="Disciplines" xml:space="preserve">
-    <value>Дисциплины</value>
-  </data>
-  <data name="Dissertations" xml:space="preserve">
-    <value>Диссертации</value>
-  </data>
-  <data name="Language" xml:space="preserve">
-    <value>Язык</value>
-  </data>
-  <data name="Logout" xml:space="preserve">
-    <value>Выход</value>
-  </data>
-  <data name="ProfessionalDevelopments" xml:space="preserve">
-    <value>ПК</value>
-  </data>
-  <data name="PublicActivities" xml:space="preserve">
-    <value>Социальные проекты</value>
-  </data>
-  <data name="Publications" xml:space="preserve">
-    <value>Публикации</value>
-  </data>
-  <data name="ScienceProjects" xml:space="preserve">
-    <value>Научные проекты</value>
-  </data>
-  <data name="Stats" xml:space="preserve">
-    <value>Статистика</value>
+  <data name="CountTeacherFaculty" xml:space="preserve">
+    <value>Количество преподавателей на факультете</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>Портфолио</value>
+    <value>Статистика</value>
   </data>
-  <data name="University" xml:space="preserve">
-    <value>Образование</value>
+  <data name="TopTeacherDisciplinesFaculty" xml:space="preserve">
+    <value>Топ 5 преподавателей у которых больше всего дисциплин</value>
   </data>
-  <data name="Work" xml:space="preserve">
-    <value>Работа</value>
+  <data name="TopTeacherPublicationsFaculty" xml:space="preserve">
+    <value>Топ 5 преподавателей у которых больше всего публикаций</value>
   </data>
 </root>

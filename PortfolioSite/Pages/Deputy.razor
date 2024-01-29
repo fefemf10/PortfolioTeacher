@@ -18,12 +18,12 @@
 		  ShowPageSizes
           @ref="@dataGrid">
     <DataGridCommandColumn />
-    <DataGridColumn Field="@nameof(RequestTeacher.Email)" Caption=@teacherInfosLocalizer["Email"] Editable />
-    <DataGridColumn Field="@nameof(RequestTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] Editable />
-    <DataGridColumn Field="@nameof(RequestTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] Editable />
-    <DataGridColumn Field="@nameof(RequestTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] Editable />
-    <DataGridColumn Field="@nameof(RequestTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] Editable />
-    <DataGridColumn Field="@nameof(RequestTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] Editable />
+    <DataGridColumn Field="@nameof(RequestTeacher.Email)" Caption=@teacherInfosLocalizer["Email"] />
+    <DataGridColumn Field="@nameof(RequestTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] />
+    <DataGridColumn Field="@nameof(RequestTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] />
+    <DataGridColumn Field="@nameof(RequestTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] />
+    <DataGridColumn Field="@nameof(RequestTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] />
+    <DataGridColumn Field="@nameof(RequestTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] />
 </DataGrid>
 @code {
     List<RequestTeacher>? requestTeachers;

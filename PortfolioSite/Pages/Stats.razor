@@ -1,0 +1,65 @@
+﻿@page "/Stats"
+@using PortfolioShared.ViewModels.Request;
+@using PortfolioShared.ViewModels.Response;
+@using Blazorise.DataGrid;
+@using PortfolioSite.Shared.Localization;
+
+@inject IStringLocalizer<TableControls> tableControlsLocalizer
+@inject IStringLocalizer<Stats> localizer
+@inject IStringLocalizer<TeacherInfos> teacherInfosLocalizer
+@inject IHttpClientFactory httpFactory
+@inject AuthenticationStateProvider authenticationStateProvider
+
+<PageTitle>@localizer["Title"]</PageTitle>
+<Heading TextAlignment="TextAlignment.Center">@localizer["Title"]</Heading>
+<Paragraph>@localizer["CountTeacherFaculty"] @countTeacherFaculty</Paragraph>
+<Paragraph>@localizer["AvarageAgeTeacherFaculty"] @avarageAgeTeacherFaculty</Paragraph>
+
+<Paragraph>@localizer["TopTeacherDisciplinesFaculty"]</Paragraph>
+<DataGrid TItem="ResponseTeacher"
+          Data="@requestTopTeacherDisciplinesInFaculty">
+    <DataGridCommandColumn />
+    <DataGridColumn Field="@nameof(ResponseTeacher.Email)" Caption=@teacherInfosLocalizer["Email"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] />
+    <DataGridColumn Field="Department.Name" Caption=@teacherInfosLocalizer["Department"] />
+</DataGrid>
+
+<Paragraph>@localizer["TopTeacherPublicationsFaculty"]</Paragraph>
+<DataGrid TItem="ResponseTeacher"
+          Data="@requestTopTeacherPublicationsInFaculty">
+    <DataGridCommandColumn />
+    <DataGridColumn Field="@nameof(ResponseTeacher.Email)" Caption=@teacherInfosLocalizer["Email"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] />
+    <DataGridColumn Field="@nameof(ResponseTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] />
+    <DataGridColumn Field="Department.Name" Caption=@teacherInfosLocalizer["Department"] />
+</DataGrid>
+
+@code {
+    uint countTeacherFaculty;
+    uint avarageAgeTeacherFaculty;
+    List<ResponseTeacher>? requestTopTeacherDisciplinesInFaculty;
+    List<ResponseTeacher>? requestTopTeacherPublicationsInFaculty;
+    HttpClient webapi;
+    Guid guid;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        webapi = httpFactory.CreateClient("PortfolioServer");
+        var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+        if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
+        {
+            ResponseTeacher responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
+            countTeacherFaculty = await webapi.GetFromJsonAsync<uint>($"Stats/GetCountTeacherInFaculty/{responseUser.Faculty.Id}");
+            avarageAgeTeacherFaculty = await webapi.GetFromJsonAsync<uint>($"Stats/GetAvarageAgeTeacherInFaculty/{responseUser.Faculty.Id}");
+            requestTopTeacherDisciplinesInFaculty = await webapi.GetFromJsonAsync<List<ResponseTeacher>>($"Stats/GetTopTeacherDisciplinesInFaculty/{responseUser.Faculty.Id}");
+            requestTopTeacherPublicationsInFaculty = await webapi.GetFromJsonAsync<List<ResponseTeacher>>($"Stats/GetTopTeacherPublicationsInFaculty/{responseUser.Faculty.Id}");
+        }
+    }
+}

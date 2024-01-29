@@ -22,7 +22,7 @@ namespace PortfolioServer.Controllers.TeacherControllers
 		[HttpGet("{guid:guid}/[action]")]
 		public ActionResult<ResponseTeacher> GetInfo(Guid guid)
 		{
-			Teacher? teacher = db.Teachers.Include(x => x.Faculty).Include(x => x.Department).Single(x => x.Id == guid);
+			Teacher? teacher = db.Teachers.AsNoTracking().Include(x => x.Faculty).Include(x => x.Department).Include(x => x.Publications).Single(x => x.Id == guid);
 			if (teacher is null)
 				return BadRequest();
 			return Ok(new ResponseTeacher(teacher.Id, teacher.Email, teacher.FirstName, teacher.MiddleName, teacher.LastName, teacher.DateBirthday, teacher.Post, teacher.AcademicDegree, teacher.AcademicTitle, new RequestFaculty(teacher.Faculty.Id, teacher.Faculty.Name), (teacher.Department is not null) ? new RequestDepartment(teacher.Department.Id, teacher.Department.Name) : null, (uint)teacher.Publications.Count));

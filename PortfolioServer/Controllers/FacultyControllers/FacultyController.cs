@@ -32,7 +32,7 @@ namespace PortfolioServer.Controllers.FacultyControllers
 			List<ResponseTeacher> responseTeachers = [];
 			foreach(var department in faculty.Departments)
             {
-                responseTeachers.AddRange(db.Departments.Include(x => x.Teachers).Single(x => x.Id == department.Id).Teachers.Select(x => new ResponseTeacher(x.Id, x.Email, x.FirstName, x.MiddleName, x.LastName, x.DateBirthday, x.Post, x.AcademicDegree, x.AcademicTitle, new RequestFaculty(x.Faculty.Id, x.Faculty.Name), (x.Department is not null) ? new RequestDepartment(x.Department.Id, x.Department.Name) : null, (uint)x.Publications.Count)));
+                responseTeachers.AddRange(db.Departments.Include(x => x.Teachers).ThenInclude(y => y.Publications).Single(x => x.Id == department.Id).Teachers.Select(x => new ResponseTeacher(x.Id, x.Email, x.FirstName, x.MiddleName, x.LastName, x.DateBirthday, x.Post, x.AcademicDegree, x.AcademicTitle, new RequestFaculty(x.Faculty.Id, x.Faculty.Name), (x.Department is not null) ? new RequestDepartment(x.Department.Id, x.Department.Name) : null, (uint)x.Publications.Count)));
             }
             return Ok(responseTeachers);
         }
@@ -73,7 +73,6 @@ namespace PortfolioServer.Controllers.FacultyControllers
 			Faculty? faculty = await db.Faculties.FindAsync(id);
 			if (faculty is null)
 				return NotFound();
-
 			db.Faculties.Remove(faculty);
 			await db.SaveChangesAsync();
 			return Ok();
