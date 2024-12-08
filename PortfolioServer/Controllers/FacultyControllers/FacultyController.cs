@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.DependencyResolver;
 using PortfolioShared.Models;
 using PortfolioShared.ViewModels.Request;
 using PortfolioShared.ViewModels.Response;
