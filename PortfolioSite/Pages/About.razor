@@ -1,7 +1,7 @@
 ﻿@page "/about"
 @using System.ComponentModel.DataAnnotations
-@using PortfolioShared.ViewModels.Request
-@using PortfolioShared.ViewModels.Response
+@using Portfolio.Application.ViewModels.Request
+@using Portfolio.Application.ViewModels.Response
 @using PortfolioSite.ViewModels
 
 @inject IStringLocalizer<About> localizer
@@ -67,7 +67,7 @@
 	string academicTitle;
 	string departmentName;
 	Guid facultyId;
-	RequestDepartment? department;
+	ResponseDepartment department;
 	DateOnly? dateBirthday;
 	protected override async Task OnInitializedAsync()
 	{
@@ -103,7 +103,7 @@
 				AcademicDegree = academicDegree,
 				AcademicTitle = academicTitle,
 				FacultyId = facultyId,
-				DepartmentId = (department is not null) ? department.Id : null
+				DepartmentId = department.Id
 			});
 		webapi.PutAsync($"Teacher/{guid.ToString()}/AddInfo", js);
 	}

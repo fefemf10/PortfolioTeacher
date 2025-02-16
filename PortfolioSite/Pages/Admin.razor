@@ -1,10 +1,10 @@
 ﻿@page "/Admin"
 @attribute [Authorize(Roles = nameof(Roles.Administrator))]
 @using Blazorise.DataGrid;
-@using PortfolioShared.ViewModels.Request
-@using PortfolioShared.ViewModels.Response
-@using PortfolioShared.Models
-@using IdentityModel.Client
+@using Portfolio.Application.ViewModels.Request
+@using Portfolio.Application.ViewModels.Response
+@using Portfolio.Domain.Models
+@using Duende.IdentityModel.Client
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using PortfolioSite.Shared.Localization
 @inject IStringLocalizer<Admin> localizer
@@ -51,14 +51,14 @@
 				</Select>
 			</Field>
 			<Field>
-				<SelectList TItem="@RequestDepartment"
-					TValue="Guid?"
+				<SelectList TItem="@RequestUpdateDepartment"
+					TValue="Guid"
 					Data="@requestDepartments"
 					TextField="@((item)=>item.Name)"
 					ValueField="@((item)=>item.Id)"
 					@bind-SelectedValue="@addUser.DepartmentId"
 					DefaultItemText=""
-					DefaultItemValue="@null"
+					DefaultItemValue="@requestDepartments.FirstOrDefault().Id"
 					@ref="@selectList"/>
 			</Field>
 		</Grid>
@@ -71,12 +71,12 @@
 	SnackbarStack snackbarStack;
 	List<RequestFacultyDepartment> requestFacultyDepartments;
 	List<RequestFaculty> requestFaculties;
-	List<RequestDepartment> requestDepartments;
+	List<RequestUpdateDepartment> requestDepartments;
 	HttpClient webapi;
 	HttpClient identityapi;
 	RequestAddUser addUser = new();
 	Guid guid;
-	SelectList<RequestDepartment, Guid?> selectList;
+	SelectList<RequestUpdateDepartment, Guid> selectList;
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
@@ -93,7 +93,7 @@
 			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
 			requestFaculties = requestFacultyDepartments.Select(x => new RequestFaculty(x.Id, x.Name)).ToList();
 			addUser.FacultyId = requestFacultyDepartments.First().Id;
-			addUser.DepartmentId = null;
+			addUser.DepartmentId = requestFacultyDepartments.First().Departments.First().Id;
 			requestDepartments = requestFacultyDepartments.First().Departments;
 		}
 	}
@@ -126,17 +126,8 @@
 	Task ChangeRole(string value)
 	{
 		addUser.Role = value;
-		if (addUser.Role == Roles.Dean.ToString())
-		{
-			selectList.DefaultItemHidden = false;
-			addUser.DepartmentId = null;
-		}
-		else
-		{
-			selectList.DefaultItemHidden = true;
-			addUser.DepartmentId = requestDepartments.First().Id;
-		}
-
+		selectList.DefaultItemHidden = true;
+		addUser.DepartmentId = requestDepartments.First().Id;
 		// requestDepartments = requestFacultyDepartments.Single(x => x.Id == addUser.FacultyId).Departments;
 		return Task.CompletedTask;
 	}

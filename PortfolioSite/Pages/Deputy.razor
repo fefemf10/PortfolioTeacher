@@ -1,9 +1,9 @@
 ﻿@page "/deputy"
 @attribute [Authorize(Roles = nameof(Roles.Deputy))]
 @using Blazorise.DataGrid;
-@using PortfolioShared.ViewModels.Request
-@using PortfolioShared.ViewModels.Response
-@using PortfolioShared.Models
+@using Portfolio.Application.ViewModels.Request
+@using Portfolio.Application.ViewModels.Response
+@using Portfolio.Domain.Models
 @using PortfolioSite.Shared.Localization;
 @inject IStringLocalizer<Deputy> localizer
 @inject IStringLocalizer<TeacherInfos> teacherInfosLocalizer

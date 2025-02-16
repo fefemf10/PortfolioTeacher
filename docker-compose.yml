@@ -1,69 +1,9 @@
-version: '3.9'
-
 services:
-  identityserver:
-    image: ${DOCKER_REGISTRY-}identityserver
-    environment:
-        - ASPNETCORE_ENVIRONMENT=Development
-        - ASPNETCORE_URLS=https://+:7001;http://+:7000
-        - ASPNETCORE_HTTPS_PORT=7001
-        - DBHost=database
-    ports:
-      - "7000:7000"
-      - "7001:7001"
-    build:
-      context: .
-      dockerfile: IdentityServer/Dockerfile
-    depends_on:
-      - database
-  portfolioserver:
-    image: ${DOCKER_REGISTRY-}portfolioserver
-    environment:
-        - ASPNETCORE_ENVIRONMENT=Development
-        - ASPNETCORE_URLS=https://+:6001;http://+:6000
-        - ASPNETCORE_HTTPS_PORT=6001
-        - DBHost=database
-    ports:
-      - "6000:6000"
-      - "6001:6001"
-    build:
-      context: .
-      dockerfile: PortfolioServer/Dockerfile
-    depends_on:
-      - database
-  portfoliosite:
-    image: ${DOCKER_REGISTRY-}portfoliosite
-    environment:
-        - ASPNETCORE_ENVIRONMENT=Docker
-        - ASPNETCORE_URLS=https://+:4001;http://+:4000
-        - ASPNETCORE_HTTPS_PORT=4001
-    ports:
-      - "80:80"
-      - "81:4000"
-      - "82:4001"
-      - "443:443"
+  portfolio.frontend:
+    image: ${DOCKER_REGISTRY-}portfoliofrontend
     build:
       context: .
       dockerfile: PortfolioSite/Dockerfile
-      args:
-        Environment: Docker
-    depends_on:
-      - identityserver
-      - portfolioserver
-      - database
-  database:
-    image: mysql:latest
-    volumes:
-      - mysql-data:/var/lib/mysql
-    environment:
-      - DBPortfolioServer=portfolio
-      - DBPortfolioServerUser=root
-      - DBPortfolioServerPassword=1234
-      - DBIdentityServer=portfolioidentity
-      - DBIdentityServerUser=root
-      - DBIdentityServerPassword=1234
-      - MYSQL_ROOT_PASSWORD=1234
     ports:
-      - "3307:3306"
-volumes:
-  mysql-data:
+      - "4000:4000"
+      - "4001:4001"

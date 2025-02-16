@@ -1,10 +1,10 @@
 ﻿@page "/Dean"
 @attribute [Authorize(Roles = nameof(Roles.Dean))]
 @using Blazorise.DataGrid;
-@using PortfolioShared.ViewModels.Request
-@using PortfolioShared.ViewModels.Response
+@using Portfolio.Application.ViewModels.Request
+@using Portfolio.Application.ViewModels.Response
 @using PortfolioSite.Shared.Localization;
-@using PortfolioShared.Models
+@using Portfolio.Domain.Models
 @inject IStringLocalizer<Dean> localizer
 @inject IStringLocalizer<TeacherInfos> teacherInfosLocalizer
 @inject IHttpClientFactory httpFactory

@@ -7,7 +7,9 @@
         "identityserver": "StartWithoutDebugging",
         "database": "StartWithoutDebugging",
         "portfolioserver": "StartWithoutDebugging",
-        "portfoliosite": "StartWithoutDebugging"
+        "portfoliosite": "StartWithoutDebugging",
+        "portfolio.identity": "StartDebugging",
+        "portfolio.api": "StartDebugging"
       }
     }
   }
