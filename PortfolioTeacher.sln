@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Infrastructure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Portfolio.Identity", "Portfolio.Identity\Portfolio.Identity.csproj", "{EFD6DF34-C6F0-466C-ABFB-0A840FDB19C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Domain", "Portfolio.Core\Portfolio.Domain.csproj", "{AAC1585E-2FE5-413E-B101-3D535D2B316F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Domain", "Portfolio.Domain\Portfolio.Domain.csproj", "{AAC1585E-2FE5-413E-B101-3D535D2B316F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Application", "Portfolio.Application\Portfolio.Application.csproj", "{F158EC01-A381-4321-AAF7-DDDFA712B773}"
 EndProject
