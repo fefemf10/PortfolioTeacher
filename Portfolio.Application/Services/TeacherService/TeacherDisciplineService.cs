@@ -1,5 +1,8 @@
-﻿using Portfolio.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Portfolio.Application.Exceptions;
+using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
+using Portfolio.Infrastructure;
 
 namespace Portfolio.Application.Services.TeacherService
 {
@@ -11,29 +14,32 @@ namespace Portfolio.Application.Services.TeacherService
             this.db = db;
         }
 
-        public Task<Guid> Add(Guid id, Discipline entity)
+        public async Task Add(Guid id, Guid entityId)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Disciplines).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            Discipline? discipline = teacher.Disciplines.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
+            teacher.Disciplines.Add(discipline);
+            await db.SaveChangesAsync();
         }
 
-        public Task Delete(Guid id, Guid entityId)
+        public async Task Delete(Guid id, Guid entityId)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Disciplines).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            Discipline? discipline = teacher.Disciplines.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
+            teacher.Disciplines.Remove(discipline);
+            await db.SaveChangesAsync();
         }
 
-        public Task<Discipline> Get(Guid id, Guid entityId)
+        public async Task<Discipline> Get(Guid id, Guid entityId)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Disciplines).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return teacher.Disciplines.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
         }
 
-        public Task<IEnumerable<Guid>> GetAll(Guid id)
+        public async Task<IEnumerable<Guid>> GetAll(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task Update(Guid id, Discipline entity)
-        {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Disciplines).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return teacher.Disciplines.Select(x => x.Id).ToList();
         }
     }
 }

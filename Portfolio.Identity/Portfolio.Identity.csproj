@@ -12,11 +12,18 @@
 	<EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
 	<ContainerRuntimeIdentifier>linux-x64</ContainerRuntimeIdentifier>
 	<ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:9.0</ContainerBaseImage>
+	<ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Handlers\" />
-    <Folder Include="Resources\Pages\Account\Logout\" />
+    <Compile Remove="Handlers\**" />
+    <Compile Remove="Resources\Pages\Account\Logout\**" />
+    <Content Remove="Handlers\**" />
+    <Content Remove="Resources\Pages\Account\Logout\**" />
+    <EmbeddedResource Remove="Handlers\**" />
+    <EmbeddedResource Remove="Resources\Pages\Account\Logout\**" />
+    <None Remove="Handlers\**" />
+    <None Remove="Resources\Pages\Account\Logout\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,10 +63,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Duende.AccessTokenManagement" Version="3.2.0" />
+    <PackageReference Include="Duende.IdentityModel" Version="7.0.0" />
     <PackageReference Include="Duende.IdentityServer" Version="7.0.8" />
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.8" />
     <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="7.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0-preview.1.24081.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0-preview.1.24081.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.1.24081.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.1.24081.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-preview.1.24081.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -69,8 +84,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Portfolio.API\Portfolio.API.csproj" />
-    <ProjectReference Include="..\Portfolio.Infrastructure\Portfolio.Infrastructure.csproj" />
+    <ProjectReference Include="..\Portfolio.Application\Portfolio.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

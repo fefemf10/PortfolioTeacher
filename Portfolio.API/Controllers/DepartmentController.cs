@@ -21,7 +21,7 @@ namespace Portfolio.API.Controllers
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<ResponseDepartment>>> GetAll()
 		{
-			return Ok(mapper.Map<ResponseDepartment>(await departmentService.GetAll()));
+			return Ok(mapper.Map<IEnumerable<ResponseDepartment>>(await departmentService.GetAll()));
 		}
         [HttpGet("{id:guid}/[action]")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetTeachers(Guid id)

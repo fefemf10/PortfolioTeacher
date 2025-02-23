@@ -1,5 +1,6 @@
 ﻿using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
+using Portfolio.Infrastructure;
 
 namespace Portfolio.Application.Services.TeacherService
 {

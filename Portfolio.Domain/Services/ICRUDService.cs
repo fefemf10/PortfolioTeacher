@@ -11,7 +11,6 @@ namespace Portfolio.Domain.Services
         Task Delete(Guid id, Guid entityId);
     }
     public interface ITeacherAwardService : ICRUDService<Award>;
-    public interface ITeacherDisciplineService : ICRUDService<Discipline>;
     public interface ITeacherDissertationService : ICRUDService<Dissertation>;
     public interface ITeacherProfessionalDevelopmentService : ICRUDService<ProfessionalDevelopment>;
     public interface ITeacherPublicActivityService : ICRUDService<PublicActivity>;

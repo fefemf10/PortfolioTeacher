@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Portfolio.Application.ViewModels.Request;
+using Portfolio.Application.ViewModels.Response;
 using Portfolio.Domain.Models;
+using Portfolio.Identity.Pages.Account.Register;
 
 namespace IdentityServer.Pages.Account.Register;
 
@@ -64,7 +66,8 @@ public class Index : PageModel
 			{
 				await userManager.AddToRoleAsync(user, Input.RoleName);
 				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-                List<RequestFacultyDepartment> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
+				List<ResponseFacultyDepartments> requestFacultyDepartments;
+				requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/Faculty/GetAllWithDepartments");
 				Guid facultyId = requestFacultyDepartments.First().Id;
 				foreach (var faculty in requestFacultyDepartments)
 				{
@@ -76,7 +79,7 @@ public class Index : PageModel
 					}
 				}
                 JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = Input.RoleName, FacultyId = facultyId, DepartmentId = Input.DepartmentId });
-				HttpResponseMessage httpResponse = await httpClient.PostAsync("Teacher/AddTeacher", js);
+				HttpResponseMessage httpResponse = await httpClient.PostAsync("api/Teacher/AddTeacher", js);
 				if (httpResponse.IsSuccessStatusCode)
 				{
 					var loginresult = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: true);
@@ -114,7 +117,7 @@ public class Index : PageModel
 	{
 		HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
 		Input = new InputModel { ReturnUrl = returnUrl };
-        List<RequestFacultyDepartment> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
+        List<ResponseFacultyDepartments> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/Faculty/GetAllWithDepartments");
 		List<SelectListGroup> facultyList = requestFacultyDepartments.Select(x => new SelectListGroup { Name = x.Name }).ToList();
 		View = new ViewModel
 		{

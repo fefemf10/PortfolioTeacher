@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
+using Portfolio.API;
 using Portfolio.API.Middleware;
-using Portfolio.Application.Services;
-using Portfolio.Application.Services.TeacherService;
-using Portfolio.Domain.Services;
+using Portfolio.Infrastructure;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,21 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-builder.Services.AddScoped<IFacultyService, FacultyService>();
-builder.Services.AddScoped<IDepartmentService, DepartmentService>();
-builder.Services.AddScoped<IDisciplineService, DisciplineService>();
-builder.Services.AddScoped<ITeacherService, TeacherService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ITeacherAwardService, TeacherAwardService>();
-builder.Services.AddScoped<ITeacherDisciplineService, TeacherDisciplineService>();
-builder.Services.AddScoped<ITeacherDepartmentService, TeacherDepartmentService>();
-builder.Services.AddScoped<ITeacherDissertationService, TeacherDissertationService>();
-builder.Services.AddScoped<ITeacherProfessionalDevelopmentService, TeacherProfessionalDevelopmentService>();
-builder.Services.AddScoped<ITeacherPublicActivityService, TeacherPublicActivityService>();
-builder.Services.AddScoped<ITeacherPublicationService, TeacherPublicationService>();
-builder.Services.AddScoped<ITeacherScienceProjectService, TeacherScienceProjectService>();
-builder.Services.AddScoped<ITeacherUniversityService, TeacherUniversityService>();
-builder.Services.AddScoped<ITeacherWorkService, TeacherWorkService>();
+builder.Services.AddAPIServices();
 //builder.Services.AddSwaggerGen(options =>
 //{
 //	options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
@@ -83,49 +68,43 @@ builder.Services.AddScoped<ITeacherWorkService, TeacherWorkService>();
 //		}
 //	});
 //});
-
-builder.Services.AddDbContext<ApplicationContext>(options =>
+var connectionStringBuilder = new MySqlConnectionStringBuilder();
+connectionStringBuilder.Server = builder.Configuration["DBHost"];
+connectionStringBuilder.Database = builder.Configuration["DBDatabase"];
+connectionStringBuilder.UserID = builder.Configuration["DBUser"];
+connectionStringBuilder.Password = builder.Configuration["DBPassword"];
+string connection = connectionStringBuilder.ConnectionString;
+ServerVersion version = ServerVersion.AutoDetect(connection);
+builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(connection, version));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 	{
-		var connectionStringBuilder = new MySqlConnectionStringBuilder(builder.Configuration.GetConnectionString("DefaultConnection")!);
-		connectionStringBuilder.UserID = builder.Configuration["DBUser"];
-		connectionStringBuilder.Password = builder.Configuration["DBPassword"];
-		if (builder.Configuration["DBHost"] is not null)
-			connectionStringBuilder.Server = builder.Configuration["DBHost"];
-		string connection = connectionStringBuilder.ConnectionString;
-		ServerVersion version = ServerVersion.AutoDetect(connection);
-		options.UseMySql(connection, version);
+		options.Authority = builder.Configuration["IdentityServer:Url"];
+        options.RequireHttpsMetadata = false;
+		options.TokenValidationParameters.ValidateAudience = false;
+		options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
 	});
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-//	{
-//		options.Authority = builder.Configuration["IdentityServer:Url"];
-//		options.TokenValidationParameters.ValidateAudience = false;
-//		options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
-//	});
 
-//builder.Services.AddAuthorizationBuilder()
-//    .AddPolicy("ApiScope", policy =>
-//	{
-//		policy.RequireAuthenticatedUser();
-//		policy.RequireClaim("scope", builder.Configuration["IdentityServer:Scope"]!);
-//	});
-
-builder.Services.AddCors(options =>
-{
-	options.AddPolicy("MyPolicy", builder =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("ApiScope", policy =>
 	{
-		builder
-		.AllowAnyOrigin()
-		.AllowAnyHeader()
-		.AllowAnyMethod();
+		policy.RequireAuthenticatedUser();
+		policy.RequireClaim("scope", builder.Configuration["IdentityServer:Scope"]!);
 	});
-});
+
+builder.Services.AddCors();
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-app.UseCors("MyPolicy");
+app.UseCors(builder =>
+{
+    builder
+    .AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+});
 //if (app.Environment.IsDevelopment())
 {
-	app.UseSwagger();
+    app.UseSwagger();
     app.UseSwaggerUI();
     //app.UseSwaggerUI(options =>
     //{
@@ -133,8 +112,7 @@ app.UseCors("MyPolicy");
     //});
 }
 
-//app.UseAuthentication();
-//app.UseAuthorization();
-app.MapDefaultControllerRoute();
-//app.MapDefaultControllerRoute().RequireAuthorization("ApiScope");
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapDefaultControllerRoute().RequireAuthorization("ApiScope");
 app.Run();

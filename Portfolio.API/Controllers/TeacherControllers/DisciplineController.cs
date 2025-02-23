@@ -35,9 +35,10 @@ namespace Portfolio.API.Controllers.TeacherControllers
             return Ok(mapper.Map<ResponseDiscipline>(await tds.Get(id, disciplineId)));
         }
         [HttpPost("[action]/{disciplineId:guid}")]
-        public async Task<ActionResult<Guid>> Add(Guid id, Guid disciplineId)
+        public async Task<ActionResult> Add(Guid id, Guid disciplineId)
         {
-            return Ok(await tds.Add(id, await ds.GetById(disciplineId)));
+            await tds.Add(id, disciplineId);
+            return Ok();
         }
         [HttpDelete("[action]/{disciplineId:guid}")]
         public async Task<ActionResult> Delete(Guid id, Guid disciplineId)

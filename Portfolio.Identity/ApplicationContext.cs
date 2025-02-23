@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using MySqlConnector;
 
 namespace IdentityServer
 {
@@ -10,10 +11,10 @@ namespace IdentityServer
 		{
 
 		}
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 			modelBuilder.Entity<IdentityRole<Guid>>().HasData(Array.ConvertAll(Enum.GetNames<Portfolio.Domain.Models.Roles>(), x => new IdentityRole<Guid>(x) { Id = Guid.NewGuid(), NormalizedName = x.ToUpper() }));
 		}
-	}
+    }
 }

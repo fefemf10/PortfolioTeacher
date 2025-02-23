@@ -4,7 +4,7 @@
 
 using System.ComponentModel.DataAnnotations;
 
-namespace IdentityServer.Pages.Account.Login;
+namespace Portfolio.Identity.Pages.Account.Login;
 
 public class InputModel
 {

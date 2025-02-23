@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Portfolio.Domain.Models;
-using Portfolio.Application.ViewModels.Request;
-using Portfolio.Application.ViewModels.Response;
+using Portfolio.Infrastructure;
 
 namespace Portfolio.API.Controllers
 {

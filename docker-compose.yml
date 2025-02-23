@@ -4,6 +4,19 @@ services:
     build:
       context: .
       dockerfile: PortfolioSite/Dockerfile
-    ports:
-      - "4000:4000"
-      - "4001:4001"
+  portfolio.api:
+    image: ${DOCKER_REGISTRY-}portfolioapi
+    build:
+      context: .
+      dockerfile: Portfolio.API/Dockerfile
+  portfolio.identity:
+    image: ${DOCKER_REGISTRY-}portfolioidentity
+    build:
+      context: .
+      dockerfile: Portfolio.Identity/Dockerfile
+  db.api:
+    image: mysql:latest
+    restart: always
+  db.identity:
+    image: mysql:latest
+    restart: always

@@ -1,5 +1,8 @@
-﻿using Portfolio.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Portfolio.Application.Exceptions;
+using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
+using Portfolio.Infrastructure;
 
 namespace Portfolio.Application.Services.TeacherService
 {
@@ -11,29 +14,49 @@ namespace Portfolio.Application.Services.TeacherService
             this.db = db;
         }
 
-        public Task<Guid> Add(Guid id, ProfessionalDevelopment entity)
+        public async Task<Guid> Add(Guid id, ProfessionalDevelopment entity)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.ProfessionalDevelopments).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            ProfessionalDevelopment? professionalDevelopment = teacher.ProfessionalDevelopments.SingleOrDefault(x => x.Name == entity.Name && x.NumberDocument == entity.NumberDocument && x.SeriaDocument == entity.SeriaDocument && x.DateСompletion == entity.DateСompletion && x.ListeningTime == entity.ListeningTime && x.NameDocument == entity.NameDocument && x.NameOrganization == entity.NameOrganization);
+            if (professionalDevelopment is not null)
+                throw new AlredyExistException();
+            teacher.ProfessionalDevelopments.Add(entity);
+            await db.SaveChangesAsync();
+            return entity.Id;
         }
 
-        public Task Delete(Guid id, Guid entityId)
+        public async Task Delete(Guid id, Guid entityId)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.ProfessionalDevelopments).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            ProfessionalDevelopment? professionalDevelopment = teacher.ProfessionalDevelopments.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
+            teacher.ProfessionalDevelopments.Remove(professionalDevelopment);
+            await db.SaveChangesAsync();
         }
 
-        public Task<ProfessionalDevelopment> Get(Guid id, Guid entityId)
+        public async Task<ProfessionalDevelopment> Get(Guid id, Guid entityId)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.ProfessionalDevelopments).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return teacher.ProfessionalDevelopments.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
         }
 
-        public Task<IEnumerable<Guid>> GetAll(Guid id)
+        public async Task<IEnumerable<Guid>> GetAll(Guid id)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.ProfessionalDevelopments).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return teacher.ProfessionalDevelopments.Select(x => x.Id).ToList();
         }
 
-        public Task Update(Guid id, ProfessionalDevelopment entity)
+        public async Task Update(Guid id, ProfessionalDevelopment entity)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.ProfessionalDevelopments).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            ProfessionalDevelopment? professionalDevelopment = teacher.ProfessionalDevelopments.SingleOrDefault(x => x.Id == entity.Id) ?? throw new NotFoundByIdException();
+            professionalDevelopment.Name = entity.Name;
+            professionalDevelopment.NameDocument = entity.NameDocument;
+            professionalDevelopment.NameOrganization = entity.NameOrganization;
+            professionalDevelopment.SeriaDocument = entity.SeriaDocument;
+            professionalDevelopment.NumberDocument = entity.NumberDocument;
+            professionalDevelopment.DateСompletion = entity.DateСompletion;
+            professionalDevelopment.ListeningTime = entity.ListeningTime;
+            await db.SaveChangesAsync();
         }
     }
 }

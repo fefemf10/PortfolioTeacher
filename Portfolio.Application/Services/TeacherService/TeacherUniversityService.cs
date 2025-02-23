@@ -1,5 +1,8 @@
-﻿using Portfolio.Domain.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Portfolio.Application.Exceptions;
+using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
+using Portfolio.Infrastructure;
 
 namespace Portfolio.Application.Services.TeacherService
 {
@@ -11,29 +14,46 @@ namespace Portfolio.Application.Services.TeacherService
             this.db = db;
         }
 
-        public Task<Guid> Add(Guid id, University entity)
+        public async Task<Guid> Add(Guid id, University entity)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Universities).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            University? university = teacher.Universities.SingleOrDefault(x => x.Name == entity.Name && x.Specialization == entity.Specialization && x.Qualification == entity.Qualification && x.YearGraduation == entity.YearGraduation);
+            if (university is not null)
+                throw new AlredyExistException();
+            teacher.Universities.Add(entity);
+            await db.SaveChangesAsync();
+            return entity.Id;
         }
 
-        public Task Delete(Guid id, Guid entityId)
+        public async Task Delete(Guid id, Guid entityId)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Universities).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            University? university = teacher.Universities.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
+            teacher.Universities.Remove(university);
+            await db.SaveChangesAsync();
         }
 
-        public Task<University> Get(Guid id, Guid entityId)
+        public async Task<University> Get(Guid id, Guid entityId)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Universities).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return teacher.Universities.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
         }
 
-        public Task<IEnumerable<Guid>> GetAll(Guid id)
+        public async Task<IEnumerable<Guid>> GetAll(Guid id)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Universities).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return teacher.Universities.Select(x => x.Id).ToList();
         }
 
-        public Task Update(Guid id, University entity)
+        public async Task Update(Guid id, University entity)
         {
-            throw new NotImplementedException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Awards).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            University? university = teacher.Universities.SingleOrDefault(x => x.Id == entity.Id) ?? throw new NotFoundByIdException();
+            university.Name = entity.Name;
+            university.Qualification = entity.Qualification;
+            university.Specialization = entity.Specialization;
+            university.YearGraduation = entity.YearGraduation;
+            await db.SaveChangesAsync();
         }
     }
 }
