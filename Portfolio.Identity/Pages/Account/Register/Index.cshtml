@@ -15,7 +15,18 @@
 				<div class="card-body">
 					<form asp-route="/Account/Register/Index">
 						<input type="hidden" asp-for="Input.ReturnUrl" />
-
+						<div class="form-group">
+							<label asp-for="Input.LastName">@localizer["LastName"]</label>
+							<input type="text" class="form-control" placeholder="@localizer["LastName"]" asp-for="Input.LastName" autofocus>
+						</div>
+						<div class="form-group">
+							<label asp-for="Input.FirstName">@localizer["FirstName"]</label>
+							<input type="text" class="form-control" placeholder="@localizer["FirstName"]" asp-for="Input.FirstName" autofocus>
+						</div>
+						<div class="form-group">
+							<label asp-for="Input.MiddleName">@localizer["MiddleName"]</label>
+							<input type="text" class="form-control" placeholder="@localizer["MiddleName"]" asp-for="Input.MiddleName" autofocus>
+						</div>
 						<div class="form-group">
 							<label asp-for="Input.Email">@localizer["InputEmail"]</label>
 							<input type="email" class="form-control" placeholder="@localizer["InputEmail"]" asp-for="Input.Email" autofocus>
@@ -34,7 +45,7 @@
 							<label asp-for="Input.RoleName">@localizer["RoleName"]</label>
 							<select asp-for="Input.RoleName" class="form-control"
 									asp-items="@(new SelectList(Model.View.RolesList))">
-								select</select>
+							</select>
 						</div>
 						<div class="form-group">
 							<label asp-for="Input.DepartmentId">@localizer["Department"]</label>

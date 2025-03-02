@@ -117,43 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConfirmPassword" xml:space="preserve">
-    <value>Confirm Password</value>
+  <data name="Administrator" xml:space="preserve">
+    <value>Administrator</value>
   </data>
-  <data name="ConfirmPasswordRequired" xml:space="preserve">
-    <value>Enter the password confirmation</value>
+  <data name="Dean" xml:space="preserve">
+    <value>Dean</value>
   </data>
-  <data name="Email" xml:space="preserve">
-    <value>Email</value>
+  <data name="Deputy" xml:space="preserve">
+    <value>Deputy</value>
   </data>
-  <data name="EmailError" xml:space="preserve">
-    <value>Check the email address</value>
+  <data name="IdentityServer" xml:space="preserve">
+    <value>Identity Server</value>
   </data>
-  <data name="EmailRequired" xml:space="preserve">
-    <value>Enter your email address</value>
+  <data name="Moderator" xml:space="preserve">
+    <value>Moderator</value>
   </data>
-  <data name="FirstNameRequired" xml:space="preserve">
-    <value>Enter your first name</value>
+  <data name="Student" xml:space="preserve">
+    <value>Student</value>
   </data>
-  <data name="LastNameRequired" xml:space="preserve">
-    <value>Enter your last name</value>
-  </data>
-  <data name="Password" xml:space="preserve">
-    <value>Password</value>
-  </data>
-  <data name="PasswordCompare" xml:space="preserve">
-    <value>Passwords don't match</value>
-  </data>
-  <data name="PasswordLength" xml:space="preserve">
-    <value>The password must consist of 5 or more characters</value>
-  </data>
-  <data name="PasswordRequired" xml:space="preserve">
-    <value>Enter your password</value>
-  </data>
-  <data name="RoleName" xml:space="preserve">
-    <value>Type Account</value>
-  </data>
-  <data name="RoleRequired" xml:space="preserve">
-    <value>The account type is not selected</value>
+  <data name="Teacher" xml:space="preserve">
+    <value>Teacher</value>
   </data>
 </root>

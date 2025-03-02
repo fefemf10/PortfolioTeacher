@@ -8,6 +8,11 @@ namespace Portfolio.Identity.Pages.Account.Register;
 
 public class InputModel
 {
+    [Required(ErrorMessageResourceName = "LastNameRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
+    public string LastName { get; set; }
+    [Required(ErrorMessageResourceName = "FirstNameRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
+    public string FirstName { get; set; }
+    public string? MiddleName { get; set; }
     [Required(ErrorMessageResourceName = "EmailRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
     [EmailAddress(ErrorMessageResourceName = "EmailError", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
     public string Email { get; set; }
@@ -24,7 +29,7 @@ public class InputModel
     public string ReturnUrl { get; set; }
 	[Required(ErrorMessageResourceName = "RoleRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
 	[EnumDataType(typeof(Roles))]
-    public string RoleName { get; set; }
+    public Roles RoleName { get; set; }
     public Guid DepartmentId { get; set; }
 	public string Button { get; set; }
 }

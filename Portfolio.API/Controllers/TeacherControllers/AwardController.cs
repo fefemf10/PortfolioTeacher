@@ -14,21 +14,14 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [Authorize]
     [Route("api/Teacher/{id:guid}/[controller]")]
     [ApiController]
-    public class AwardController : ControllerBase
+    public class AwardController(IMapper mapper, ITeacherAwardService tas) : ControllerBase
     {
-        private readonly IMapper mapper;
-        private readonly ITeacherAwardService tas;
-        public AwardController(IMapper mapper, ITeacherAwardService tas)
-        {
-            this.mapper = mapper;
-            this.tas = tas;
-        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tas.GetAll(id));
         }
-        [HttpGet("[action]/{awardId:guid}")]
+        [HttpGet("{awardId:guid}")]
         public async Task<ActionResult<ResponseAward>> Get(Guid id, Guid awardId)
         {
             return Ok(mapper.Map<ResponseAward>(await tas.Get(id, awardId)));

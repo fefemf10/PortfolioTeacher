@@ -2,11 +2,18 @@
 @using System.ComponentModel.DataAnnotations
 @using Portfolio.Application.ViewModels.Request
 @using Portfolio.Application.ViewModels.Response
+@using Portfolio.Domain.Models
 @using PortfolioSite.ViewModels
+@using AutoMapper
 
+@inject IStringLocalizer<Post> localizerPost
+@inject IStringLocalizer<AcademicDegree> localizerDegree
+@inject IStringLocalizer<AcademicTitle> localizerTitle
 @inject IStringLocalizer<About> localizer
 @inject IHttpClientFactory httpFactory
+@inject IMapper mapper
 @inject AuthenticationStateProvider authenticationStateProvider
+
 <PageTitle>@localizer["Title"]</PageTitle>
 <Heading TextAlignment="TextAlignment.Center">@localizer["Title"]</Heading>
 @if (responseUser is not null)
@@ -14,40 +21,41 @@
 	<Container>
 		<Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
 			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder=@localizer["FieldLastName"] @bind-Text="@lastName" />
-				</Validation>
+				<TextEdit ReadOnly Text="@responseUser.LastName" />
 			</Field>
 			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder=@localizer["FieldFirstName"] @bind-Text="@firstName" />
-				</Validation>
+				<TextEdit ReadOnly Text="@responseUser.FirstName" />
 			</Field>
 			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder=@localizer["FieldMiddleName"] @bind-Text="@middleName" />
-				</Validation>
+				<TextEdit ReadOnly Text="@responseUser.MiddleName" />
 			</Field>
 			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder=@localizer["FieldPost"] @bind-Text="@post" />
-				</Validation>
+				<SelectList
+				TValue="int"
+				TItem="KeyValuePair<int, string>"
+				Data="@Posts"
+				SelectedValue="@( (int)(responseUser.Post) )"
+				SelectedValueExpression="@( () => (int)(responseUser.Post) )"  />
 			</Field>
 			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder=@localizer["FieldAcademicDegree"] @bind-Text="@academicDegree" />
-				</Validation>
+				<SelectList TValue="int"
+				TItem="KeyValuePair<int, string>"
+				Data="@Degrees"
+				SelectedValue="@((int)(responseUser.AcademicDegree))"
+				SelectedValueExpression="@(() => (int)(responseUser.AcademicDegree))" />
 			</Field>
 			<Field>
-				<Validation Validator="ValidationRule.IsNotEmpty">
-					<TextEdit Placeholder=@localizer["FieldAcademicTitle"] @bind-Text="@academicTitle" />
-				</Validation>
+				<SelectList TValue="int"
+				TItem="KeyValuePair<int, string>"
+				Data="@Titles"
+				SelectedValue="@((int)(responseUser.AcademicTitle))"
+				SelectedValueExpression="@(() => (int)(responseUser.AcademicTitle))" />
 			</Field>
 			<Field>
-				<TextEdit Disabled="true" @bind-Text="@departmentName" />
+				<TextEdit Disabled="true" Text="@departmentName" />
 			</Field>
 			<Field>
-				<DateEdit TValue="DateOnly?" @bind-Date="@dateBirthday" />
+				<DateEdit Date="@responseUser.DateBirthday" />
 			</Field>
 		</Grid>
 		<Button Color="Color.Success" Clicked="@AddInfo">@localizer["SaveChangesButton"]</Button>
@@ -55,56 +63,41 @@
 }
 
 @code {
+	string[]? localizedPost;
+	string[]? localizedDegree;
+	string[]? localizedTitle;
+	private List<KeyValuePair<int, string>> Posts;
+	private List<KeyValuePair<int, string>> Degrees;
+	private List<KeyValuePair<int, string>> Titles;
 	HttpClient webapi;
 	Guid guid;
 	ResponseTeacher responseUser;
 	List<RequestFacultyDepartment> requestFacultyDepartments;
-	string firstName;
-	string middleName;
-	string lastName;
-	string post;
-	string academicDegree;
-	string academicTitle;
 	string departmentName;
 	Guid facultyId;
-	ResponseDepartment department;
-	DateOnly? dateBirthday;
+	ResponseDepartment? department;
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
+		localizedPost = Enum.GetNames<Post>().Select(x => localizerPost[x].Value).ToArray();
+		localizedDegree = Enum.GetNames<AcademicDegree>().Select(x => localizerDegree[x].Value).ToArray();
+		localizedTitle = Enum.GetNames<AcademicTitle>().Select(x => localizerTitle[x].Value).ToArray();
+		Posts = localizedPost.Select((name, index) => new KeyValuePair<int, string>(index, name)).ToList();
+		Degrees = localizedDegree.Select((name, index) => new KeyValuePair<int, string>(index, name)).ToList();
+		Titles = localizedTitle.Select((name, index) => new KeyValuePair<int, string>(index, name)).ToList();
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 		{
-			responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
-			firstName = responseUser.FirstName;
-			middleName = responseUser.MiddleName;
-			lastName = responseUser.LastName;
-			dateBirthday = responseUser.DateBirthday;
-			post = responseUser.Post;
-			academicDegree = responseUser.AcademicDegree;
-			academicTitle = responseUser.AcademicTitle;
+			responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"api/Teacher/{guid.ToString()}");
 			facultyId = responseUser.Faculty.Id;
 			department = responseUser.Department;
-			if (department is not null)
-				departmentName = department.Name;
+			departmentName = department?.Name;
 		}
 	}
 	private void AddInfo()
 	{
-		JsonContent js = JsonContent.Create<RequestTeacher>(new RequestTeacher
-			{
-				Email = responseUser.Email,
-				FirstName = firstName,
-				MiddleName = middleName,
-				LastName = lastName,
-				DateBirthday = dateBirthday,
-				Post = post,
-				AcademicDegree = academicDegree,
-				AcademicTitle = academicTitle,
-				FacultyId = facultyId,
-				DepartmentId = department.Id
-			});
-		webapi.PutAsync($"Teacher/{guid.ToString()}/AddInfo", js);
+		JsonContent js = JsonContent.Create<RequestTeacher>(mapper.Map<RequestTeacher>(responseUser));
+		webapi.PutAsync($"api/Teacher/{guid.ToString()}", js);
 	}
 }

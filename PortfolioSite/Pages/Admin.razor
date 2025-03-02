@@ -110,7 +110,7 @@
 			}
 		}
 		JsonContent js = JsonContent.Create(addUser);
-		HttpResponseMessage httpResponse = await identityapi.PostAsync($"User/Add", js);
+		HttpResponseMessage httpResponse = await identityapi.PostAsync($"api/User/Add", js);
 		if (httpResponse.IsSuccessStatusCode)
 			snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
 		else
@@ -133,7 +133,7 @@
 	}
 	private async void AddTestUsers()
 	{
-		HttpResponseMessage httpResponse = await identityapi.PostAsync($"User/AddTestUsers", null);
+		HttpResponseMessage httpResponse = await identityapi.PostAsync($"api/User/AddTestUsers", null);
 		if (httpResponse.IsSuccessStatusCode)
 			snackbarStack.PushAsync("Added 1000 test users", SnackbarColor.Success);
 		else

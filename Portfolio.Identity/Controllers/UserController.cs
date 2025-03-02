@@ -6,65 +6,60 @@ using Portfolio.Application.ViewModels.Response;
 using Portfolio.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 using static Duende.IdentityServer.IdentityServerConstants;
+using static Duende.IdentityServer.Models.IdentityResources;
 
 namespace IdentityServer.Controllers
 {
 	[Authorize(LocalApi.PolicyName, Roles = nameof(Roles.Administrator))]
 	[Route("[controller]/[action]")]
 	[ApiController]
-	public class UserController : ControllerBase
+	public class UserController(
+		UserManager<IdentityUser<Guid>> userManager,
+		RoleManager<IdentityRole<Guid>> roleManager,
+		IHttpClientFactory httpClientFactory) : ControllerBase
 	{
-		private readonly UserManager<IdentityUser<Guid>> userManager;
-		private readonly RoleManager<IdentityRole<Guid>> roleManager;
-		private readonly IHttpClientFactory httpClientFactory;
-		public UserController(UserManager<IdentityUser<Guid>> userManager, RoleManager<IdentityRole<Guid>> roleManager, IHttpClientFactory httpClientFactory)
-		{
-			this.userManager = userManager;
-			this.roleManager = roleManager;
-			this.httpClientFactory = httpClientFactory;
-		}
-		[HttpPost]
+        List<RequestAddTeacher> listAddTeachers = [];
+		List<ResponseFacultyDepartments> requestFacultyDepartments;
+        [HttpPost]
 		public async Task<ActionResult> Add([Required][FromBody] RequestAddUser requestAddUser)
 		{
-			if (requestAddUser.Role == Roles.Dean.ToString())
+			HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
 			{
-				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-				var usersInRole = await userManager.GetUsersInRoleAsync(requestAddUser.Role);
-				foreach (var userInRole in usersInRole)
+				var usersInRole = await userManager.GetUsersInRoleAsync(requestAddUser.Role.ToString());
+				if (requestAddUser.Role == Roles.Dean)
 				{
-					ResponseTeacher? responseTeacher = await httpClient.GetFromJsonAsync<ResponseTeacher>($"Teacher/{userInRole.Id}/GetInfo");
-					if (requestAddUser.FacultyId == responseTeacher.Faculty.Id)
-						return BadRequest();
+					foreach (var userInRole in usersInRole)
+					{
+						ResponseTeacher? responseTeacher = await httpClient.GetFromJsonAsync<ResponseTeacher>($"api/Teacher/{userInRole.Id}/GetInfo");
+						if (requestAddUser.FacultyId == responseTeacher.Faculty.Id)
+							return BadRequest();
+					}
+				}
+				else if (requestAddUser.Role == Roles.Deputy)
+				{
+					foreach (var userInRole in usersInRole)
+					{
+						List<ResponseTeacher>? responseTeachers = await httpClient.GetFromJsonAsync<List<ResponseTeacher>>($"api/Department/{requestAddUser.DepartmentId}/GetTeacher");
+						if (responseTeachers.SingleOrDefault(x => x.Id == userInRole.Id) != null)
+							return BadRequest();
+					}
 				}
 			}
-			else if (requestAddUser.Role == Roles.Deputy.ToString())
+			if (await roleManager.RoleExistsAsync(requestAddUser.Role.ToString()))
 			{
-				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-				var usersInRole = await userManager.GetUsersInRoleAsync(requestAddUser.Role);
-				foreach (var userInRole in usersInRole)
+				var user = new IdentityUser<Guid>()
 				{
-					List<ResponseTeacher>? responseTeachers = await httpClient.GetFromJsonAsync<List<ResponseTeacher>>($"Department/{requestAddUser.DepartmentId}/GetTeacher");
-					if (responseTeachers.SingleOrDefault(x => x.Id == userInRole.Id) != null)
-						return BadRequest();
-				}
-			}
-			var user = new IdentityUser<Guid>()
-			{
-				UserName = requestAddUser.Email,
-				Email = requestAddUser.Email,
-				EmailConfirmed = true
-			};
+					UserName = requestAddUser.Email,
+					Email = requestAddUser.Email,
+					EmailConfirmed = true
+				};
 
-			var result = await userManager.CreateAsync(user, requestAddUser.Password);
-
-			if (result.Succeeded)
-			{
-				if (await roleManager.RoleExistsAsync(requestAddUser.Role))
+				var result = await userManager.CreateAsync(user, requestAddUser.Password);
+				if (result.Succeeded)
 				{
-					await userManager.AddToRoleAsync(user, requestAddUser.Role);
-					HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-					JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = requestAddUser.Role, FacultyId = requestAddUser.FacultyId, DepartmentId = requestAddUser.DepartmentId });
-					HttpResponseMessage httpResponse = await httpClient.PostAsync("Teacher/AddTeacher", js);
+					await userManager.AddToRoleAsync(user, requestAddUser.Role.ToString());
+					JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, FirstName = requestAddUser.FirstName, LastName = requestAddUser.LastName, MiddleName = requestAddUser.MiddleName, Role = requestAddUser.Role, FacultyId = requestAddUser.FacultyId, DepartmentId = requestAddUser.DepartmentId });
+					HttpResponseMessage httpResponse = await httpClient.PostAsync("api/Teacher", js);
 					if (httpResponse.IsSuccessStatusCode)
 						return Ok();
 				}
@@ -76,120 +71,14 @@ namespace IdentityServer.Controllers
 		public async Task<ActionResult> AddTestUsers()
 		{
 			HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-			List<RequestFacultyDepartment> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
-			List<ResponseDepartment> requestDepartments = await httpClient.GetFromJsonAsync<List<ResponseDepartment>>("Department/GetAll");
-			List<RequestAddTeacher> listAddTeachers = [];
-
-            int countDean = 5;
-			int countDeputy = 25;
-			for (int i = 0; i < countDean; i++)
-			{
-				string Email = GenerateEmail("Dean", i);
-
-				Guid facultyId = requestFacultyDepartments[i].Id;
-				var f = requestFacultyDepartments.Find(x => x.Id == facultyId);
-                Guid departmentId = f.Departments[Random.Shared.Next() % f.Departments.Count].Id;
-
-				var user = new IdentityUser<Guid>()
-				{
-					UserName = Email,
-					Email = Email,
-					EmailConfirmed = true
-				};
-
-				var result = await userManager.CreateAsync(user, "12345");
-
-				if (result.Succeeded)
-				{
-					if (await roleManager.RoleExistsAsync(Roles.Dean.ToString()))
-					{
-						await userManager.AddToRoleAsync(user, Roles.Dean.ToString());
-                        listAddTeachers.Add(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = Roles.Dean.ToString(), FacultyId = facultyId, DepartmentId = departmentId });
-					}
-				}
-				else
-				{
-					return BadRequest();
-				}
-			}
-			for (int i = 0; i < countDeputy; i++)
-			{
-				string Email = GenerateEmail("Deputy", i);
-
-				Guid departmentId = requestDepartments[i].Id;
-				Guid facultyId = Guid.NewGuid();
-				foreach (var faculty in requestFacultyDepartments)
-				{
-					var department = faculty.Departments.FirstOrDefault(y => y.Id == departmentId);
-					if (department is not null)
-					{
-						facultyId = faculty.Id;
-						break;
-					}
-				}
-				var user = new IdentityUser<Guid>()
-				{
-					UserName = Email,
-					Email = Email,
-					EmailConfirmed = true
-				};
-
-				var result = await userManager.CreateAsync(user, "12345");
-
-				if (result.Succeeded)
-				{
-					if (await roleManager.RoleExistsAsync(Roles.Deputy.ToString()))
-					{
-						await userManager.AddToRoleAsync(user, Roles.Deputy.ToString());
-                        listAddTeachers.Add(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = Roles.Deputy.ToString(), FacultyId = facultyId, DepartmentId = departmentId });
-					}
-				}
-				else
-				{
-					return BadRequest();
-				}
-			}
-			for (int i = 0; i < 1000; i++)
-			{
-				string Email = GenerateEmail("Teacher", i);
-
-				Guid departmentId = requestDepartments[Random.Shared.Next() % 25].Id;
-				Guid facultyId = Guid.NewGuid();
-				foreach (var faculty in requestFacultyDepartments)
-				{
-					var department = faculty.Departments.FirstOrDefault(y => y.Id == departmentId);
-					if (department is not null)
-					{
-						facultyId = faculty.Id;
-						break;
-					}
-				}
-				var user = new IdentityUser<Guid>()
-				{
-					UserName = Email,
-					Email = Email,
-					EmailConfirmed = true
-				};
-
-				var result = await userManager.CreateAsync(user, "12345");
-
-				if (result.Succeeded)
-				{
-					if (await roleManager.RoleExistsAsync(Roles.Teacher.ToString()))
-					{
-						await userManager.AddToRoleAsync(user, Roles.Teacher.ToString());
-                        listAddTeachers.Add(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = Roles.Teacher.ToString(), FacultyId = facultyId, DepartmentId = departmentId });
-					}
-				}
-				else
-				{
-					return BadRequest();
-				}
-			}
+			requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>($"api/Faculty/departments");
+			GenerateDeans();
+			GenerateDeputy();
+			GenerateTeachers(1000);
 			JsonContent js = JsonContent.Create(listAddTeachers);
-            HttpResponseMessage httpResponse = await httpClient.PostAsync("Teacher/AddTestTeacher", js);
-            if (!httpResponse.IsSuccessStatusCode)
-            {
+			HttpResponseMessage httpResponse = await httpClient.PostAsync("Teacher/AddTestTeacher", js);
+			if (!httpResponse.IsSuccessStatusCode)
+			{
 				foreach (var user in listAddTeachers)
 				{
 					var identity = new IdentityUser<Guid>()
@@ -200,15 +89,64 @@ namespace IdentityServer.Controllers
 					};
 					await userManager.DeleteAsync(identity);
 				}
-                return BadRequest();
-            }
-            return Ok();
+				return BadRequest();
+			}
+			return Ok();
 		}
-
-		private string GenerateEmail(string prefix, int number)
+		private void GenerateDeans()
 		{
-			return prefix + number.ToString() + "@yandex.ru";
+            for (int i = 0; i < requestFacultyDepartments.Count; i++)
+            {
+                string email = GenerateEmail("Dean", i);
+                Guid facultyId = requestFacultyDepartments[i].Id;
+                Guid departmentId = requestFacultyDepartments[i].Departments[Random.Shared.Next() % requestFacultyDepartments[i].Departments.Count].Id;
+				AddUser(email, Roles.Dean, facultyId, departmentId);
+            }
+        }
+		private void GenerateDeputy()
+		{
+            for (int i = 0; i < requestFacultyDepartments.Count; i++)
+            {
+                Guid facultyId = requestFacultyDepartments[i].Id;
+                for (int j = 0; j < requestFacultyDepartments[i].Departments.Count; j++)
+				{
+					string email = GenerateEmail("Deputy", j);
+					Guid departmentId = requestFacultyDepartments[i].Departments[j].Id;
+					AddUser(email, Roles.Deputy, facultyId, departmentId);
+                }
+            }
+        }
+		private void GenerateTeachers(int count)
+		{
+			int countFaculty = requestFacultyDepartments.Count;
+			int[] countDepartment = new int[countFaculty];
+			for (int i = 0; i < countFaculty; i++)
+				countDepartment[i] = requestFacultyDepartments[i].Departments.Count;
+            for (int i = 0; i < count; i++)
+            {
+                string email = GenerateEmail("Teacher", i);
+				int idFaculty = Random.Shared.Next() % countFaculty;
+				int idDepartment = Random.Shared.Next() % countDepartment[idFaculty];
+                Guid facultyId = requestFacultyDepartments[idFaculty].Id;
+                Guid departmentId = requestFacultyDepartments[idFaculty].Departments[idDepartment].Id;
+                AddUser(email, Roles.Deputy, facultyId, departmentId);
+            }
+        }
+		private async void AddUser(string email, Roles role, Guid facultyId, Guid departmentId)
+		{
+            var user = new IdentityUser<Guid>()
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true
+            };
+            var result = await userManager.CreateAsync(user, "12345");
+			if (result.Succeeded)
+			{
+				userManager.AddToRoleAsync(user, role.ToString());
+				listAddTeachers.Add(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = role, FacultyId = facultyId, DepartmentId = departmentId });
+			}
 		}
-
+		private static string GenerateEmail(string prefix, int number) => prefix + number.ToString() + "@yandex.ru";
 	}
 }

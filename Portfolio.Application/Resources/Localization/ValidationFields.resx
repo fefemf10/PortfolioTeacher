@@ -123,6 +123,12 @@
   <data name="EmailRequired" xml:space="preserve">
     <value>Enter a email</value>
   </data>
+  <data name="FirstNameRequired" xml:space="preserve">
+    <value>Enter your first name</value>
+  </data>
+  <data name="LastNameRequired" xml:space="preserve">
+    <value>Enter your last name</value>
+  </data>
   <data name="NameOrganizationRequired" xml:space="preserve">
     <value>Enter the name of the organization</value>
   </data>

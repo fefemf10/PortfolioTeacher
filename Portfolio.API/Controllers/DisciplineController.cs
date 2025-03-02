@@ -10,15 +10,8 @@ namespace Portfolio.API.Controllers
 {
 	[Route("api/[controller]/[action]")]
 	[ApiController]
-	public class DisciplineController : ControllerBase
+	public class DisciplineController(IMapper mapper, IDisciplineService disciplineService) : ControllerBase
 	{
-        private readonly IMapper mapper;
-        private readonly IDisciplineService disciplineService;
-		public DisciplineController(IMapper mapper, IDisciplineService disciplineService)
-		{
-			this.mapper = mapper;
-			this.disciplineService = disciplineService;
-		}
         [HttpGet]
         public async Task<ActionResult<List<ResponseDiscipline>>> GetAll()
         {

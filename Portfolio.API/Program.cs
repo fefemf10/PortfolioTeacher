@@ -111,7 +111,6 @@ app.UseCors(builder =>
     //	//options.OAuthUsePkce();
     //});
 }
-
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapDefaultControllerRoute().RequireAuthorization("ApiScope");

@@ -1,11 +1,13 @@
-﻿namespace Portfolio.Application.ViewModels.Response
+﻿using Portfolio.Domain.Models;
+
+namespace Portfolio.Application.ViewModels.Response
 {
     public record ResponseFaculty(Guid Id, string Name, string FullName);
     public record ResponseDepartment(Guid Id, string Name);
-    public record ResponseFacultyDepartments(Guid Id, string Name, string FullName, ICollection<ResponseDepartment> Departments);
+    public record ResponseFacultyDepartments(Guid Id, string Name, string FullName, List<ResponseDepartment> Departments);
     public record ResponseDiscipline(Guid Id, string Name);
-    public record ResponseUser(Guid Id, string Email, string? FirstName, string? MiddleName, string? LastName, DateOnly? DateBirthday);
-    public record ResponseTeacher(Guid Id, string Email, string? FirstName, string? MiddleName, string? LastName, DateOnly? DateBirthday, string Post, string? AcademicDegree, string? AcademicTitle, ResponseFaculty Faculty, ResponseDepartment? Department, uint PublicationCount);
+    public record ResponseUser(Guid Id, string Email, string LastName, string FirstName, string? MiddleName,  DateOnly? DateBirthday);
+    public record ResponseTeacher(Guid Id, string Email, string LastName, string FirstName, string? MiddleName, DateOnly? DateBirthday, Post Post, AcademicDegree AcademicDegree, AcademicTitle AcademicTitle, ResponseFaculty Faculty, ResponseDepartment? Department, uint PublicationCount);
     public record ResponseRegistration(Guid Guid, string Email, string AccessToken, string RefreshToken);
     public record ResponseLogin(Guid Guid, string Email, string AccessToken, string RefreshToken);
     public record ResponseAccount(string FirstName, string LastName, string Email, string Password);

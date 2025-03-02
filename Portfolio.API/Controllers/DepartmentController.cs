@@ -9,15 +9,8 @@ namespace Portfolio.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class DepartmentController : ControllerBase
+	public class DepartmentController(IMapper mapper, IDepartmentService departmentService) : ControllerBase
 	{
-		private readonly IMapper mapper;
-		private readonly IDepartmentService departmentService;
-		public DepartmentController(IMapper mapper, IDepartmentService departmentService)
-		{
-			this.mapper = mapper;
-			this.departmentService = departmentService;
-		}
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<ResponseDepartment>>> GetAll()
 		{
@@ -28,7 +21,7 @@ namespace Portfolio.API.Controllers
         {
             return Ok(await departmentService.GetTeachers(id));
         }
-        [HttpGet("[action]/{id:guid}")]
+        [HttpGet("{id:guid}")]
 		public async Task<ActionResult<ResponseDepartment>> GetById(Guid id)
 		{
 			return Ok(mapper.Map<ResponseDepartment>(await departmentService.GetById(id)));

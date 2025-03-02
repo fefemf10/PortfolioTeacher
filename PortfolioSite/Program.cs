@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using PortfolioSite;
 using PortfolioSite.Extensions;
 using PortfolioSite.Handlers;
+using System.Reflection;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
@@ -67,6 +68,7 @@ builder.Services.AddAuthorizationCore(options =>
             .Build();
 });
 builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 var app = builder.Build();
 await app.SetDefaultCulture();
 await app.RunAsync();

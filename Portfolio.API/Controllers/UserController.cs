@@ -8,17 +8,10 @@ using Portfolio.Domain.Services;
 namespace Portfolio.API.Cotrollers
 {
 	[AllowAnonymous]
-	[Route("api/[controller]/[action]")]
+	[Route("api/[controller]")]
 	[ApiController]
-	public class UserController : ControllerBase
+	public class UserController(IMapper mapper, IUserService userService) : ControllerBase
 	{
-		private readonly IMapper mapper;
-		private readonly IUserService userService;
-		public UserController(IMapper mapper, IUserService userService)
-		{
-			this.mapper = mapper;
-			this.userService = userService;
-		}
 		[HttpGet("{id:guid}")]
 		public async Task<ActionResult<ResponseUser>> GetInfo(Guid id)
 		{

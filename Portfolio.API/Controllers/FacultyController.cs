@@ -9,52 +9,45 @@ namespace Portfolio.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class FacultyController : ControllerBase
+	public class FacultyController(IMapper mapper, IFacultyService facultyService) : ControllerBase
 	{
-        private readonly IMapper mapper;
-        private readonly IFacultyService facultyService;
-		public FacultyController(IMapper mapper, IFacultyService facultyService)
-		{
-			this.mapper = mapper;
-			this.facultyService = facultyService;
-		}
-		[HttpGet("[action]")]
+        [HttpGet]
 		public async Task<ActionResult<IEnumerable<ResponseFaculty>>> GetAll()
 		{
 			return Ok(mapper.Map<IEnumerable<ResponseFaculty>>(await facultyService.GetAll()));
 		}
-        [HttpGet("{id:guid}/[action]")]
-        public async Task<ActionResult<IEnumerable<Guid>>> GetTeachers(Guid id)
-        {
-            return Ok(await facultyService.GetTeachers(id));
-        }
-		[HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<ResponseFacultyDepartments>>> GetAllWithDepartments()
-        {
-            return Ok(mapper.Map<IEnumerable<ResponseFacultyDepartments>>(await facultyService.GetAllWithDepartments()));
-        }
-        [HttpGet("[action]/{id:guid}")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<ResponseDepartment>> GetById(Guid id)
         {
             return Ok(mapper.Map<ResponseFaculty>(await facultyService.GetById(id)));
         }
-        [HttpGet("[action]/{id:guid}")]
+        [HttpGet("{id:guid}/teachers")]
+        public async Task<ActionResult<IEnumerable<Guid>>> GetTeachers(Guid id)
+        {
+            return Ok(await facultyService.GetTeachers(id));
+        }
+		[HttpGet("departments")]
+        public async Task<ActionResult<IEnumerable<ResponseFacultyDepartments>>> GetAllWithDepartments()
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseFacultyDepartments>>(await facultyService.GetAllWithDepartments()));
+        }
+        [HttpGet("{id:guid}/departments")]
         public async Task<ActionResult<ResponseDepartment>> GetByIdWithDepartments(Guid id)
         {
             return Ok(mapper.Map<ResponseFacultyDepartments>(await facultyService.GetByIdWithDepartments(id)));
         }
-        [HttpPost("[action]")]
+        [HttpPost]
         public async Task<ActionResult<Guid>> Add(RequestAddDepartment requestDepartment)
         {
             return Ok(await facultyService.Add(mapper.Map<Faculty>(requestDepartment)));
         }
-        [HttpPut("[action]")]
+        [HttpPut]
         public async Task<ActionResult> UpdateAsync(RequestUpdateDepartment requestDepartment)
         {
             await facultyService.Update(mapper.Map<Faculty>(requestDepartment));
             return Ok();
         }
-        [HttpDelete("[action]/{id:guid}")]
+        [HttpDelete("{id:guid}")]
         public async Task<ActionResult> DeleteById(Guid id)
         {
             await facultyService.DeleteById(id);

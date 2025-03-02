@@ -12,15 +12,8 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [Authorize]
     [Route("api/Teacher/{id:guid}/[controller]")]
     [ApiController]
-    public class ProfessionalDevelopmentController : ControllerBase
+    public class ProfessionalDevelopmentController(IMapper mapper, ITeacherProfessionalDevelopmentService tpds) : ControllerBase
     {
-        private readonly IMapper mapper;
-        private readonly ITeacherProfessionalDevelopmentService tpds;
-        public ProfessionalDevelopmentController(IMapper mapper, ITeacherProfessionalDevelopmentService tpds)
-        {
-            this.mapper = mapper;
-            this.tpds = tpds;
-        }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {

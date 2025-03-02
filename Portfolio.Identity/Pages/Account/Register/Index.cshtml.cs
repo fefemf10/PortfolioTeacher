@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using Portfolio.Application.ViewModels.Request;
 using Portfolio.Application.ViewModels.Response;
 using Portfolio.Domain.Models;
@@ -12,32 +13,19 @@ using Portfolio.Identity.Pages.Account.Register;
 
 namespace IdentityServer.Pages.Account.Register;
 
-public class Index : PageModel
+public class Index(
+	IIdentityServerInteractionService interaction,
+	IClientStore clientStore,
+	IAuthenticationSchemeProvider schemeProvider,
+	IIdentityProviderStore identityProviderStore,
+	IEventService events,
+	IHttpClientFactory httpClientFactory,
+	RoleManager<IdentityRole<Guid>> roleManager,
+	UserManager<IdentityUser<Guid>> userManager,
+	SignInManager<IdentityUser<Guid>> signInManager,
+	IStringLocalizer<Roles> localizer) : PageModel
 {
-	private readonly IClientStore clientStore;
-	private readonly IEventService events;
-	private readonly IIdentityProviderStore identityProviderStore;
-	private readonly IIdentityServerInteractionService interaction;
-	private readonly IAuthenticationSchemeProvider schemeProvider;
-	private readonly SignInManager<IdentityUser<Guid>> signInManager;
-	private readonly RoleManager<IdentityRole<Guid>> roleManager;
-	private readonly UserManager<IdentityUser<Guid>> userManager;
-	private readonly IHttpClientFactory httpClientFactory;
-
-    public Index(IIdentityServerInteractionService interaction, IClientStore clientStore, IAuthenticationSchemeProvider schemeProvider, IIdentityProviderStore identityProviderStore, IEventService events, IHttpClientFactory httpClientFactory, RoleManager<IdentityRole<Guid>> roleManager, UserManager<IdentityUser<Guid>> userManager, SignInManager<IdentityUser<Guid>> signInManager)
-	{
-		this.roleManager = roleManager;
-		this.userManager = userManager;
-		this.signInManager = signInManager;
-		this.interaction = interaction;
-		this.clientStore = clientStore;
-		this.schemeProvider = schemeProvider;
-		this.httpClientFactory = httpClientFactory;
-		this.identityProviderStore = identityProviderStore;
-		this.events = events;
-	}
-
-	public ViewModel View { get; set; }
+    public ViewModel View { get; set; }
 
 	[BindProperty]
 	public InputModel Input { get; set; }
@@ -64,7 +52,7 @@ public class Index : PageModel
 
 			if (result.Succeeded)
 			{
-				await userManager.AddToRoleAsync(user, Input.RoleName);
+				await userManager.AddToRoleAsync(user, Input.RoleName.ToString());
 				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
 				List<ResponseFacultyDepartments> requestFacultyDepartments;
 				requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/Faculty/GetAllWithDepartments");
@@ -78,8 +66,8 @@ public class Index : PageModel
 						break;
 					}
 				}
-                JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Role = Input.RoleName, FacultyId = facultyId, DepartmentId = Input.DepartmentId });
-				HttpResponseMessage httpResponse = await httpClient.PostAsync("api/Teacher/AddTeacher", js);
+                JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, FirstName = Input.FirstName, LastName = Input.LastName, MiddleName = Input.MiddleName, Role = Input.RoleName, FacultyId = facultyId, DepartmentId = Input.DepartmentId });
+				HttpResponseMessage httpResponse = await httpClient.PostAsync("api/Teacher", js);
 				if (httpResponse.IsSuccessStatusCode)
 				{
 					var loginresult = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: true);
@@ -98,10 +86,6 @@ public class Index : PageModel
 							throw new Exception("invalid return URL");
 						}
 					}
-					else
-					{
-
-					}
 				}
 				else
 				{
@@ -117,17 +101,18 @@ public class Index : PageModel
 	{
 		HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
 		Input = new InputModel { ReturnUrl = returnUrl };
-        List<ResponseFacultyDepartments> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/Faculty/GetAllWithDepartments");
+        List<ResponseFacultyDepartments> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/Faculty/departments");
 		List<SelectListGroup> facultyList = requestFacultyDepartments.Select(x => new SelectListGroup { Name = x.Name }).ToList();
 		View = new ViewModel
 		{
-			RolesList = new List<string>() { Roles.Teacher.ToString(), Roles.Student.ToString() },
+            RolesList = new List<SelectListItem>(),
 			FacultyDepartments = new List<SelectListItem>()
-			//FacultyDepartments = requestFacultyDepartments.Select(x => x.Departments.Select(y => new SelectListItem { Value = y.Id.ToString(), Text = y.Name, Group = facultyList.First() })).ToList()
 		};
 		foreach (var faculty in requestFacultyDepartments)
 		{
 			View.FacultyDepartments.AddRange(faculty.Departments.Select(y => new SelectListItem { Value = y.Id.ToString(), Text = y.Name, Group = facultyList.Find(z => z.Name == faculty.Name) }));
 		}
+		View.RolesList.Add(new SelectListItem(localizer[Roles.Teacher.ToString()], Roles.Teacher.ToString()));
+		View.RolesList.Add(new SelectListItem(localizer[Roles.Student.ToString()], Roles.Student.ToString()));
 	}
 }
