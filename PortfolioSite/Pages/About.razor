@@ -1,9 +1,7 @@
 ﻿@page "/about"
-@using System.ComponentModel.DataAnnotations
 @using Portfolio.Application.ViewModels.Request
 @using Portfolio.Application.ViewModels.Response
 @using Portfolio.Domain.Models
-@using PortfolioSite.ViewModels
 @using AutoMapper
 
 @inject IStringLocalizer<Post> localizerPost
@@ -29,7 +27,7 @@
 			<Field>
 				<TextEdit ReadOnly Text="@responseUser.MiddleName" />
 			</Field>
-			<Field>
+			@* <Field>
 				<SelectList
 				TValue="int"
 				TItem="KeyValuePair<int, string>"
@@ -50,7 +48,7 @@
 				Data="@Titles"
 				SelectedValue="@((int)(responseUser.AcademicTitle))"
 				SelectedValueExpression="@(() => (int)(responseUser.AcademicTitle))" />
-			</Field>
+			</Field> *@
 			<Field>
 				<TextEdit Disabled="true" Text="@departmentName" />
 			</Field>

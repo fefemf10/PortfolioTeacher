@@ -11,13 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\**" />
-    <Content Remove="Services\**" />
-    <EmbeddedResource Remove="Services\**" />
-    <None Remove="Services\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\appsettings.json" />
   </ItemGroup>
 
@@ -28,52 +21,26 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-    <PackageReference Include="Blazorise.Bootstrap5" Version="1.7.0" />
-    <PackageReference Include="Blazorise.Components" Version="1.7.0" />
-    <PackageReference Include="Blazorise.DataGrid" Version="1.7.0" />
-    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.7.0" />
+    <PackageReference Include="Blazorise" Version="1.7.5" />
+    <PackageReference Include="Blazorise.Bootstrap5" Version="1.7.5" />
+    <PackageReference Include="Blazorise.Components" Version="1.7.5" />
+    <PackageReference Include="Blazorise.DataGrid" Version="1.7.5" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.7.5" />
+    <PackageReference Include="Blazorise.Sidebar" Version="1.7.5" />
+    <PackageReference Include="Blazorise.Snackbar" Version="1.7.5" />
     <PackageReference Include="BlazorPro.BlazorSize" Version="9.0.0" />
     <PackageReference Include="Duende.IdentityModel" Version="7.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components" Version="9.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="9.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="9.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="9.0.2" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Portfolio.Application\Portfolio.Application.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\Shared\Localization\RoleNames.Designer.cs">
-      <DependentUpon>RoleNames.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Update="Resources\Shared\Localization\RoleNames.ru.Designer.cs">
-      <DependentUpon>RoleNames.ru.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\App.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Shared\Localization\RoleNames.resx">
-      <LastGenOutput>RoleNames.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Resources\Shared\Localization\RoleNames.ru.resx">
-      <LastGenOutput>RoleNames.ru.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

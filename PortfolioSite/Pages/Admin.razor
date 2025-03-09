@@ -36,10 +36,10 @@
 				</Validation>
 			</Field>
 			<Field>
-				<Select TValue="string" SelectedValueChanged="@ChangeRole">
-					<SelectItem Value="@Roles.Dean.ToString()">@roleLocalizer[@Roles.Dean.ToString()]</SelectItem>
-					<SelectItem Value="@Roles.Deputy.ToString()">@roleLocalizer[@Roles.Deputy.ToString()]</SelectItem>
-					<SelectItem Value="@Roles.Teacher.ToString()">@roleLocalizer[@Roles.Teacher.ToString()]</SelectItem>
+				<Select TValue="Roles" SelectedValueChanged="@ChangeRole">
+					<SelectItem Value="Roles.Dean">@roleLocalizer[@Roles.Dean.ToString()]</SelectItem>
+					<SelectItem Value="Roles.Deputy">@roleLocalizer[@Roles.Deputy.ToString()]</SelectItem>
+					<SelectItem Value="Roles.Teacher">@roleLocalizer[@Roles.Teacher.ToString()]</SelectItem>
 				</Select>
 			</Field>
 			<Field>
@@ -51,15 +51,15 @@
 				</Select>
 			</Field>
 			<Field>
-				<SelectList TItem="@RequestUpdateDepartment"
-					TValue="Guid"
-					Data="@requestDepartments"
-					TextField="@((item)=>item.Name)"
-					ValueField="@((item)=>item.Id)"
-					@bind-SelectedValue="@addUser.DepartmentId"
-					DefaultItemText=""
-					DefaultItemValue="@requestDepartments.FirstOrDefault().Id"
-					@ref="@selectList"/>
+				<SelectList TItem="@ResponseDepartment"
+				TValue="Guid?"
+				Data="@requestDepartments"
+				TextField="@((item)=>item.Name)"
+				ValueField="@((item)=>item.Id)"
+				@bind-SelectedValue="@addUser.DepartmentId"
+				DefaultItemText=""
+				DefaultItemValue="null"
+				@ref="@selectList"/>
 			</Field>
 		</Grid>
 	</Validations>
@@ -69,17 +69,16 @@
 <SnackbarStack @ref="@snackbarStack" DefaultInterval="3000.0" Location="SnackbarStackLocation.BottomEnd" TextWeight="TextWeight.Bold" TextSize="TextSize.ExtraLarge" />
 @code {
 	SnackbarStack snackbarStack;
-	List<RequestFacultyDepartment> requestFacultyDepartments;
-	List<RequestFaculty> requestFaculties;
-	List<RequestUpdateDepartment> requestDepartments;
+	List<ResponseFacultyDepartments> requestFacultyDepartments;
+	List<ResponseFaculty> requestFaculties;
+	List<ResponseDepartment> requestDepartments;
 	HttpClient webapi;
 	HttpClient identityapi;
 	RequestAddUser addUser = new();
 	Guid guid;
-	SelectList<RequestUpdateDepartment, Guid> selectList;
+	SelectList<ResponseDepartment, Guid?> selectList;
 	protected override async Task OnInitializedAsync()
 	{
-		await base.OnInitializedAsync();
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		identityapi = httpFactory.CreateClient("IdentityServer");
 		AccessTokenResult accessTokenResult = await tokenProvider.RequestAccessToken();
@@ -89,54 +88,52 @@
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
 		{
-			addUser.Role = Roles.Dean.ToString();
-			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<RequestFacultyDepartment>>($"Faculty/GetWithDepartment");
-			requestFaculties = requestFacultyDepartments.Select(x => new RequestFaculty(x.Id, x.Name)).ToList();
+			addUser.Role = Roles.Dean;
+			requestFacultyDepartments = await webapi.GetFromJsonAsync<List<ResponseFacultyDepartments>>($"api/Faculty/departments");
+			requestFaculties = requestFacultyDepartments.Select(x => new ResponseFaculty(x.Id, x.Name, x.FullName)).ToList();
+			selectList.DefaultItemHidden = false;
 			addUser.FacultyId = requestFacultyDepartments.First().Id;
-			addUser.DepartmentId = requestFacultyDepartments.First().Departments.First().Id;
 			requestDepartments = requestFacultyDepartments.First().Departments;
 		}
 	}
 	private async void AddNewUser()
 	{
-		Guid facultyId = requestFacultyDepartments.First().Id;
-		foreach (var faculty in requestFacultyDepartments)
-		{
-			var department = faculty.Departments.FirstOrDefault(y => y.Id == addUser.DepartmentId);
-			if (department is not null)
-			{
-				facultyId = faculty.Id;
-				break;
-			}
-		}
 		JsonContent js = JsonContent.Create(addUser);
 		HttpResponseMessage httpResponse = await identityapi.PostAsync($"api/User/Add", js);
 		if (httpResponse.IsSuccessStatusCode)
-			snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
+			await snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
 		else
-			snackbarStack.PushAsync(tableControlsLocalizer["ErrorRowNotification"], SnackbarColor.Danger);
+			await snackbarStack.PushAsync(tableControlsLocalizer["ErrorRowNotification"], SnackbarColor.Danger);
 	}
-
 	Task ChangeFaculty(Guid value)
 	{
 		addUser.FacultyId = value;
 		requestDepartments = requestFacultyDepartments.Single(x => x.Id == value).Departments;
+		addUser.DepartmentId = addUser.Role == Roles.Dean ? null : requestDepartments.First().Id;
 		return Task.CompletedTask;
 	}
-	Task ChangeRole(string value)
+	Task ChangeRole(Roles value)
 	{
 		addUser.Role = value;
-		selectList.DefaultItemHidden = true;
-		addUser.DepartmentId = requestDepartments.First().Id;
-		// requestDepartments = requestFacultyDepartments.Single(x => x.Id == addUser.FacultyId).Departments;
+		addUser.DepartmentId ??= requestDepartments.First().Id;
+		if (value != Roles.Dean)
+		{
+			selectList.DefaultItemHidden = true;
+			addUser.DepartmentId ??= requestDepartments.First().Id;
+		}
+		else
+		{
+			selectList.DefaultItemHidden = false;
+			addUser.DepartmentId = null;
+		}
 		return Task.CompletedTask;
 	}
 	private async void AddTestUsers()
 	{
 		HttpResponseMessage httpResponse = await identityapi.PostAsync($"api/User/AddTestUsers", null);
 		if (httpResponse.IsSuccessStatusCode)
-			snackbarStack.PushAsync("Added 1000 test users", SnackbarColor.Success);
+			await snackbarStack.PushAsync("Added 1000 test users", SnackbarColor.Success);
 		else
-			snackbarStack.PushAsync("Error", SnackbarColor.Danger);
+			await snackbarStack.PushAsync("Error", SnackbarColor.Danger);
 	}
 }

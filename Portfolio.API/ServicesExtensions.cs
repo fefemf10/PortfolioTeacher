@@ -13,6 +13,7 @@ namespace Portfolio.API
             services.AddScoped<IDisciplineService, DisciplineService>();
             services.AddScoped<ITeacherService, TeacherService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<ITeacherAwardService, TeacherAwardService>();
             services.AddScoped<ITeacherDisciplineService, TeacherDisciplineService>();
             services.AddScoped<ITeacherDepartmentService, TeacherDepartmentService>();

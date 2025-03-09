@@ -11,12 +11,10 @@ namespace Portfolio.Application.Services
     {
         public async Task AddTestUsers(List<Teacher> requestAddTeachers)
         {
-            string[] fio = [.. System.IO.File.ReadAllLines("SeedData/FIO.txt")];
             foreach (var requestAddTeacher in requestAddTeachers)
             {
                 Faculty faculty = await db.Faculties.FindAsync(requestAddTeacher.FacultyId) ?? throw new NotFoundByIdException();
-                Department? department = await db.Departments.FindAsync(requestAddTeacher.DepartmentId) ?? throw new NotFoundByIdException();
-                var name = GetName(fio[Random.Shared.Next() % fio.Length]);
+                Department? department = await db.Departments.FindAsync(requestAddTeacher.DepartmentId);
                 List<Work> works = new()
                 {
                     new Work
@@ -172,9 +170,9 @@ namespace Portfolio.Application.Services
                     Email = requestAddTeacher.Email,
                     Faculty = faculty,
                     Department = department,
-                    LastName = name.Item1,
-                    FirstName = name.Item2,
-                    MiddleName = name.Item3,
+                    LastName = requestAddTeacher.LastName,
+                    FirstName = requestAddTeacher.FirstName,
+                    MiddleName = requestAddTeacher.MiddleName,
                     DateBirthday = GetDateMinMax(1924, DateOnly.FromDateTime(DateTime.Now).Year - 18),
                     Post = (Post)(Random.Shared.Next() % Enum.GetNames<Post>().Length),
                     AcademicDegree = (AcademicDegree)(Random.Shared.Next() % Enum.GetNames<AcademicDegree>().Length),
@@ -190,14 +188,10 @@ namespace Portfolio.Application.Services
                     Awards = awards
                 };
                 await db.Teachers.AddAsync(teacher);
+                await db.SaveChangesAsync();
             }
-            await db.SaveChangesAsync();
         }
-        private (string, string, string) GetName(string value)
-        {
-            var splited = value.Split(' ');
-            return (splited[0], splited[1], splited[2]);
-        }
+        
         private List<T> ShuffleCollection<T>(List<T> list, int numberTake = 0)
         {
             var result = list.ToArray();

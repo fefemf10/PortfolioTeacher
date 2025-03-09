@@ -17,7 +17,7 @@ namespace Portfolio.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-preview.1.24081.2")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -861,21 +861,20 @@ namespace Portfolio.Infrastructure.Migrations
                 {
                     b.HasBaseType("Portfolio.Domain.Models.User");
 
-                    b.Property<string>("AcademicDegree")
-                        .HasColumnType("longtext");
+                    b.Property<int>("AcademicDegree")
+                        .HasColumnType("int");
 
-                    b.Property<string>("AcademicTitle")
-                        .HasColumnType("longtext");
+                    b.Property<int>("AcademicTitle")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("DepartmentId")
+                    b.Property<Guid?>("DepartmentId")
                         .HasColumnType("char(36)");
 
                     b.Property<Guid>("FacultyId")
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Post")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("Post")
+                        .HasColumnType("int");
 
                     b.HasIndex("DepartmentId");
 
@@ -1036,9 +1035,7 @@ namespace Portfolio.Infrastructure.Migrations
                 {
                     b.HasOne("Portfolio.Domain.Models.Department", "Department")
                         .WithMany("Teachers")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DepartmentId");
 
                     b.HasOne("Portfolio.Domain.Models.Faculty", "Faculty")
                         .WithMany()

@@ -5,6 +5,7 @@ namespace Portfolio.Application.ViewModels.Response
     public record ResponseFaculty(Guid Id, string Name, string FullName);
     public record ResponseDepartment(Guid Id, string Name);
     public record ResponseFacultyDepartments(Guid Id, string Name, string FullName, List<ResponseDepartment> Departments);
+    public record ResponseAddDepartment(string Name, Guid FaculyId);
     public record ResponseDiscipline(Guid Id, string Name);
     public record ResponseUser(Guid Id, string Email, string LastName, string FirstName, string? MiddleName,  DateOnly? DateBirthday);
     public record ResponseTeacher(Guid Id, string Email, string LastName, string FirstName, string? MiddleName, DateOnly? DateBirthday, Post Post, AcademicDegree AcademicDegree, AcademicTitle AcademicTitle, ResponseFaculty Faculty, ResponseDepartment? Department, uint PublicationCount);

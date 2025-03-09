@@ -16,17 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Handlers\**" />
-    <Compile Remove="Resources\Pages\Account\Logout\**" />
-    <Content Remove="Handlers\**" />
-    <Content Remove="Resources\Pages\Account\Logout\**" />
-    <EmbeddedResource Remove="Handlers\**" />
-    <EmbeddedResource Remove="Resources\Pages\Account\Logout\**" />
-    <None Remove="Handlers\**" />
-    <None Remove="Resources\Pages\Account\Logout\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Resources\Pages\Account\Login\InputModel.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -68,19 +57,19 @@
     <PackageReference Include="Duende.IdentityServer" Version="7.0.8" />
     <PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.8" />
     <PackageReference Include="Duende.IdentityServer.EntityFramework" Version="7.0.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.0-preview.1.24081.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.0-preview.1.24081.5" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0-preview.1.24081.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0-preview.1.24081.2">
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0-preview.1.24081.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
-    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.1" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="9.0.0-preview.3.efcore.9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
