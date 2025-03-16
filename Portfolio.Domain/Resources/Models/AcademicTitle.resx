@@ -117,22 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Administrator" xml:space="preserve">
-    <value>Администратор</value>
+  <data name="Docent" xml:space="preserve">
+    <value>Docent</value>
   </data>
-  <data name="Dean" xml:space="preserve">
-    <value>Декан</value>
-  </data>
-  <data name="Deputy" xml:space="preserve">
-    <value>Зав. кафедрой</value>
-  </data>
-  <data name="Moderator" xml:space="preserve">
-    <value>Модератор</value>
-  </data>
-  <data name="Student" xml:space="preserve">
-    <value>Студент</value>
-  </data>
-  <data name="Teacher" xml:space="preserve">
-    <value>Преподаватель</value>
+  <data name="Professor" xml:space="preserve">
+    <value>Professor</value>
   </data>
 </root>

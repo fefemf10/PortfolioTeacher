@@ -2,6 +2,7 @@
 @using Portfolio.Application.ViewModels.Request
 @using Portfolio.Application.ViewModels.Response
 @using Portfolio.Domain.Models
+@using PortfolioSite.Components
 @using AutoMapper
 
 @inject IStringLocalizer<Post> localizerPost
@@ -13,52 +14,7 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 
 <PageTitle>@localizer["Title"]</PageTitle>
-<Heading TextAlignment="TextAlignment.Center">@localizer["Title"]</Heading>
-@if (responseUser is not null)
-{
-	<Container>
-		<Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
-			<Field>
-				<TextEdit ReadOnly Text="@responseUser.LastName" />
-			</Field>
-			<Field>
-				<TextEdit ReadOnly Text="@responseUser.FirstName" />
-			</Field>
-			<Field>
-				<TextEdit ReadOnly Text="@responseUser.MiddleName" />
-			</Field>
-			@* <Field>
-				<SelectList
-				TValue="int"
-				TItem="KeyValuePair<int, string>"
-				Data="@Posts"
-				SelectedValue="@( (int)(responseUser.Post) )"
-				SelectedValueExpression="@( () => (int)(responseUser.Post) )"  />
-			</Field>
-			<Field>
-				<SelectList TValue="int"
-				TItem="KeyValuePair<int, string>"
-				Data="@Degrees"
-				SelectedValue="@((int)(responseUser.AcademicDegree))"
-				SelectedValueExpression="@(() => (int)(responseUser.AcademicDegree))" />
-			</Field>
-			<Field>
-				<SelectList TValue="int"
-				TItem="KeyValuePair<int, string>"
-				Data="@Titles"
-				SelectedValue="@((int)(responseUser.AcademicTitle))"
-				SelectedValueExpression="@(() => (int)(responseUser.AcademicTitle))" />
-			</Field> *@
-			<Field>
-				<TextEdit Disabled="true" Text="@departmentName" />
-			</Field>
-			<Field>
-				<DateEdit Date="@responseUser.DateBirthday" />
-			</Field>
-		</Grid>
-		<Button Color="Color.Success" Clicked="@AddInfo">@localizer["SaveChangesButton"]</Button>
-	</Container>
-}
+<UserCard Teacher=@responseUser/>
 
 @code {
 	string[]? localizedPost;
@@ -95,7 +51,6 @@
 	}
 	private void AddInfo()
 	{
-		JsonContent js = JsonContent.Create<RequestTeacher>(mapper.Map<RequestTeacher>(responseUser));
-		webapi.PutAsync($"api/Teacher/{guid.ToString()}", js);
+		webapi.PutAsJsonAsync($"api/Teacher/{guid.ToString()}", mapper.Map<RequestTeacher>(responseUser));
 	}
 }

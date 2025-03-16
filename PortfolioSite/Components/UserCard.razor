@@ -1,0 +1,30 @@
+﻿@using Portfolio.Application.ViewModels.Response
+@using Portfolio.Domain.Models
+@inject IStringLocalizer<Post> localizerPost
+@inject IStringLocalizer<AcademicDegree> localizerDegree
+@inject IStringLocalizer<AcademicTitle> localizerTitle
+
+<Div Flex="Flex.InlineFlex.Column.AlignItems.Center" Shadow="Shadow.Default" Border="Border.Rounded.Is1.Dark">
+    <Text Padding="Padding.Is1.OnAll" TextWeight="TextWeight.SemiBold" TextSize="TextSize.Large">@Teacher.LastName @Teacher.FirstName @Teacher.MiddleName</Text>
+    <Div Padding="Padding.Is3.OnAll" Flex="Flex.InlineFlex" Border="Border.Is1.OnTop.Dark">
+        <Div Flex="Flex.Column.JustifyContent.Center">
+            <UserCardItem Icon=@("fa-briefcase")>
+                @Teacher.Faculty.FullName, @Teacher.Department?.Name, @localizerPost[Teacher.Post.ToString()]
+            </UserCardItem>
+            <UserCardItem Icon=@("fa-user")>
+                @localizerDegree[Teacher.AcademicDegree.ToString()], @localizerTitle[Teacher.AcademicTitle.ToString()]
+            </UserCardItem>
+            <UserCardItem Icon=@("fa-envelope")>
+                @Teacher.Email
+            </UserCardItem>
+            <UserCardItem Icon=@("fa-cake-candles")>
+                @Teacher.DateBirthday
+            </UserCardItem>
+        </Div>
+        <Image Shadow="Shadow.Small" style="border-radius: 100%" Margin="Margin.Is3.FromStart.OnTablet.Is0.FromStart.OnTablet" Height="Height.Rem(8)" Source="https://avatar.iran.liara.run/public/44" />
+    </Div>
+</Div>
+
+@code {
+    [Parameter] public ResponseTeacher Teacher { get; set; }
+}

@@ -1,0 +1,9 @@
+﻿<Div Margin="Margin.Is1">
+    <Icon Width="Width.Em(1)" IconSize="IconSize.Large" Name=@Icon/>
+    <Text>@ChildContent</Text>
+</Div>
+
+@code {
+    [Parameter] public object? Icon { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
