@@ -11,11 +11,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="Resources\Pages\Dean.ru.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\appsettings.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Dockerfile" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Resources\Pages\Dean.ru.resx" />
   </ItemGroup>
 
   <ItemGroup>

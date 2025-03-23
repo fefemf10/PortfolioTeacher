@@ -88,6 +88,15 @@ namespace Portfolio.Domain.Resources.Models {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на None.
+        /// </summary>
+        internal static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Senior Teacher.
         /// </summary>
         internal static string SeniorTeacher {

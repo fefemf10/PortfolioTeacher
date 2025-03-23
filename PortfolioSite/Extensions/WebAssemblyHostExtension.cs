@@ -10,11 +10,7 @@ namespace PortfolioSite.Extensions
 		{
 			ILocalStorageService localStorage = webAssemblyHost.Services.GetRequiredService<ILocalStorageService>();
 			string result = await localStorage.GetItemAsStringAsync("BlazorCulture");
-			CultureInfo cultureInfo;
-			if (result is null)
-				cultureInfo = new CultureInfo("ru-RU");
-			else
-				cultureInfo = new CultureInfo(result);
+			CultureInfo cultureInfo = new CultureInfo(result ?? "ru_RU");
 			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 			CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 		}

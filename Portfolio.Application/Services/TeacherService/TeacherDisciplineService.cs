@@ -17,7 +17,9 @@ namespace Portfolio.Application.Services.TeacherService
         public async Task Add(Guid id, Guid entityId)
         {
             Teacher? teacher = await db.Teachers.Include(x => x.Disciplines).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
-            Discipline? discipline = teacher.Disciplines.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
+            Discipline? disciplineTeacher = teacher.Disciplines.SingleOrDefault(x => x.Id == entityId);
+            if (disciplineTeacher is not null) throw new AlredyExistException();
+            Discipline? discipline = await db.Disciplines.FindAsync(entityId) ?? throw new NotFoundByIdException();
             teacher.Disciplines.Add(discipline);
             await db.SaveChangesAsync();
         }
@@ -40,6 +42,12 @@ namespace Portfolio.Application.Services.TeacherService
         {
             Teacher? teacher = await db.Teachers.Include(x => x.Disciplines).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             return teacher.Disciplines.Select(x => x.Id).ToList();
+        }
+
+        public async Task<IEnumerable<Discipline>> GetAllEntities(Guid id)
+        {
+            Teacher? teacher = await db.Teachers.Include(x => x.Disciplines).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return teacher.Disciplines.ToList();
         }
     }
 }

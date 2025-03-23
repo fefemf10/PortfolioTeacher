@@ -150,6 +150,9 @@
   <data name="SpecializationRequired" xml:space="preserve">
     <value>Enter specialization</value>
   </data>
+  <data name="YearGraduationRange" xml:space="preserve">
+    <value>The field Year Graduation must be between {1} and {2}</value>
+  </data>
   <data name="YearGraduationRequired" xml:space="preserve">
     <value>Enter the year graduate</value>
   </data>

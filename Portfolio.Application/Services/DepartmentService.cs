@@ -15,11 +15,6 @@ namespace Portfolio.Application.Services
             this.db = db;
             this.facultyService = facultyService;
         }
-        public async Task<IEnumerable<Guid>> GetTeachers(Guid id)
-        {
-            Department d = await db.Departments.FindAsync(id) ?? throw new NotFoundByIdException();
-            return await db.Teachers.Where(x => x.DepartmentId == d.Id).Select(x => x.Id).ToListAsync();
-        }
         public async Task<IEnumerable<Department>> GetAll()
         {
             return await db.Departments.AsNoTracking().ToListAsync();
@@ -49,6 +44,18 @@ namespace Portfolio.Application.Services
         {
             db.Departments.Remove(await db.Departments.FindAsync(id) ?? throw new NotFoundByIdException());
             await db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Guid>> GetTeachersIds(Guid id)
+        {
+            Department d = await db.Departments.FindAsync(id) ?? throw new NotFoundByIdException();
+            return await db.Teachers.Where(x => x.DepartmentId == d.Id).Select(x => x.Id).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Teacher>> GetTeachers(Guid id)
+        {
+            Department d = await db.Departments.FindAsync(id) ?? throw new NotFoundByIdException();
+            return await db.Teachers.IncludeAll(db).Where(x => x.DepartmentId == d.Id).ToListAsync();
         }
     }
 }

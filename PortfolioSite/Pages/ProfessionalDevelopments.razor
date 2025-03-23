@@ -20,7 +20,7 @@
 		  FilterMode="DataGridFilterMode.Menu"
 		  UseValidation
 		  ValidationsHandlerType="ValidationHandlerType.DataAnnotation"
-		  Navigable
+		  NavigationMode="DataGridNavigationMode.Row"
 		  PagerOptions="@(new() {PaginationPosition = PagerElementPosition.Center})"
 		  EditMode="DataGridEditMode.Cell"
 		  RowInserted="OnRowInserted"
@@ -76,23 +76,21 @@
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-			userProfessionalDevelopments = await webapi.GetFromJsonAsync<List<RequestProfessionalDevelopment>>($"Teacher/{guid.ToString()}/GetProfessionalDevelopment");
+			userProfessionalDevelopments = await webapi.GetFromJsonAsync<List<RequestProfessionalDevelopment>>($"api/Teacher/{guid}/professionalDevelopment");
 	}
 	private void OnRowInserted(SavedRowItem<RequestProfessionalDevelopment, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestProfessionalDevelopment>(e.NewItem);
-		webapi.PostAsync($"Teacher/{guid.ToString()}/AddProfessionalDevelopment", jc);
+		webapi.PostAsJsonAsync($"api/Teacher/{guid}/professionalDevelopment", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
 	}
 	private void OnRowUpdated(SavedRowItem<RequestProfessionalDevelopment, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestProfessionalDevelopment>(e.NewItem);
-		webapi.PutAsync($"Teacher/{guid.ToString()}/UpdateProfessionalDevelopment", jc);
+		webapi.PutAsJsonAsync($"api/Teacher/{guid}/professionalDevelopment", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["UpdateRowNotification"], SnackbarColor.Warning);
 	}
 	private void OnRowDeleted(RequestProfessionalDevelopment e)
 	{
-		webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteProfessionalDevelopment/{e.Id}");
+		webapi.DeleteAsync($"api/Teacher/{guid}/professionalDevelopment/{e.Id}");
 		snackbarStack.PushAsync(tableControlsLocalizer["RemoveRowNotification"], SnackbarColor.Danger);
 	}
 }

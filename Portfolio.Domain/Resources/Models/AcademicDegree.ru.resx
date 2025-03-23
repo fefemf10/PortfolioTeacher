@@ -123,4 +123,7 @@
   <data name="Doctor" xml:space="preserve">
     <value>Доктор</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+  </data>
 </root>

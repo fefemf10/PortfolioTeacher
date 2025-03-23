@@ -10,7 +10,8 @@ namespace Portfolio.Domain.Services
         Task<IEnumerable<Faculty>> GetAllWithDepartments();
         Task<Faculty> GetById(Guid id);
         Task<Faculty> GetByIdWithDepartments(Guid id);
-        Task<IEnumerable<Guid>> GetTeachers(Guid id);
+        Task<IEnumerable<Guid>> GetTeachersIds(Guid id);
+        Task<IEnumerable<Teacher>> GetTeachers(Guid id);
         Task Update(Faculty faculty);
     }
 }

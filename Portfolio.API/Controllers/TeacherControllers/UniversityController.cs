@@ -15,12 +15,17 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [ApiController]
     public class UniversityController(IMapper mapper, ITeacherUniversityService tus) : ControllerBase
 	{
-        [HttpGet]
+        [HttpGet("/ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tus.GetAll(id));
         }
-        [HttpGet("[action]/{universityId:guid}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResponseUniversity>>> GetAllEntities(Guid id)
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseUniversity>>(await tus.GetAllEntities(id)));
+        }
+        [HttpGet("{universityId:guid}")]
         public async Task<ActionResult<ResponseUniversity>> Get(Guid id, Guid universityId)
         {
             return Ok(mapper.Map<ResponseUniversity>(await tus.Get(id, universityId)));
@@ -36,7 +41,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
             await tus.Update(id, mapper.Map<University>(university));
             return Ok();
         }
-        [HttpDelete("[action]/{universityId:guid}")]
+        [HttpDelete("{universityId:guid}")]
         public async Task<ActionResult> Delete(Guid id, Guid universityId)
         {
             await tus.Delete(id, universityId);

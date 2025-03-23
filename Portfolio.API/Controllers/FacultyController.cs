@@ -21,10 +21,15 @@ namespace Portfolio.API.Controllers
         {
             return Ok(mapper.Map<ResponseFaculty>(await facultyService.GetById(id)));
         }
-        [HttpGet("{id:guid}/teachers")]
-        public async Task<ActionResult<IEnumerable<Guid>>> GetTeachers(Guid id)
+        [HttpGet("{id:guid}/teachers/ids")]
+        public async Task<ActionResult<IEnumerable<Guid>>> GetTeachersIds(Guid id)
         {
-            return Ok(await facultyService.GetTeachers(id));
+            return Ok(await facultyService.GetTeachersIds(id));
+        }
+        [HttpGet("{id:guid}/teachers")]
+        public async Task<ActionResult<IEnumerable<ResponseTeacher>>> GetTeachers(Guid id)
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseTeacher>>(await facultyService.GetTeachers(id)));
         }
 		[HttpGet("departments")]
         public async Task<ActionResult<IEnumerable<ResponseFacultyDepartments>>> GetAllWithDepartments()

@@ -20,7 +20,7 @@
 		  FilterMode="DataGridFilterMode.Menu"
 		  UseValidation
 		  ValidationsHandlerType="ValidationHandlerType.DataAnnotation"
-		  Navigable
+		  NavigationMode="DataGridNavigationMode.Row"
 		  PagerOptions="@(new() {PaginationPosition = PagerElementPosition.Center})"
 		  EditMode="DataGridEditMode.Cell"
 		  RowInserted="OnRowInserted"
@@ -73,23 +73,21 @@
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-			userScienceProjects = await webapi.GetFromJsonAsync<List<RequestScienceProject>>($"Teacher/{guid.ToString()}/GetScienceProject");
+			userScienceProjects = await webapi.GetFromJsonAsync<List<RequestScienceProject>>($"api/Teacher/{guid}/scienceProject");
 	}
 	private void OnRowInserted(SavedRowItem<RequestScienceProject, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestScienceProject>(e.NewItem);
-		webapi.PostAsync($"Teacher/{guid.ToString()}/AddScienceProject", jc);
+		webapi.PostAsJsonAsync($"api/Teacher/{guid}/scienceProject", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
 	}
 	private void OnRowUpdated(SavedRowItem<RequestScienceProject, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestScienceProject>(e.NewItem);
-		webapi.PutAsync($"Teacher/{guid.ToString()}/UpdateScienceProject", jc);
+		webapi.PutAsJsonAsync($"api/Teacher/{guid}/scienceProject", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["UpdateRowNotification"], SnackbarColor.Warning);
 	}
 	private void OnRowDeleted(RequestScienceProject e)
 	{
-		webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteScienceProject/{e.Id}");
+		webapi.DeleteAsync($"api/Teacher/{guid}/scienceProject/{e.Id}");
 		snackbarStack.PushAsync(tableControlsLocalizer["RemoveRowNotification"], SnackbarColor.Danger);
 	}
 }

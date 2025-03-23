@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 namespace Portfolio.API.Controllers
 {
-	[Route("api/[controller]/[action]")]
+	[Route("api/[controller]")]
 	[ApiController]
 	public class DisciplineController(IMapper mapper, IDisciplineService disciplineService) : ControllerBase
 	{

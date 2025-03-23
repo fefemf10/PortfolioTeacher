@@ -150,6 +150,9 @@
   <data name="SpecializationRequired" xml:space="preserve">
     <value>Введите специализацию</value>
   </data>
+  <data name="YearGraduationRange" xml:space="preserve">
+    <value>Дата выпуска должна быть от {1} до {2}</value>
+  </data>
   <data name="YearGraduationRequired" xml:space="preserve">
     <value>Введите год выпуска</value>
   </data>

@@ -15,12 +15,17 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [ApiController]
     public class WorkController(IMapper mapper, ITeacherWorkService tws) : ControllerBase
 	{
-        [HttpGet]
+        [HttpGet("/ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tws.GetAll(id));
         }
-        [HttpGet("[action]/{workId:guid}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResponseWork>>> GetAllEntities(Guid id)
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseWork>>(await tws.GetAllEntities(id)));
+        }
+        [HttpGet("{workId:guid}")]
         public async Task<ActionResult<ResponseWork>> Get(Guid id, Guid workId)
         {
             return Ok(mapper.Map<ResponseWork>(await tws.Get(id, workId)));
@@ -36,7 +41,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
             await tws.Update(id, mapper.Map<Work>(work));
             return Ok();
         }
-        [HttpDelete("[action]/{workId:guid}")]
+        [HttpDelete("{workId:guid}")]
         public async Task<ActionResult> Delete(Guid id, Guid workId)
         {
             await tws.Delete(id, workId);

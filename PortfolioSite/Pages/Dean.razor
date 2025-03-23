@@ -6,11 +6,16 @@
 @using PortfolioSite.Shared.Localization;
 @using Portfolio.Domain.Models
 @inject IStringLocalizer<Dean> localizer
+@inject IStringLocalizer<Post> localizerPosts
 @inject IStringLocalizer<TeacherInfos> teacherInfosLocalizer
+@inject IStringLocalizer<TableControls> localizerTable
 @inject IHttpClientFactory httpFactory
 @inject AuthenticationStateProvider authenticationStateProvider
 <PageTitle>@localizer["Title"]</PageTitle>
-
+<Paragraph>
+    <Button Color="Color.Primary" Clicked="@dataGrid.ExpandAllGroups">@localizerTable["ExpandAllButton"]</Button>
+    <Button Color="Color.Secondary" Clicked="@dataGrid.CollapseAllGroups">@localizerTable["CollapseAllButton"]</Button>
+</Paragraph>
 <DataGrid TItem="ResponseTeacher"
           Data="@requestTeachers"
           Groupable
@@ -22,8 +27,12 @@
     <DataGridColumn Field="@nameof(ResponseTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] />
     <DataGridColumn Field="@nameof(ResponseTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] />
     <DataGridColumn Field="@nameof(ResponseTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] />
-    <DataGridColumn Field="@nameof(ResponseTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] />
-    <DataGridColumn Field="@nameof(ResponseTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] />
+    <DataGridColumn Field="@nameof(RequestTeacher.Post)" Caption=@teacherInfosLocalizer["Post"]>
+        <DisplayTemplate>
+            @localizerPosts[context.Post.ToString()]
+        </DisplayTemplate>
+    </DataGridColumn>
+    <DataGridNumericColumn Field="@nameof(ResponseTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] />
     <DataGridColumn Field="Department.Name" Caption=@teacherInfosLocalizer["Department"] Groupable Grouping />
 </DataGrid>
 
@@ -32,15 +41,17 @@
     DataGrid<ResponseTeacher> dataGrid;
     HttpClient webapi;
     Guid guid;
-	protected override async Task OnInitializedAsync()
-	{
-		await base.OnInitializedAsync();
-		webapi = httpFactory.CreateClient("PortfolioServer");
-		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
-		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-		{
-			ResponseTeacher responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
-            requestTeachers = await webapi.GetFromJsonAsync<List<ResponseTeacher>>($"Faculty/{responseUser.Faculty.Id}/GetTeacher");
-		}
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        webapi = httpFactory.CreateClient("PortfolioServer");
+        var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+        if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
+        {
+            ResponseTeacher responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"api/Teacher/{guid}");
+            requestTeachers = await webapi.GetFromJsonAsync<List<ResponseTeacher>>($"api/Faculty/{responseUser.Faculty.Id}/teachers");
+            requestTeachers = requestTeachers.Except(new[] { requestTeachers.Find(x => x.Id == guid) }).ToList();
+            await dataGrid.ExpandAllGroups();
+        }
 	}
 }

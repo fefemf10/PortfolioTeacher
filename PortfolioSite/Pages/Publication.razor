@@ -18,7 +18,7 @@
 		  FilterMode="DataGridFilterMode.Menu"
 		  UseValidation
 		  ValidationsHandlerType="ValidationHandlerType.DataAnnotation"
-		  Navigable
+		  NavigationMode="DataGridNavigationMode.Row"
 		  PagerOptions="@(new() {PaginationPosition = PagerElementPosition.Center})"
 		  EditMode="DataGridEditMode.Cell"
 		  RowInserted="OnRowInserted"
@@ -72,23 +72,21 @@
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-			userPublications = await webapi.GetFromJsonAsync<List<RequestPublication>>($"Teacher/{guid.ToString()}/GetPublication");
+			userPublications = await webapi.GetFromJsonAsync<List<RequestPublication>>($"api/Teacher/{guid}/publication");
 	}
 	private void OnRowInserted(SavedRowItem<RequestPublication, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestPublication>(e.NewItem);
-		webapi.PostAsync($"Teacher/{guid.ToString()}/AddPublication", jc);
+		webapi.PostAsJsonAsync($"api/Teacher/{guid}/publication", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
 	}
 	private void OnRowUpdated(SavedRowItem<RequestPublication, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestPublication>(e.NewItem);
-		webapi.PutAsync($"Teacher/{guid.ToString()}/UpdatePublication", jc);
+		webapi.PutAsJsonAsync($"api/Teacher/{guid}/publication", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["UpdateRowNotification"], SnackbarColor.Warning);
 	}
 	private void OnRowDeleted(RequestPublication e)
 	{
-		webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeletePublication/{e.Id}");
+		webapi.DeleteAsync($"api/Teacher/{guid}/publication/{e.Id}");
 		snackbarStack.PushAsync(tableControlsLocalizer["RemoveRowNotification"], SnackbarColor.Danger);
 	}
 }

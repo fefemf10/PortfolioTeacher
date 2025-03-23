@@ -45,9 +45,15 @@ namespace Portfolio.Application.Services.TeacherService
             return teacher.Dissertations.Select(x => x.Id).ToList();
         }
 
+        public async Task<IEnumerable<Dissertation>> GetAllEntities(Guid id)
+        {
+            Teacher? teacher = await db.Teachers.Include(x => x.Dissertations).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return teacher.Dissertations;
+        }
+
         public async Task Update(Guid id, Dissertation entity)
         {
-            Teacher? teacher = await db.Teachers.Include(x => x.Awards).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            Teacher? teacher = await db.Teachers.Include(x => x.Dissertations).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             Dissertation? dissertation = teacher.Dissertations.SingleOrDefault(x => x.Id == entity.Id) ?? throw new NotFoundByIdException();
             dissertation.Name = entity.Name;
             dissertation.YearProtection = entity.YearProtection;

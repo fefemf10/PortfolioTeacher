@@ -15,12 +15,17 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [ApiController]
     public class ScienceProjectController(IMapper mapper, ITeacherScienceProjectService tsps) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("/ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tsps.GetAll(id));
         }
-        [HttpGet("[action]/{scienceProjectId:guid}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResponseScienceProject>>> GetAllEntities(Guid id)
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseScienceProject>>(await tsps.GetAllEntities(id)));
+        }
+        [HttpGet("{scienceProjectId:guid}")]
         public async Task<ActionResult<ResponseScienceProject>> Get(Guid id, Guid scienceProjectId)
         {
             return Ok(mapper.Map<ResponseScienceProject>(await tsps.Get(id, scienceProjectId)));
@@ -36,7 +41,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
             await tsps.Update(id, mapper.Map<ScienceProject>(requestScienceProject));
             return Ok();
         }
-        [HttpDelete("[action]/{scienceProjectId:guid}")]
+        [HttpDelete("{scienceProjectId:guid}")]
         public async Task<ActionResult> Delete(Guid id, Guid scienceProjectId)
         {
             await tsps.Delete(id, scienceProjectId);

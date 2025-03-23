@@ -120,6 +120,9 @@
   <data name="Docent" xml:space="preserve">
     <value>Доцент</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+  </data>
   <data name="Professor" xml:space="preserve">
     <value>Профессор</value>
   </data>

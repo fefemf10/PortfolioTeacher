@@ -123,6 +123,9 @@
   <data name="AcademicTitle" xml:space="preserve">
     <value>Academic Title</value>
   </data>
+  <data name="DateBirthday" xml:space="preserve">
+    <value>Date of Birthday</value>
+  </data>
   <data name="Department" xml:space="preserve">
     <value>Department</value>
   </data>

@@ -14,12 +14,17 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [ApiController]
     public class ProfessionalDevelopmentController(IMapper mapper, ITeacherProfessionalDevelopmentService tpds) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("/ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tpds.GetAll(id));
         }
-        [HttpGet("[action]/{professionalDevelopementId:guid}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResponseProfessionalDevelopment>>> GetAllEntities(Guid id)
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseProfessionalDevelopment>>(await tpds.GetAllEntities(id)));
+        }
+        [HttpGet("{professionalDevelopementId:guid}")]
         public async Task<ActionResult<ResponseProfessionalDevelopment>> Get(Guid id, Guid professionalDevelopementId)
         {
             return Ok(mapper.Map<ResponseProfessionalDevelopment>(await tpds.Get(id, professionalDevelopementId)));
@@ -35,7 +40,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
             await tpds.Update(id, mapper.Map<ProfessionalDevelopment>(professionalDevelopment));
             return Ok();
         }
-        [HttpDelete("[action]/{professionalDevelopementId:guid}")]
+        [HttpDelete("{professionalDevelopementId:guid}")]
         public async Task<ActionResult> Delete(Guid id, Guid professionalDevelopementId)
         {
             await tpds.Delete(id, professionalDevelopementId);

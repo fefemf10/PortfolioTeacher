@@ -8,7 +8,8 @@ namespace Portfolio.Domain.Services
         Task DeleteById(Guid id);
         Task<IEnumerable<Department>> GetAll();
         Task<Department> GetById(Guid id);
-        Task<IEnumerable<Guid>> GetTeachers(Guid id);
+        Task<IEnumerable<Guid>> GetTeachersIds(Guid id);
+        Task<IEnumerable<Teacher>> GetTeachers(Guid id);
         Task Update(Department department);
     }
 }

@@ -20,7 +20,7 @@
 		  FilterMode="DataGridFilterMode.Menu"
 		  UseValidation
 		  ValidationsHandlerType="ValidationHandlerType.DataAnnotation"
-		  Navigable
+		  NavigationMode="DataGridNavigationMode.Row"
 		  PagerOptions="@(new() {PaginationPosition = PagerElementPosition.Center})"
 		  EditMode="DataGridEditMode.Cell"
 		  RowInserted="OnRowInserted"
@@ -70,23 +70,21 @@
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-			userPublicActivities = await webapi.GetFromJsonAsync<List<RequestPublicActivity>>($"Teacher/{guid.ToString()}/GetPublicActivity");
+			userPublicActivities = await webapi.GetFromJsonAsync<List<RequestPublicActivity>>($"api/Teacher/{guid}/publicActivity");
 	}
 	private void OnRowInserted(SavedRowItem<RequestPublicActivity, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestPublicActivity>(e.NewItem);
-		webapi.PostAsync($"Teacher/{guid.ToString()}/AddPublicActivity", jc);
+		webapi.PostAsJsonAsync($"api/Teacher/{guid}/publicActivity", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
 	}
 	private void OnRowUpdated(SavedRowItem<RequestPublicActivity, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestPublicActivity>(e.NewItem);
-		webapi.PutAsync($"Teacher/{guid.ToString()}/UpdatePublicActivity", jc);
+		webapi.PutAsJsonAsync($"api/Teacher/{guid}/publicActivity", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["UpdateRowNotification"], SnackbarColor.Warning);
 	}
 	private void OnRowDeleted(RequestPublicActivity e)
 	{
-		webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeletePublicActivity/{e.Id}");
+		webapi.DeleteAsync($"api/Teacher/{guid}/publicActivity/{e.Id}");
 		snackbarStack.PushAsync(tableControlsLocalizer["RemoveRowNotification"], SnackbarColor.Danger);
 	}
 }

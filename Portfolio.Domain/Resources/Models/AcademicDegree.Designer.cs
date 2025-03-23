@@ -77,5 +77,14 @@ namespace Portfolio.Domain.Resources.Models {
                 return ResourceManager.GetString("Doctor", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на None.
+        /// </summary>
+        internal static string None {
+            get {
+                return ResourceManager.GetString("None", resourceCulture);
+            }
+        }
     }
 }

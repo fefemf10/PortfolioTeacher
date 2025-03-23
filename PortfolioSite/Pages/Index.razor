@@ -19,6 +19,6 @@
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-			teacher = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
+			teacher = await webapi.GetFromJsonAsync<ResponseTeacher>($"api/Teacher/{guid}");
 	}
 }

@@ -126,6 +126,9 @@
   <data name="Laborant" xml:space="preserve">
     <value>Лаборант</value>
   </data>
+  <data name="None" xml:space="preserve">
+    <value>Нет</value>
+  </data>
   <data name="SeniorTeacher" xml:space="preserve">
     <value>Старший преподаватель</value>
   </data>

@@ -5,6 +5,7 @@ namespace Portfolio.Domain.Services
     public interface ICRUDService<T>
     {
         Task<IEnumerable<Guid>> GetAll(Guid id);
+        Task<IEnumerable<T>> GetAllEntities(Guid id);
         Task<T> Get(Guid id, Guid entityId);
         Task<Guid> Add(Guid id, T entity);
         Task Update(Guid id, T entity);

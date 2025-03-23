@@ -15,12 +15,17 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [ApiController]
     public class PublicationController(IMapper mapper, ITeacherPublicationService tps) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("/ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tps.GetAll(id));
         }
-        [HttpGet("[action]/{publicationId:guid}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResponsePublication>>> GetAllEntities(Guid id)
+        {
+            return Ok(mapper.Map<IEnumerable<ResponsePublication>>(await tps.GetAllEntities(id)));
+        }
+        [HttpGet("{publicationId:guid}")]
         public async Task<ActionResult<ResponsePublication>> Get(Guid id, Guid publicationId)
         {
             return Ok(mapper.Map<ResponsePublication>(await tps.Get(id, publicationId)));
@@ -36,7 +41,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
             await tps.Update(id, mapper.Map<Publication>(publication));
             return Ok();
         }
-        [HttpDelete("[action]/{publicationId:guid}")]
+        [HttpDelete("{publicationId:guid}")]
         public async Task<ActionResult> Delete(Guid id, Guid publicationId)
         {
             await tps.Delete(id, publicationId);

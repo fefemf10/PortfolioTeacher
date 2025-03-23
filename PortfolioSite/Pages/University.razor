@@ -20,7 +20,7 @@
 		  FilterMode="DataGridFilterMode.Menu"
 		  UseValidation
 		  ValidationsHandlerType="ValidationHandlerType.DataAnnotation"
-		  Navigable
+		  NavigationMode="DataGridNavigationMode.Row"
 		  PagerOptions="@(new() {PaginationPosition = PagerElementPosition.Center})"
 		  EditMode="DataGridEditMode.Cell"
 		  RowInserted="OnRowInserted"
@@ -31,7 +31,7 @@
 		<DataGridColumn Field="@nameof(RequestUniversity.Name)" Caption="@localizer["TableColumnName"]" Editable />
 		<DataGridColumn Field="@nameof(RequestUniversity.Specialization)" Caption="@localizer["TableColumnSpecialization"]" Editable />
 		<DataGridColumn Field="@nameof(RequestUniversity.Qualification)" Caption="@localizer["TableColumnQualification"]" Editable />
-		<DataGridColumn Field="@nameof(RequestUniversity.YearGraduation)" Caption="@localizer["TableColumnYearGraduation"]" Editable />
+		<DataGridNumericColumn Field="@nameof(RequestUniversity.YearGraduation)" Caption="@localizer["TableColumnYearGraduation"]" Editable />
 		<DataGridCommandColumn>
 			<NewCommandTemplate>
 				<Button Color="Color.Success" Clicked="@context.Clicked"><Icon Name="IconName.PlusSquare" IconSize="IconSize.Large" /></Button>
@@ -73,23 +73,21 @@
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-			userUniversities = await webapi.GetFromJsonAsync<List<RequestUniversity>>($"Teacher/{guid.ToString()}/GetUniversity");
+			userUniversities = await webapi.GetFromJsonAsync<List<RequestUniversity>>($"api/Teacher/{guid}/university");
 	}
 	private void OnRowInserted(SavedRowItem<RequestUniversity, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestUniversity>(e.NewItem);
-		webapi.PostAsync($"Teacher/{guid.ToString()}/AddUniversity", jc);
+		webapi.PostAsJsonAsync($"api/Teacher/{guid}/university", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["InsertRowNotification"], SnackbarColor.Success);
 	}
 	private void OnRowUpdated(SavedRowItem<RequestUniversity, Dictionary<string, object>> e)
 	{
-		JsonContent jc = JsonContent.Create<RequestUniversity>(e.NewItem);
-		webapi.PutAsync($"Teacher/{guid.ToString()}/UpdateUniversity", jc);
+		webapi.PutAsJsonAsync($"api/Teacher/{guid}/university", e.NewItem);
 		snackbarStack.PushAsync(tableControlsLocalizer["UpdateRowNotification"], SnackbarColor.Warning);
 	}
 	private void OnRowDeleted(RequestUniversity e)
 	{
-		webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteUniversity/{e.Id}");
+		webapi.DeleteAsync($"api/Teacher/{guid}/university/{e.Id}");
 		snackbarStack.PushAsync(tableControlsLocalizer["RemoveRowNotification"], SnackbarColor.Danger);
 	}
 }

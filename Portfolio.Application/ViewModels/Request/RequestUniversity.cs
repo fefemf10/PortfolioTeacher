@@ -12,6 +12,7 @@ namespace Portfolio.Application.ViewModels.Request
 		[Required(ErrorMessageResourceName = "QualificationRequired", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]
 		public string Qualification { get; set; }
 		[Required(ErrorMessageResourceName = "YearGraduationRequired", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]
-		public int YearGraduation { get; set; }
+		[Range(1900, 2100, ErrorMessageResourceName = "YearGraduationRange", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]
+		public int YearGraduation { get; set; } = DateTime.Today.Year;
     }
 }

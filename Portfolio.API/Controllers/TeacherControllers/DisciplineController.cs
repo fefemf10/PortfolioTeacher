@@ -15,23 +15,28 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [ApiController]
     public class DisciplineController(IMapper mapper, ITeacherDisciplineService tds) : ControllerBase
 	{
-        [HttpGet]
+        [HttpGet("/ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tds.GetAll(id));
         }
-        [HttpGet("[action]/{disciplineId:guid}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResponseDiscipline>>> GetAllEntities(Guid id)
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseDiscipline>>(await tds.GetAllEntities(id)));
+        }
+        [HttpGet("{disciplineId:guid}")]
         public async Task<ActionResult<ResponseDiscipline>> Get(Guid id, Guid disciplineId)
         {
             return Ok(mapper.Map<ResponseDiscipline>(await tds.Get(id, disciplineId)));
         }
-        [HttpPost("[action]/{disciplineId:guid}")]
+        [HttpPost("{disciplineId:guid}")]
         public async Task<ActionResult> Add(Guid id, Guid disciplineId)
         {
             await tds.Add(id, disciplineId);
             return Ok();
         }
-        [HttpDelete("[action]/{disciplineId:guid}")]
+        [HttpDelete("{disciplineId:guid}")]
         public async Task<ActionResult> Delete(Guid id, Guid disciplineId)
         {
             await tds.Delete(id, disciplineId);

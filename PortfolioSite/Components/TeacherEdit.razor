@@ -1,0 +1,91 @@
+﻿@using Portfolio.Application.ViewModels.Response
+@using Portfolio.Domain.Models
+@using PortfolioSite.Shared.Localization
+@using PortfolioSite.Extensions
+@inject IStringLocalizer<TeacherInfos> localizer
+@inject IStringLocalizer<TeacherEdit> localizerTeacherEdit
+@inject IStringLocalizer<Post> localizerPost
+@inject IStringLocalizer<AcademicDegree> localizerDegree
+@inject IStringLocalizer<AcademicTitle> localizerTitle
+
+<Div Flex="Flex.InlineFlex.Column.AlignItems.Center">
+    <Validations Mode="ValidationMode.Auto" Model="@Teacher">
+        <Grid Columns="GridColumns.Are1.OnMobile.Are3.OnDesktop" Gap="Gap.Is0.OnY">
+            <Field>
+                <FieldHelp>@localizer["LastName"]</FieldHelp>
+                <Validation Validator="ValidationRuleExtension.IsNotEmptyAndCharacter">
+                    <TextEdit Placeholder="@localizer["LastName"]" @bind-Text="@Teacher.LastName" />
+                </Validation>
+            </Field>
+            <Field>
+                <FieldHelp>@localizer["FirstName"]</FieldHelp>
+                <Validation Validator="ValidationRuleExtension.IsNotEmptyAndCharacter">
+                    <TextEdit Placeholder="@localizer["FirstName"]" @bind-Text="@Teacher.FirstName" />
+                </Validation>
+            </Field>
+            <Field>
+                <FieldHelp>@localizer["MiddleName"]</FieldHelp>
+                <Validation Validator="ValidationRuleExtension.IsEmptyAndCharacter">
+                    <TextEdit Placeholder="@localizer["MiddleName"]" @bind-Text="@Teacher.MiddleName" />
+                </Validation>
+            </Field>
+            <Field>
+                <FieldHelp>@localizer["Post"]</FieldHelp>
+                <SelectList TItem="KeyValuePair<Post, string>"
+                            TValue="Post"
+                            Data="@Posts"
+                            ValueField="_ => _.Key"
+                            TextField="_ => _.Value"
+                            @bind-SelectedValue="@Teacher.Post" />
+            </Field>
+            <Field>
+                <FieldHelp>@localizer["AcademicDegree"]</FieldHelp>
+                <SelectList TItem="KeyValuePair<AcademicDegree, string>"
+                            TValue="AcademicDegree"
+                            Data="@Degrees"
+                            ValueField="_ => _.Key"
+                            TextField="_ => _.Value"
+                            @bind-SelectedValue="@Teacher.AcademicDegree" />
+            </Field>
+            <Field>
+                <FieldHelp>@localizer["AcademicTitle"]</FieldHelp>
+                <SelectList TItem="KeyValuePair<AcademicTitle, string>"
+                            TValue="AcademicTitle"
+                            Data="@Titles"
+                            ValueField="_ => _.Key"
+                            TextField="_ => _.Value"
+                            @bind-SelectedValue="@Teacher.AcademicTitle" />
+            </Field>
+            <Field>
+                <FieldHelp>@localizer["Faculty"]</FieldHelp>
+                <TextEdit Disabled="true" Text="@Teacher.Faculty.Name" />
+            </Field>
+            <Field>
+                <FieldHelp>@localizer["Department"]</FieldHelp>
+                <TextEdit Disabled="true" Text="@Teacher.Department?.Name" />
+            </Field>
+            <Field>
+                <FieldHelp>@localizer["DateBirthday"]</FieldHelp>
+                <DateEdit Date="@Teacher.DateBirthday" />
+            </Field>
+        </Grid>
+    </Validations>
+    <Button Color="Color.Success" Clicked="@SaveInfo">@localizerTeacherEdit["SaveChangesButton"]</Button>
+</Div>
+@code {
+    [Parameter] public ResponseTeacher Teacher { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> SaveInfo { get; set; }
+    private List<KeyValuePair<Post, string>> Posts;
+    private List<KeyValuePair<AcademicDegree, string>> Degrees;
+    private List<KeyValuePair<AcademicTitle, string>> Titles;
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        string[]? localizedPost = Enum.GetNames<Post>().Select(x => localizerPost[x].Value).ToArray();
+        string[]? localizedDegree = Enum.GetNames<AcademicDegree>().Select(x => localizerDegree[x].Value).ToArray();
+        string[]? localizedTitle = Enum.GetNames<AcademicTitle>().Select(x => localizerTitle[x].Value).ToArray();
+        Posts = localizedPost.Select((name, index) => new KeyValuePair<Post, string>((Post)index, name)).ToList();
+        Degrees = localizedDegree.Select((name, index) => new KeyValuePair<AcademicDegree, string>((AcademicDegree)index, name)).ToList();
+        Titles = localizedTitle.Select((name, index) => new KeyValuePair<AcademicTitle, string>((AcademicTitle)index, name)).ToList();
+    }
+}

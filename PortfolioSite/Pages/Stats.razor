@@ -55,7 +55,7 @@
         var state = await authenticationStateProvider.GetAuthenticationStateAsync();
         if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
         {
-            ResponseTeacher responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
+            ResponseTeacher responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"api/Teacher/{guid}");
             countTeacherFaculty = await webapi.GetFromJsonAsync<uint>($"Stats/GetCountTeacherInFaculty/{responseUser.Faculty.Id}");
             avarageAgeTeacherFaculty = await webapi.GetFromJsonAsync<uint>($"Stats/GetAvarageAgeTeacherInFaculty/{responseUser.Faculty.Id}");
             requestTopTeacherDisciplinesInFaculty = await webapi.GetFromJsonAsync<List<ResponseTeacher>>($"Stats/GetTopTeacherDisciplinesInFaculty/{responseUser.Faculty.Id}");

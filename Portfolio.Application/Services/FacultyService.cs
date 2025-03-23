@@ -13,7 +13,7 @@ namespace Portfolio.Application.Services
         {
             this.db = db;
         }
-        public async Task<IEnumerable<Guid>> GetTeachers(Guid id)
+        public async Task<IEnumerable<Guid>> GetTeachersIds(Guid id)
         {
             Faculty f = await db.Faculties.Include(x => x.Departments).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             var teachers =
@@ -59,6 +59,13 @@ namespace Portfolio.Application.Services
         {
             db.Faculties.Remove(await db.Faculties.FindAsync(id) ?? throw new NotFoundByIdException());
             await db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Teacher>> GetTeachers(Guid id)
+        {
+            Faculty f = await db.Faculties.FindAsync(id) ?? throw new NotFoundByIdException();
+            var teachers = await db.Teachers.IncludeAll(db).Where(x => x.FacultyId == id).AsNoTracking().ToListAsync();
+            return teachers;
         }
     }
 }

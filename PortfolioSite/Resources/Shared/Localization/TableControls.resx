@@ -123,11 +123,17 @@
   <data name="CancelRowButton" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="CollapseAllButton" xml:space="preserve">
+    <value>Collapse All</value>
+  </data>
   <data name="EditRowButton" xml:space="preserve">
     <value>Edit</value>
   </data>
   <data name="ErrorRowNotification" xml:space="preserve">
     <value>Error add new entry</value>
+  </data>
+  <data name="ExpandAllButton" xml:space="preserve">
+    <value>Expand All</value>
   </data>
   <data name="InsertRowNotification" xml:space="preserve">
     <value>An entry has been added</value>

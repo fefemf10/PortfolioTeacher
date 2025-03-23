@@ -39,34 +39,34 @@
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-			userDisciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>($"Teacher/{guid.ToString()}/GetDiscipline");
-		disciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>("Discipline/Get");
+			userDisciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>($"api/Teacher/{guid}/discipline");
+		disciplines = await webapi.GetFromJsonAsync<List<ResponseDiscipline>>("api/Discipline");
 		disciplines = disciplines.Except(userDisciplines).ToList();
 		if (disciplines.Count > 0)
 			selectedValue = disciplines.First().Id;
 	}
 	private void AddDiscipline()
 	{
-		if (disciplines.Count > 0)
+		if (disciplines?.Count > 0)
 		{
 			selectedDiscipline = disciplines.Single(x => x.Id == selectedValue);
 			userDisciplines.Add(selectedDiscipline);
 			disciplines.Remove(selectedDiscipline);
-			webapi.PostAsync($"Teacher/{guid.ToString()}/AddDiscipline/{selectedValue}", null);
+			webapi.PostAsync($"api/Teacher/{guid}/discipline/{selectedValue}", null);
 			if (disciplines.Count > 0)
 				selectedValue = disciplines.First().Id;
 		}
 	}
 	private void DeleteDiscipline()
 	{
-		if (userDisciplines.Count > 0)
+		if (userDisciplines?.Count > 0)
 		{
 			if (userDisciplineSelectedItem is null)
 				return;
 			userDisciplines.Remove(userDisciplineSelectedItem);
 			if (!disciplines.Contains(userDisciplineSelectedItem))
 				disciplines.Add(userDisciplineSelectedItem);
-			webapi.DeleteAsync($"Teacher/{guid.ToString()}/DeleteDiscipline/{userDisciplineSelectedItem.Id}");
+			webapi.DeleteAsync($"api/Teacher/{guid}/discipline/{userDisciplineSelectedItem.Id}");
 			userDisciplineSelectedItem = userDisciplines.FirstOrDefault();
 			if (disciplines.Count > 0)
 				selectedValue = disciplines.First().Id;

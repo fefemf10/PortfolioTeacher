@@ -6,6 +6,7 @@
 @using Portfolio.Domain.Models
 @using PortfolioSite.Shared.Localization;
 @inject IStringLocalizer<Deputy> localizer
+@inject IStringLocalizer<Post> localizerPosts
 @inject IStringLocalizer<TeacherInfos> teacherInfosLocalizer
 @inject IHttpClientFactory httpFactory
 @inject AuthenticationStateProvider authenticationStateProvider
@@ -22,7 +23,11 @@
     <DataGridColumn Field="@nameof(RequestTeacher.LastName)" Caption=@teacherInfosLocalizer["LastName"] />
     <DataGridColumn Field="@nameof(RequestTeacher.FirstName)" Caption=@teacherInfosLocalizer["FirstName"] />
     <DataGridColumn Field="@nameof(RequestTeacher.MiddleName)" Caption=@teacherInfosLocalizer["MiddleName"] />
-    <DataGridColumn Field="@nameof(RequestTeacher.Post)" Caption=@teacherInfosLocalizer["Post"] />
+    <DataGridColumn Field="@nameof(RequestTeacher.Post)" Caption=@teacherInfosLocalizer["Post"]>
+        <DisplayTemplate>
+            @localizerPosts[context.Post.ToString()]
+        </DisplayTemplate>
+    </DataGridColumn>
     <DataGridColumn Field="@nameof(RequestTeacher.PublicationCount)" Caption=@teacherInfosLocalizer["PublicationCount"] />
 </DataGrid>
 @code {
@@ -37,8 +42,8 @@
         var state = await authenticationStateProvider.GetAuthenticationStateAsync();
         if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
         {
-            ResponseTeacher user = await webapi.GetFromJsonAsync<ResponseTeacher>($"Teacher/{guid.ToString()}/GetInfo");
-            requestTeachers = await webapi.GetFromJsonAsync<List<RequestTeacher>>($"Department/{user.Department.Id}/GetTeacher");
+            ResponseTeacher user = await webapi.GetFromJsonAsync<ResponseTeacher>($"api/Teacher/{guid}");
+            requestTeachers = await webapi.GetFromJsonAsync<List<RequestTeacher>>($"api/Department/{user.Department.Id}/teachers");
         }
     }
 }

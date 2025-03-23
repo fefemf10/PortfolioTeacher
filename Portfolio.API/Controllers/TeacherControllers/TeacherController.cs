@@ -22,8 +22,8 @@ namespace Portfolio.API.Controllers.TeacherControllers
             Teacher? teacher = await teacherService.GetByIdWithDependencies(id) ?? throw new NotFoundByIdException();
             return mapper.Map<ResponseTeacher>(teacher);
 		}
-		[HttpPut("{id:guid}")]
-		public async Task<ActionResult> AddInfo(Guid id, [Required][FromBody] RequestTeacher requestTeacher)
+		[HttpPut]
+		public async Task<ActionResult> AddInfo([Required][FromBody] RequestTeacher requestTeacher)
 		{
             await teacherService.AddInfo(mapper.Map<Teacher>(requestTeacher));
             return Ok();

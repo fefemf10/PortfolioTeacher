@@ -123,6 +123,9 @@
   <data name="AcademicTitle" xml:space="preserve">
     <value>Учёное звание</value>
   </data>
+  <data name="DateBirthday" xml:space="preserve">
+    <value>Дата рождения</value>
+  </data>
   <data name="Department" xml:space="preserve">
     <value>Кафедра</value>
   </data>

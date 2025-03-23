@@ -16,10 +16,15 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [ApiController]
     public class AwardController(IMapper mapper, ITeacherAwardService tas) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("/ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tas.GetAll(id));
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResponseAward>>> GetAllEntities(Guid id)
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseAward>>(await tas.GetAllEntities(id)));
         }
         [HttpGet("{awardId:guid}")]
         public async Task<ActionResult<ResponseAward>> Get(Guid id, Guid awardId)
@@ -37,7 +42,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
             await tas.Update(id, mapper.Map<Award>(requestAward));
             return Ok();
         }
-        [HttpDelete("[action]/{awardId:guid}")]
+        [HttpDelete("{awardId:guid}")]
         public async Task<ActionResult> Delete(Guid id, Guid awardId)
         {
             await tas.Delete(id, awardId);

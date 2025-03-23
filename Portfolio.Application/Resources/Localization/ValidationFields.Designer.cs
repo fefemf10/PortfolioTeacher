@@ -160,6 +160,15 @@ namespace Portfolio.Application.Resources.Localization {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на The field Year Graduation must be between {1} and {2}.
+        /// </summary>
+        public static string YearGraduationRange {
+            get {
+                return ResourceManager.GetString("YearGraduationRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Enter the year graduate.
         /// </summary>
         public static string YearGraduationRequired {

@@ -14,43 +14,22 @@
 @inject AuthenticationStateProvider authenticationStateProvider
 
 <PageTitle>@localizer["Title"]</PageTitle>
-<UserCard Teacher=@responseUser/>
+<TeacherEdit Teacher="@responseUser" SaveInfo="@AddInfo"/>
 
 @code {
-	string[]? localizedPost;
-	string[]? localizedDegree;
-	string[]? localizedTitle;
-	private List<KeyValuePair<int, string>> Posts;
-	private List<KeyValuePair<int, string>> Degrees;
-	private List<KeyValuePair<int, string>> Titles;
 	HttpClient webapi;
 	Guid guid;
 	ResponseTeacher responseUser;
-	List<RequestFacultyDepartment> requestFacultyDepartments;
-	string departmentName;
-	Guid facultyId;
-	ResponseDepartment? department;
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
-		localizedPost = Enum.GetNames<Post>().Select(x => localizerPost[x].Value).ToArray();
-		localizedDegree = Enum.GetNames<AcademicDegree>().Select(x => localizerDegree[x].Value).ToArray();
-		localizedTitle = Enum.GetNames<AcademicTitle>().Select(x => localizerTitle[x].Value).ToArray();
-		Posts = localizedPost.Select((name, index) => new KeyValuePair<int, string>(index, name)).ToList();
-		Degrees = localizedDegree.Select((name, index) => new KeyValuePair<int, string>(index, name)).ToList();
-		Titles = localizedTitle.Select((name, index) => new KeyValuePair<int, string>(index, name)).ToList();
 		webapi = httpFactory.CreateClient("PortfolioServer");
 		var state = await authenticationStateProvider.GetAuthenticationStateAsync();
 		if (Guid.TryParse(state.User.FindFirstValue("sub"), out guid))
-		{
-			responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"api/Teacher/{guid.ToString()}");
-			facultyId = responseUser.Faculty.Id;
-			department = responseUser.Department;
-			departmentName = department?.Name;
-		}
+			responseUser = await webapi.GetFromJsonAsync<ResponseTeacher>($"api/Teacher/{guid}");
 	}
 	private void AddInfo()
 	{
-		webapi.PutAsJsonAsync($"api/Teacher/{guid.ToString()}", mapper.Map<RequestTeacher>(responseUser));
+		webapi.PutAsJsonAsync($"api/Teacher", mapper.Map<RequestTeacher>(responseUser));
 	}
 }

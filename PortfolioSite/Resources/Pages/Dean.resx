@@ -117,37 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddRowButton" xml:space="preserve">
-    <value>Добавить</value>
-  </data>
-  <data name="CancelRowButton" xml:space="preserve">
-    <value>Отменить</value>
-  </data>
-  <data name="CollapseAllButton" xml:space="preserve">
-    <value>Скрыть</value>
-  </data>
-  <data name="EditRowButton" xml:space="preserve">
-    <value>Изменить</value>
-  </data>
-  <data name="ErrorRowNotification" xml:space="preserve">
-    <value>Ошибка повторите снова</value>
-  </data>
-  <data name="ExpandAllButton" xml:space="preserve">
-    <value>Раскрыть</value>
-  </data>
-  <data name="InsertRowNotification" xml:space="preserve">
-    <value>Запись добавлена</value>
-  </data>
-  <data name="RemoveRowButton" xml:space="preserve">
-    <value>Удалить</value>
-  </data>
-  <data name="RemoveRowNotification" xml:space="preserve">
-    <value>Запись удалена</value>
-  </data>
-  <data name="SaveRowButton" xml:space="preserve">
-    <value>Сохранить</value>
-  </data>
-  <data name="UpdateRowNotification" xml:space="preserve">
-    <value>Запись обновлена</value>
+  <data name="Title" xml:space="preserve">
+    <value>Dean</value>
   </data>
 </root>
