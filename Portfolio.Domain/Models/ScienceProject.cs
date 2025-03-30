@@ -1,4 +1,6 @@
-﻿namespace Portfolio.Domain.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Portfolio.Domain.Models
 {
 	public class ScienceProject
 	{
@@ -8,6 +10,7 @@
         public DateOnly? EndTimeWork { get; set; }
         public bool Director { get; set; }
         public Guid TeacherId { get; set; }
+        [JsonIgnore]
         public Teacher Teacher { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Portfolio.Domain.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Portfolio.Domain.Models
 {
     public class Publication
     {
@@ -9,6 +11,7 @@
         public uint Size { get; set; }
         public string? CoAuthor { get; set; }
         public Guid TeacherId { get; set; }
+        [JsonIgnore]
         public Teacher Teacher { get; set; }
     }
 }

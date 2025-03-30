@@ -19,7 +19,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
         [HttpGet("{id:guid}")]
 		public async Task<ActionResult<ResponseTeacher>> GetInfo(Guid id)
 		{
-            Teacher? teacher = await teacherService.GetByIdWithDependencies(id) ?? throw new NotFoundByIdException();
+            Teacher? teacher = await teacherService.GetByIdFromCache(id) ?? throw new NotFoundByIdException();
             return mapper.Map<ResponseTeacher>(teacher);
 		}
 		[HttpPut]

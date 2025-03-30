@@ -1,4 +1,6 @@
-﻿namespace Portfolio.Domain.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Portfolio.Domain.Models
 {
     public class ProfessionalDevelopment
     {
@@ -11,6 +13,7 @@
         public DateOnly DateСompletion { get; set; }
         public int? ListeningTime { get; set; }
         public Guid TeacherId { get; set; }
+        [JsonIgnore]
         public Teacher Teacher { get; set; }
     }
 }

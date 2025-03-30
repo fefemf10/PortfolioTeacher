@@ -1,17 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 using Portfolio.Application.Exceptions;
 using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
 using Portfolio.Infrastructure;
+using System.Text.Json;
 
 namespace Portfolio.Application.Services
 {
     public class FacultyService : IFacultyService
     {
         private readonly ApplicationContext db;
-        public FacultyService(ApplicationContext db)
+        private readonly IDistributedCache cache;
+        public FacultyService(ApplicationContext db, IDistributedCache cache)
         {
             this.db = db;
+            this.cache = cache;
         }
         public async Task<IEnumerable<Guid>> GetTeachersIds(Guid id)
         {
@@ -63,8 +67,19 @@ namespace Portfolio.Application.Services
 
         public async Task<IEnumerable<Teacher>> GetTeachers(Guid id)
         {
-            Faculty f = await db.Faculties.FindAsync(id) ?? throw new NotFoundByIdException();
-            var teachers = await db.Teachers.IncludeAll(db).Where(x => x.FacultyId == id).AsNoTracking().ToListAsync();
+            IEnumerable<Teacher> teachers = [];
+            string? teachersString = await cache.GetStringAsync("facultyTeachers" + id);
+            if (teachersString is not null) teachers = JsonSerializer.Deserialize<IEnumerable<Teacher>>(teachersString) ?? [];
+            if (!teachers.Any())
+            {
+                Faculty f = await db.Faculties.FindAsync(id) ?? throw new NotFoundByIdException();
+                teachers = await db.Teachers.IncludeAll(db).Where(x => x.FacultyId == id).AsNoTracking().ToListAsync();
+                teachersString = JsonSerializer.Serialize(teachers);
+                await cache.SetStringAsync("facultyTeachers" + id, teachersString, new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+                });
+            }
             return teachers;
         }
     }

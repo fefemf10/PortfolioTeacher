@@ -9,8 +9,10 @@ namespace Portfolio.Domain.Services
 		Task DeleteById(Guid id);
 		Task<IEnumerable<Teacher>> GetAll();
 		Task<IEnumerable<Teacher>> GetAllDependencies();
+		Task<IEnumerable<Teacher>> GetAllFromCache();
 		Task<Teacher> GetById(Guid id);
 		Task<Teacher> GetByIdWithDependencies(Guid id);
+		Task<Teacher> GetByIdFromCache(Guid id);
 		Task AddInfo(Teacher teacher);
 	}
 }

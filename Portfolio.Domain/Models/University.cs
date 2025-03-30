@@ -1,4 +1,6 @@
-﻿namespace Portfolio.Domain.Models
+﻿using System.Text.Json.Serialization;
+
+namespace Portfolio.Domain.Models
 {
 	public class University
 	{
@@ -8,6 +10,7 @@
 		public string Qualification { get; set; }
 		public int YearGraduation { get; set; }
 		public Guid TeacherId { get; set; }
-		public Teacher Teacher { get; set; }
+        [JsonIgnore]
+        public Teacher Teacher { get; set; }
 	}
 }

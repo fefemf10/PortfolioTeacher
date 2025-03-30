@@ -57,6 +57,7 @@ builder.Services.AddClientCredentialsHttpClient("PortfolioServer", "PortfolioSer
 {
     httpClient.BaseAddress = new Uri(builder.Configuration["PortfolioServer:Url"]!);
 });
+builder.Configuration.AddUserSecrets<Program>();
 string assembly = typeof(Program).Assembly.GetName().Name!;
 var connectionStringBuilder = new MySqlConnectionStringBuilder();
 connectionStringBuilder.Server = builder.Configuration["DBHost"];
@@ -106,7 +107,7 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    app.UseHsts();
+    //app.UseHsts();
 
 }
 //app.UseSwagger();

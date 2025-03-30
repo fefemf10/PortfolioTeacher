@@ -4,6 +4,7 @@ using MySqlConnector;
 using Portfolio.API;
 using Portfolio.API.Middleware;
 using Portfolio.Infrastructure;
+using StackExchange.Redis;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -71,6 +72,7 @@ builder.Services.AddAPIServices();
 //		}
 //	});
 //});
+builder.Configuration.AddUserSecrets<Program>();
 var connectionStringBuilder = new MySqlConnectionStringBuilder();
 connectionStringBuilder.Server = builder.Configuration["DBHost"];
 connectionStringBuilder.Database = builder.Configuration["DBDatabase"];
@@ -96,6 +98,10 @@ builder.Services.AddAuthorizationBuilder()
 	});
 
 builder.Services.AddCors();
+builder.Services.AddStackExchangeRedisCache(options => {
+    options.Configuration = "localhost";
+    options.InstanceName = "local";
+});
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors(builder =>

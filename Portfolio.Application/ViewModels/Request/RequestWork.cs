@@ -4,7 +4,7 @@ namespace Portfolio.Application.ViewModels.Request
 {
     public class RequestWork
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         [Required(ErrorMessageResourceName = "NameRequired", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]
         public required string Name { get; set; }
         [Required(ErrorMessageResourceName = "PostRequired", ErrorMessageResourceType = typeof(Resources.Localization.ValidationFields))]

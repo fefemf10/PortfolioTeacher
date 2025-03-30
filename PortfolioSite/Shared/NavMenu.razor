@@ -5,142 +5,147 @@
 @inject IStringLocalizer<NavMenu> localizer
 @inject NavigationManager navigationManager
 @inject IOptionsSnapshot<RemoteAuthenticationOptions<ApiAuthorizationProviderOptions>> RemoteAuthOptions
+@inject AuthenticationStateProvider authenticationStateProvider
 <Bar @bind-Visible="@topbarVisible"
-	 Breakpoint="Breakpoint.Widescreen"
-	 ThemeContrast="ThemeContrast.Light"
-	 Mode="BarMode.Horizontal"
-	 Padding="Padding.Is4.OnX.Is3.FromTop">
-	<BarBrand>
-		<BarItem>
-			<BarLink To="/">
-				<BarIcon IconName="IconName.Dashboard" />
-				@localizer["Title"]
-			</BarLink>
-		</BarItem>
-	</BarBrand>
-	<BarToggler />
-	<BarMenu>
-		<BarStart>
-			<BarItem>
-				<BarLink To="about">
-					<BarIcon IconName="IconName.User" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
-					@localizer["About"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="work">
-					<BarIcon IconName="IconName.Building" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
-					@localizer["Work"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="university">
-					<BarIcon IconName="@("fa-university")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
-					@localizer["University"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="awards">
-					<BarIcon IconName="@("fa-award")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
-					@localizer["Awards"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="publication">
-					<BarIcon IconName="@("fa-file")" />
-					@localizer["Publications"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="dissertation">
-					<BarIcon IconName="@("fa-book")" />
-					@localizer["Dissertations"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="scienceprojects">
-					<BarIcon IconName="@("fa-flask")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
-					@localizer["ScienceProjects"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="professionaldevelopments">
-					<BarIcon IconName="@("fa-chalkboard-teacher")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
-					@localizer["ProfessionalDevelopments"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="disciplines">
-					<BarIcon IconName="@("fa-list-ul")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
-					@localizer["Disciplines"]
-				</BarLink>
-			</BarItem>
-			<BarItem>
-				<BarLink To="publicactivities">
-					<BarIcon IconName="@("fa-walking")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
-					@localizer["PublicActivities"]
-				</BarLink>
-			</BarItem>
-			<AuthorizeView Roles="@Roles.Administrator.ToString()">
-				<Authorized>
-					<BarItem>
-						<BarLink To="admin">
-							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
-							@localizer["Admin"]
-						</BarLink>
-					</BarItem>
-				</Authorized>
-			</AuthorizeView>
-			<AuthorizeView Roles="@Roles.Dean.ToString()">
-				<Authorized>
-					<BarItem>
-						<BarLink To="dean">
-							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
-							@localizer["Dean"]
-						</BarLink>
-					</BarItem>
-					<BarItem>
-						<BarLink To="Stats">
-							<BarIcon IconName="IconName.Star" Padding="Padding.Is2.FromEnd" />
-							@localizer["Stats"]
-						</BarLink>
-					</BarItem>
-				</Authorized>
-			</AuthorizeView>
-			<AuthorizeView Roles="@Roles.Deputy.ToString()">
-				<Authorized>
-					<BarItem>
-						<BarLink To="deputy">
-							<BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
-							@localizer["Deputy"]
-						</BarLink>
-					</BarItem>
-					<BarItem>
-						<BarLink To="Stats">
-							<BarIcon IconName="IconName.Star" Padding="Padding.Is2.FromEnd" />
-							@localizer["Stats"]
-						</BarLink>
-					</BarItem>
-				</Authorized>
-			</AuthorizeView>
-			<BarItem>
-				<BarLink To="Authentication/Logout" Clicked="@BeginSignOut">
-					<BarIcon IconName="@("fa-right-from-bracket")" Padding="Padding.Is2.FromEnd" />
-					@localizer["Logout"]
-				</BarLink>
-			</BarItem>
-		</BarStart>
-	</BarMenu>
+     Breakpoint="Breakpoint.Widescreen"
+     ThemeContrast="ThemeContrast.Light"
+     Mode="BarMode.Horizontal"
+     Padding="Padding.Is4.OnX.Is3.FromTop">
+    <BarBrand>
+        <BarItem>
+            <BarLink To="/">
+                <BarIcon IconName="IconName.Dashboard" />
+                @localizer["Title"]
+            </BarLink>
+        </BarItem>
+    </BarBrand>
+    <BarToggler />
+    <BarMenu>
+        <BarStart>
+            <BarItem>
+                <BarLink To="about">
+                    <BarIcon IconName="IconName.User" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+                    @localizer["About"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="work">
+                    <BarIcon IconName="IconName.Building" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+                    @localizer["Work"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="university">
+                    <BarIcon IconName="@("fa-university")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+                    @localizer["University"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="awards">
+                    <BarIcon IconName="@("fa-award")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+                    @localizer["Awards"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="publication">
+                    <BarIcon IconName="@("fa-file")" />
+                    @localizer["Publications"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="dissertation">
+                    <BarIcon IconName="@("fa-book")" />
+                    @localizer["Dissertations"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="scienceprojects">
+                    <BarIcon IconName="@("fa-flask")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+                    @localizer["ScienceProjects"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="professionaldevelopments">
+                    <BarIcon IconName="@("fa-chalkboard-teacher")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+                    @localizer["ProfessionalDevelopments"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="disciplines">
+                    <BarIcon IconName="@("fa-list-ul")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+                    @localizer["Disciplines"]
+                </BarLink>
+            </BarItem>
+            <BarItem>
+                <BarLink To="publicactivities">
+                    <BarIcon IconName="@("fa-walking")" IconSize="IconSize.Large" Padding="Padding.Is2.FromEnd" />
+                    @localizer["PublicActivities"]
+                </BarLink>
+            </BarItem>
+            @if (role == Roles.Administrator)
+            {
+                <BarItem>
+                    <BarLink To="admin">
+                        <BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+                        @localizer["Admin"]
+                    </BarLink>
+                </BarItem>
+            }
+            else if (role == Roles.Dean)
+            {
+                <BarItem>
+                    <BarLink To="dean">
+                        <BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+                        @localizer["Dean"]
+                    </BarLink>
+                </BarItem>
+                <BarItem>
+                    <BarLink To="Stats">
+                        <BarIcon IconName="IconName.Star" Padding="Padding.Is2.FromEnd" />
+                        @localizer["Stats"]
+                    </BarLink>
+                </BarItem>
+            }
+            else if (role == Roles.Deputy)
+            {
+                <BarItem>
+                    <BarLink To="deputy">
+                        <BarIcon IconName="IconName.User" Padding="Padding.Is2.FromEnd" />
+                        @localizer["Deputy"]
+                    </BarLink>
+                </BarItem>
+                <BarItem>
+                    <BarLink To="Stats">
+                        <BarIcon IconName="IconName.Star" Padding="Padding.Is2.FromEnd" />
+                        @localizer["Stats"]
+                    </BarLink>
+                </BarItem>
+            }
+            <BarItem>
+                <BarLink To="Authentication/Logout" Clicked="@BeginSignOut">
+                    <BarIcon IconName="@("fa-right-from-bracket")" Padding="Padding.Is2.FromEnd" />
+                    @localizer["Logout"]
+                </BarLink>
+            </BarItem>
+        </BarStart>
+    </BarMenu>
 </Bar>
 <MediaQuery Media="@Breakpoints.LargeUp" @bind-Matches="isDesktop" />
 @code {
-	private bool topbarVisible = false;
-	private bool isDesktop = false;
-	private BarMode barMode => isDesktop ? BarMode.Horizontal : BarMode.VerticalInline;
-	private void BeginSignOut()
-	{
-		navigationManager.NavigateToLogout(RemoteAuthOptions.Get(Options.DefaultName).AuthenticationPaths.LogOutPath, RemoteAuthOptions.Get(Options.DefaultName).AuthenticationPaths.LogInPath);
-	}
+    private Roles role;
+    private bool topbarVisible = false;
+    private bool isDesktop = false;
+    private BarMode barMode => isDesktop ? BarMode.Horizontal : BarMode.VerticalInline;
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        var state = await authenticationStateProvider.GetAuthenticationStateAsync();
+        role = Enum.Parse<Roles>(state.User.FindFirstValue("role"));
+    }
+    private void BeginSignOut()
+    {
+        navigationManager.NavigateToLogout(RemoteAuthOptions.Get(Options.DefaultName).AuthenticationPaths.LogOutPath, RemoteAuthOptions.Get(Options.DefaultName).AuthenticationPaths.LogInPath);
+    }
 }
 @* <div class="top-row navbar navbar-dark">
 	<div class="container-fluid">
