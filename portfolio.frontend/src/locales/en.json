@@ -1,0 +1,50 @@
+{
+    "Nav": {
+        "Lang": "Language",
+        "BtnLogout": "Logout"
+    },
+    "Pages": {
+        "Home": {
+            "NameTitle": "Home"
+        },
+        "About": {
+            "NameTitle": "About"
+        },
+        "Awards": {
+            "NameTitle": "Awards"
+        },
+        "Disciplines": {
+            "NameTitle": "Disciplines"
+        },
+        "Dissertation": {
+            "NameTitle": "Dissertation"
+        },
+        "ProfessionalDevelopment": {
+            "NameTitle": "Professional Development"
+        },
+        "PublicActivities": {
+            "NameTitle": "Public Activities"
+        },
+        "ScienceProjects": {
+            "NameTitle": "Science Projects"
+        },
+        "University": {
+            "NameTitle": "University"
+        },
+        "Work": {
+            "NameTitle": "Work"
+        },
+        "Stats": {
+            "NameTitle": "Stats"
+        },
+        "Admin": {
+            "NameTitle": "Administrator"
+        },
+        "Dean": {
+            "NameTitle": "Dean"
+        },
+        "Deputy": {
+            "NameTitle": "Deputy"
+        }
+    }
+}

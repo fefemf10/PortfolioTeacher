@@ -23,7 +23,8 @@ namespace IdentityServer
 			new Client
 			{
 				ClientId = "PortfolioSite",
-				AllowedGrantTypes = GrantTypes.Code,
+                ClientSecrets = { new Secret("client_secret".Sha256()) },
+                AllowedGrantTypes = GrantTypes.Code,
 				AllowedScopes =
 				{
 					IdentityServerConstants.StandardScopes.OpenId,
@@ -31,9 +32,11 @@ namespace IdentityServer
 					IdentityServerConstants.LocalApi.ScopeName,
 					"PortfolioServer",
 				},
-				RedirectUris = { "https://localhost:4001/authentication/login-callback" },
-				PostLogoutRedirectUris = { "https://localhost:4001/authentication/logout-callback" },
-				RequireClientSecret = false
+				RedirectUris = {
+					"http://localhost:4000/authentication/login-callback", "http://pteach.ru/authentication/login-callback",
+					"http://localhost:4000/authentication/silent-callback", "http://pteach.ru/authentication/silent-callback"  },
+				PostLogoutRedirectUris = { "http://localhost:4000/authentication/logout-callback", "http://pteach.ru/authentication/logout-callback" },
+				RequireClientSecret = true
 			}
 		};
 		public static IEnumerable<ApiResource> ApiResources => new ApiResource[]

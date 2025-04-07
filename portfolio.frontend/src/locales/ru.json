@@ -1,0 +1,50 @@
+{
+    "Nav": {
+        "Lang": "Язык",
+        "BtnLogout": "Выход"
+    },
+    "Pages": {
+        "Home": {
+            "NameTitle": "Портфолио"
+        },
+        "About": {
+            "NameTitle": "Обо мне"
+        },
+        "Awards": {
+            "NameTitle": "Награды"
+        },
+        "Disciplines": {
+            "NameTitle": "Дисциплины"
+        },
+        "Dissertation": {
+            "NameTitle": "Диссертации"
+        },
+        "ProfessionalDevelopment": {
+            "NameTitle": "Повышения квалификации"
+        },
+        "PublicActivities": {
+            "NameTitle": "Общественные проекты"
+        },
+        "ScienceProjects": {
+            "NameTitle": "Нучные проекты"
+        },
+        "University": {
+            "NameTitle": "Образование"
+        },
+        "Work": {
+            "NameTitle": "Работа"
+        },
+        "Stats": {
+            "NameTitle": "Статистика"
+        },
+        "Admin": {
+            "NameTitle": "Администратор"
+        },
+        "Dean": {
+            "NameTitle": "Декан"
+        },
+        "Deputy": {
+            "NameTitle": "Зав. каф"
+        }
+    }
+}

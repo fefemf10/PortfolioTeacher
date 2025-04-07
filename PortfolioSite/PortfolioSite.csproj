@@ -13,12 +13,9 @@
 	<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <RunAOTCompilation>False</RunAOTCompilation>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <RunAOTCompilation>False</RunAOTCompilation>
+	<BlazorWebAssemblyEnableLinking>true</BlazorWebAssemblyEnableLinking>
+	<BlazorEnableCompression>true</BlazorEnableCompression>
     <Optimize>True</Optimize>
   </PropertyGroup>
 

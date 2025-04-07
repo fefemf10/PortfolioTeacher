@@ -77,7 +77,7 @@ namespace Portfolio.Application.Services
                 teachersString = JsonSerializer.Serialize(teachers);
                 await cache.SetStringAsync("facultyTeachers" + id, teachersString, new DistributedCacheEntryOptions
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
                 });
             }
             return teachers;

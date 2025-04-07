@@ -82,14 +82,16 @@ builder.Services.AddIdentityServer()
     .AddInMemoryApiScopes(builder.Configuration.GetSection("IdentityServer:ApiScopes"))
     .AddInMemoryApiResources(builder.Configuration.GetSection("IdentityServer:ApiResources"))
     .AddInMemoryIdentityResources(Configuration.IdentityResources)
-    .AddInMemoryClients(builder.Configuration.GetSection("IdentityServer:Clients"))
+    .AddInMemoryClients(Configuration.Clients)
     .AddOperationalStore(options =>
     {
         options.ConfigureDbContext = b => b.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(assembly));
     })
     .AddProfileService<ProfileService>()
     .AddDeveloperSigningCredential();
-
+builder.Services.ConfigureApplicationCookie(options => {
+    options.Cookie.SameSite = SameSiteMode.Lax;
+});
 builder.Services.AddScoped<ICorsPolicyService>(sp =>
 {
     var logger = sp.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
@@ -123,10 +125,8 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     SupportedCultures = supportedCultures,
     SupportedUICultures = supportedCultures
 });
-app.UseCookiePolicy(new CookiePolicyOptions { MinimumSameSitePolicy = SameSiteMode.Lax });
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAntiforgery();
 app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();

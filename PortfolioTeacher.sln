@@ -17,6 +17,8 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Infrastructure", "Portfolio.Infrastructure\Portfolio.Infrastructure.csproj", "{6F3D83D9-6B61-7A5E-6BB4-A58F805362C7}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "portfolio.frontend", "Portfolio.Frontend\portfolio.frontend.esproj", "{0DA0A781-A846-5543-488D-F8FDFB79A124}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,12 @@ Global
 		{6F3D83D9-6B61-7A5E-6BB4-A58F805362C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F3D83D9-6B61-7A5E-6BB4-A58F805362C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F3D83D9-6B61-7A5E-6BB4-A58F805362C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DA0A781-A846-5543-488D-F8FDFB79A124}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DA0A781-A846-5543-488D-F8FDFB79A124}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DA0A781-A846-5543-488D-F8FDFB79A124}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0DA0A781-A846-5543-488D-F8FDFB79A124}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DA0A781-A846-5543-488D-F8FDFB79A124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DA0A781-A846-5543-488D-F8FDFB79A124}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

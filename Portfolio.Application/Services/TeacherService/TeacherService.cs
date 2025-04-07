@@ -37,7 +37,7 @@ namespace Portfolio.Application.Services.TeacherService
             t.LastName = teacher.LastName;
             t.MiddleName = teacher.MiddleName;
             await db.SaveChangesAsync();
-            await cache.SetStringAsync(teacher.Id.ToString(), JsonSerializer.Serialize(t));
+            await cache.SetStringAsync("teacherWithDependencies" + teacher.Id, JsonSerializer.Serialize(t));
         }
 
         public async Task DeleteById(Guid id)
