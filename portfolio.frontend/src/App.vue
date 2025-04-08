@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { MenuOption, NButton, NLayout, NLayoutContent, NLayoutSider, NMenu, NIcon } from 'naive-ui'
+  import { MenuOption, NButton, NLayout, NLayoutContent, NLayoutSider, NMenu, NIcon, NFlex } from 'naive-ui'
   import {
     User as UserIcon,
     Home as HomeIcon,
@@ -50,13 +50,22 @@
   const collapsed = ref(false);
 </script>
 <template>
-  <NLayout has-sider>
+  <NLayout has-sider position="absolute">
     <NLayoutSider bordered show-trigger :collapsed="collapsed" collapse-mode="width" :collapsed-width="64" @collapse="collapsed = true" @expand="collapsed = false">
       <NMenu :options="menuOptions" :value="activeKey" :collapsed="collapsed" :collapsed-width="64" :collapsed-icon-size="32"/>
       <LanguageSwitcher/>
     </NLayoutSider>
-    <NLayoutContent>
-      <RouterView/>
+    <NLayoutContent style="background-color: #f5f5f5;" content-style="padding: 0 15px; max-width: 80vw; margin: 0 auto; min-width: calc(230px + 2rem);">
+        <RouterView/>
     </NLayoutContent>
   </NLayout>
 </template>
+<style scoped>
+  .LayoutContent{
+    background-color: #f5f5f5;
+    width: 100%;
+  }
+  .routerview{
+    padding: 0 15px; max-width: 80svw; margin: 0 auto; min-width: 200px;
+  }
+</style>

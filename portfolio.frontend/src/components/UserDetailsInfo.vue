@@ -6,14 +6,14 @@
     aud: string,
   }>()
   import {NFlex, NIcon} from 'naive-ui'
-  import { Briefcase, Mail, PhonePortraitOutline, Home } from '@vicons/ionicons5'
+  import { Briefcase, Envelope, Phone, Home } from '@vicons/fa'
   import UserDetailsInfoItem from './UserDetailsInfoItem.vue';
 </script>
 <template>
   <NFlex vertical>
       <UserDetailsInfoItem :icon=Briefcase :value=post />
-      <UserDetailsInfoItem :icon=Mail :value=email />
-      <UserDetailsInfoItem :icon=PhonePortraitOutline :value=phone />
+      <UserDetailsInfoItem :icon=Envelope :value=email />
+      <UserDetailsInfoItem :icon=Phone :value=phone />
       <UserDetailsInfoItem :icon=Home :value=aud />
   </NFlex>
 </template>

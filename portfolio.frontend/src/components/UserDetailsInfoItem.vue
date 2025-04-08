@@ -7,7 +7,7 @@
   }>()
 </script>
 <template>
-  <NFlex align="center" style="gap:unset">
+  <NFlex align="center" style="gap:unset" :wrap=false>
     <NIcon size="24" :component="icon"/>
     <NText class="text">{{ value }}</NText>
   </NFlex>
