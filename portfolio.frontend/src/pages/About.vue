@@ -1,6 +1,8 @@
 <script setup lang="ts">
   import { NFlex, NCard } from 'naive-ui'
   import { UserProfile } from '../classes/UserProfile';
+  import NavMenu from '../components/NavMenu.vue';
+  import Demo from '../components/Demo.vue';
   import UserInfo from '../components/UserInfo.vue';
   const user=new UserProfile();
   user.lastName="Терентьева";
@@ -16,6 +18,8 @@
 <template>
   <NFlex justify="center" vertical>
     <UserInfo :user=user></UserInfo>
+
+    <NavMenu></NavMenu>
       <NCard class="cards" title="Образование">
         <template #footer>
           #footer

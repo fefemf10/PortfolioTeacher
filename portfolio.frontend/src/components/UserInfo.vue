@@ -9,7 +9,7 @@
 </script>
 <template>
   <NFlex class="UserInfoCard" justify="space-evenly" align="center" reverse>
-    <NAvatar circle :size="200" src="https://avatar.iran.liara.run/public" />
+    <NAvatar lazy circle :size="200" src="https://avatar.iran.liara.run/public" />
     <NFlex vertical>
       <UserNameInfo :lastName=user.lastName :firstName=user.firstName :middleName=user.middleName :academicDegree=user.academicDegree :academicTitle=user.academicTitle />
       <NDivider class="divider"/>
