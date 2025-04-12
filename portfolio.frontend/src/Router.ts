@@ -18,9 +18,16 @@ import Stats from './pages/Stats.vue'
 import University from './pages/University.vue'
 import Work from './pages/Work.vue'
 import Admin from './pages/Admin.vue'
+import Resume from './pages/Resume.vue'
+
+
+import Page404 from './pages/404.vue'
+import Page403 from './pages/403.vue'
+import Page500 from './pages/500.vue'
+import Page418 from './pages/418.vue'
 
 const routes = [
-  { path: '/', component: Home, meta: { requiresAuth: true } },
+  { path: '/', component: Home },
   { path: '/about', component: About },
   { path: '/awards', component: Awards },
   { path: '/dean', component: Dean },
@@ -34,9 +41,15 @@ const routes = [
   { path: '/university', component: University },
   { path: '/work', component: Work },
   { path: '/admin', component: Admin },
+  { path: '/resume/:id', component: Resume },
   { path: '/authentication/login-callback', component: LoginCallback },
   { path: '/authentication/logout-callback', component: LogoutCallback },
   { path: '/authentication/silent-callback', component: SilentCallback },
+  { path: "/404", component: Page404 },
+  { path: "/403", component: Page403 },
+  { path: "/500", component: Page500 },
+  { path: "/418", component: Page418 },
+  { path: "/:catchAll(.*)", component: Page404 },
 ]
 
 const router = createRouter({

@@ -45,6 +45,26 @@
         },
         "Deputy": {
             "NameTitle": "Deputy"
+        },
+        "404": {
+            "title": "404 Not Found",
+            "description": "You know life is always ridiculous.",
+            "button": "Find Something Funny"
+        },
+        "403": {
+            "title": "403 Forbidden",
+            "description": "Some of the doors are always close to you.",
+            "button": "Take It Easy"
+        },
+        "500": {
+            "title": "500 Server error",
+            "description": "Server error may prove that you need hiring more developers.",
+            "button": "Speard Money Out"
+        },
+        "418": {
+            "title": "418 I'm a Teapot",
+            "description": "In Chinese, teapot is a kind of 'Beiju', which means 'tragedy'.",
+            "button": "It Is Easy to Take the Truth"
         }
     }
 }

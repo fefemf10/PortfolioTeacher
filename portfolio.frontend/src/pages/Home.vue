@@ -1,4 +1,9 @@
-<script setup></script>
+<script setup lang="ts">
+  import {NFlex} from 'naive-ui'
+  import NavigableBlock from '../components/NavigableBlock.vue'
+</script>
 <template>
-  Home
+  <NFlex>
+    <NavigableBlock/>
+  </NFlex>
 </template>

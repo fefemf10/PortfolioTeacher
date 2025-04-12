@@ -15,6 +15,7 @@ import {
   } from '@vicons/fa'
 import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router';
+import { logout } from '../oidc';
 const { t } = useI18n()
 function renderIcon(icon: Component) {
     return () => h(NIcon, { component: icon })
@@ -34,15 +35,29 @@ let getMenuOptions = (): DropdownOption[] => [
     {label: () => h(RouterLink, { to: '/admin' }, { default: () => t('Pages.Admin.NameTitle') }), key: '/admin', icon: renderIcon(UserIcon)},
     {label: () => h(RouterLink, { to: '/dean' }, { default: () => t('Pages.Dean.NameTitle') }), key: '/dean', icon: renderIcon(UserIcon)},
     {label: () => h(RouterLink, { to: '/deputy' }, { default: () => t('Pages.Deputy.NameTitle') }), key: '/deputy', icon: renderIcon(UserIcon)},
-    //{label: () => h(NButton, { onClick: logout }, { default: () => t('Nav.BtnLogout') }), key: 'go-back-logout'},
   ];
   const menuOptions = getMenuOptions();
 </script>
 <template>
-  <NFlex>
+  <NFlex justify="space-around" style="gap: 0.5rem">
     <NDropdown :options="menuOptions">
       <NButton>Образование</NButton>
     </NDropdown>
-    <NButton>djsd</NButton>
+    <RouterLink to="/"><NButton :render-icon=renderIcon(HomeIcon)>{{ t('Pages.Home.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/about"><NButton :render-icon=renderIcon(UserIcon)>{{ t('Pages.About.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/awards"><NButton :render-icon=renderIcon(AwardIcon)>{{ t('Pages.Awards.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/disciplines"><NButton :render-icon=renderIcon(ListUlIcon)>{{ t('Pages.Disciplines.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/dissertation"><NButton :render-icon=renderIcon(BookIcon)>{{ t('Pages.Dissertation.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/professionalDevelopments"><NButton :render-icon=renderIcon(AwardIcon)>{{ t('Pages.ProfessionalDevelopment.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/publicActivities"><NButton :render-icon=renderIcon(WalkingIcon)>{{ t('Pages.PublicActivities.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/scienceProjects"><NButton :render-icon=renderIcon(FlaskIcon)>{{ t('Pages.ScienceProjects.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/university"><NButton :render-icon=renderIcon(UniversityIcon)>{{ t('Pages.University.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/work"><NButton :render-icon=renderIcon(BuildingIcon)>{{ t('Pages.Work.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/stats"><NButton :render-icon=renderIcon(StarIcon)>{{ t('Pages.Stats.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/admin"><NButton :render-icon=renderIcon(UserIcon)>{{ t('Pages.Admin.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/dean"><NButton :render-icon=renderIcon(UserIcon)>{{ t('Pages.Dean.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/deputy"><NButton :render-icon=renderIcon(UserIcon)>{{ t('Pages.Deputy.NameTitle') }}</NButton></RouterLink>
+    <RouterLink to="/"><NButton :render-icon=renderIcon(UserIcon)>{{ t('Pages.Deputy.NameTitle') }}</NButton></RouterLink>
+    <NButton :onclick=logout>{{ t('Nav.BtnLogout') }}</NButton>
   </NFlex>
 </template>

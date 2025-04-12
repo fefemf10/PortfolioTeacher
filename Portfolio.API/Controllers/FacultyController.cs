@@ -4,13 +4,16 @@ using Portfolio.Application.ViewModels.Request;
 using Portfolio.Application.ViewModels.Response;
 using AutoMapper;
 using Portfolio.Domain.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Portfolio.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class FacultyController(IMapper mapper, IFacultyService facultyService) : ControllerBase
 	{
+        [AllowAnonymous]
         [HttpGet]
 		public async Task<ActionResult<IEnumerable<ResponseFaculty>>> GetAll()
 		{
@@ -31,7 +34,8 @@ namespace Portfolio.API.Controllers
         {
             return Ok(mapper.Map<IEnumerable<ResponseTeacher>>(await facultyService.GetTeachers(id)));
         }
-		[HttpGet("departments")]
+        [AllowAnonymous]
+        [HttpGet("departments")]
         public async Task<ActionResult<IEnumerable<ResponseFacultyDepartments>>> GetAllWithDepartments()
         {
             return Ok(mapper.Map<IEnumerable<ResponseFacultyDepartments>>(await facultyService.GetAllWithDepartments()));
