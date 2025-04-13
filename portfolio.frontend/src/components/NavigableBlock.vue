@@ -30,9 +30,9 @@ onMounted(async () => {
 <template>
   <NCard class="cards">
     <template #header>
-      <NText class="cardtitle">Организационная структура</NText>
+      <NText class="cardtitle" type="success">Организационная структура</NText>
     </template>
-    <NTree :data=treeData block-line expand-on-click>
+    <NTree :data=treeData block-line expand-on-click :animated=false show-line>
     </NTree>
   </NCard>
 </template>
@@ -40,10 +40,8 @@ onMounted(async () => {
   .cards{
     border-radius: 0.5rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
-    width: 20vw;
   }
   .cardtitle {
-    color: var(--n-color-target);
     font-size: large;
     font-weight: bold;
   }

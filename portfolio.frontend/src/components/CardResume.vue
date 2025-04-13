@@ -2,9 +2,9 @@
   import { NTimeline, NTimelineItem, NText, NCard } from 'naive-ui';
 </script>
 <template>
-  <NCard class="cards">
+  <NCard>
     <template #header>
-      <NText class="cardtitle">Образование</NText>
+      <NText type="info">Образование</NText>
     </template>
       <NTimeline size="large">
         <NTimelineItem type="info" time="2025 г." content="Oops" />
@@ -17,10 +17,6 @@
     </NCard>
 </template>
 <style scoped>
-  .cards{
-    border-radius: 0.5rem;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
-  }
   .cardtitle {
     color: var(--n-color-target);
     font-size: large;
