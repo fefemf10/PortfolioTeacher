@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import {NFlex} from 'naive-ui'
+  import {NFlex, NText} from 'naive-ui'
   import NavigableBlock from '../components/NavigableBlock.vue'
   import CardUser from '../components/Home/CardUser.vue';
   import { UserProfile } from '../classes/UserProfile';
@@ -15,19 +15,19 @@
   user.aud = "ауд.Приемная";
 </script>
 <template>
-  <NFlex justify="space-between" :size="[0, 0]" style="min-width: 20rem;">
-    <NFlex class="users">
-      <CardUser :user=user />
-    </NFlex>
-    <NFlex class="navblock">
-      <NavigableBlock/>
-    </NFlex>
+  <NFlex class="roothome" justify="space-between" size="large">
+      <CardUser class="users" :user=user />
+      <NavigableBlock class="navblock"/>
   </NFlex>
 </template>
 <style scoped>
-  .users{
+  .users {
+    width: calc(100% - 23rem);
+    flex-shrink: 0;
+    flex-grow: 1;
   }
-  .navblock{
+  .navblock {
     width: 20rem;
+    flex-grow: 1;
   }
 </style>

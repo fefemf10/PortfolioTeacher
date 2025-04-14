@@ -9,7 +9,7 @@
       <NText>ДонГТУ</NText>
       <ThemeSwitcher />
     </NLayoutHeader>
-    <NLayoutContent style="min-height: calc(100dvh - 6rem);" content-style="padding: 0 1rem; max-width: 80vw; margin: 0 auto; min-width: calc(200px + 4rem);">
+    <NLayoutContent content-style="min-height: calc(100dvh - 6rem); padding: 1rem; min-width: 320px;">
         <RouterView />
     </NLayoutContent>
     <NLayoutFooter class="headfoot">
@@ -19,11 +19,16 @@
 </template>
 <style scoped>
   .routerview {
-    padding: 0 15px; max-width: 80svw; margin: 0 auto; min-width: 200px;
+    padding: 0 1rem; min-width: calc(200px + 4rem);
   }
   .headfoot{
     font-size: large;
     font-weight: bold;
-    display:flex; flex-wrap: nowrap; text-wrap-mode: nowrap; justify-content:center; align-items: center; height: 3rem; background-color: inherit; padding: 0 1rem; max-width: 80vw; margin: 0 auto;
+    display:flex;
+    text-wrap-mode: nowrap;
+    justify-content:center;
+    align-items: center;
+    height: 3rem;
+    padding: 0 1rem;
   }
 </style>

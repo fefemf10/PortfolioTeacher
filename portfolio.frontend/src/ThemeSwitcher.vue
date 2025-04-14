@@ -7,9 +7,9 @@
 <template>
   <NSpace align="center" style="padding: 1rem;">
     <NRadioGroup v-model:value="themePreference">
-      <NRadioButton value="system">🌗 Системная</NRadioButton>
-      <NRadioButton value="light">☀️ Светлая</NRadioButton>
-      <NRadioButton value="dark">🌙 Тёмная</NRadioButton>
+      <NRadioButton value="system">🌗</NRadioButton>
+      <NRadioButton value="light">☀️</NRadioButton>
+      <NRadioButton value="dark">🌙</NRadioButton>
     </NRadioGroup>
   </NSpace>
 </template>

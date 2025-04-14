@@ -30,6 +30,15 @@ watchEffect(() => {
     meta.content = themeColor
     document.head.appendChild(meta)
   }
+  const metaColorScheme = document.querySelector('meta[name="color-scheme"]') as HTMLMetaElement
+  if (metaColorScheme) {
+    metaColorScheme.setAttribute('content', 'dark light')
+  } else {
+    const meta = document.createElement('meta')
+    meta.name = 'color-scheme'
+    meta.content = 'dark light'
+    document.head.appendChild(meta)
+  }
 });
 
 export function useThemeStore() {

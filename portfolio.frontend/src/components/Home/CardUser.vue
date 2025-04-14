@@ -17,12 +17,12 @@
       <NText class="cardtitle" type="info">Список сотрудников</NText>
     </template>
     <NListItem>
-      <NFlex justify="space-around">
+      <NFlex>
         <NAvatar lazy circle :size="64" src="https://avatar.iran.liara.run/public" />
-        <NFlex justify="space-between">
+        <NFlex class="fiopost" justify="space-between">
           <NFlex vertical>
-            <NText class="fio" type="info">{{user.lastName }} {{user.firstName}} {{user.middleName}}</NText>
-            <NText class="post" type="info">{{user.post }}</NText>
+            <NText class="fio" type="info">{{ user.lastName }} {{ user.firstName }} {{ user.middleName }}</NText>
+            <NText class="post" type="info">{{ user.post }}</NText>
           </NFlex>
           <NFlex vertical>
             <UserDetailsInfoItem :icon=Envelope :value=user.email />
@@ -42,11 +42,15 @@
     border-radius: 0.5rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
     padding: 1rem;
+    min-width: 14rem;
   }
   .fio {
     font-size: x-large;
   }
   .academic {
     font-size: medium;
+  }
+  .fiopost{
+    width: calc(100% - 64px - 2rem);
   }
 </style>
