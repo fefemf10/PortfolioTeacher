@@ -17,13 +17,12 @@
 <template>
   <NFlex justify="center" vertical>
     <UserInfo :user=user></UserInfo>
-
     <NavMenu></NavMenu>
-      <NCard class="cards" title="Образование">
-        <template #footer>
-          #footer
-        </template>
-      </NCard>
+    <NCard class="cards" title="Образование">
+      <template #footer>
+        #footer
+      </template>
+    </NCard>
   </NFlex>
 </template>
 <style scoped>

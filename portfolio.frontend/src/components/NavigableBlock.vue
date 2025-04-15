@@ -41,6 +41,7 @@ onMounted(async () => {
     border-radius: 0.5rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
     min-width: 16rem;
+    height: fit-content;
   }
   .cardtitle {
     font-size: large;

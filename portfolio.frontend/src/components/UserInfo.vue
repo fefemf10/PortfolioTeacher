@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { UserProfile } from '../classes/UserProfile';
-  import {NFlex, NAvatar, NDivider, DividerProps } from 'naive-ui'
+  import {NFlex, NAvatar, NDivider, DividerProps, useThemeVars } from 'naive-ui'
   import UserNameInfo from './UserNameInfo.vue';
   import UserDetailsInfo from './UserDetailsInfo.vue';
   import { ref } from 'vue';
@@ -11,6 +11,8 @@
   const dividerThemeOverrides: DividerThemeOverrides = {
     color: 'red',
   }
+  const themeVars = useThemeVars();
+  const borderColor = themeVars.value.boxShadow1;
 </script>
 <template>
   <NFlex class="UserInfoCard" justify="space-evenly" align="center" reverse>

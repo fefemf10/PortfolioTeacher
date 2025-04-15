@@ -1,8 +1,7 @@
 <script setup lang="ts">
-  import { NList, NListItem, NText, NFlex, NAvatar, TextProps } from 'naive-ui';
-  import { Briefcase, Envelope, Phone, Home } from '@vicons/fa';
-  import UserDetailsInfoItem from '../UserDetailsInfoItem.vue';
+  import { NList, NListItem, NText, TextProps } from 'naive-ui';
   import { UserProfile } from '../../classes/UserProfile';
+  import CardUserItem from './CardUserItem.vue';
   const props = defineProps<{
     user: UserProfile
   }>();
@@ -16,21 +15,13 @@
     <template #header>
       <NText class="cardtitle" type="info">Список сотрудников</NText>
     </template>
-    <NListItem>
-      <NFlex>
-        <NAvatar lazy circle :size="64" src="https://avatar.iran.liara.run/public" />
-        <NFlex class="fiopost" justify="space-between">
-          <NFlex vertical>
-            <NText class="fio" type="info">{{ user.lastName }} {{ user.firstName }} {{ user.middleName }}</NText>
-            <NText class="post" type="info">{{ user.post }}</NText>
-          </NFlex>
-          <NFlex vertical>
-            <UserDetailsInfoItem :icon=Envelope :value=user.email />
-            <UserDetailsInfoItem :icon=Phone :value=user.phone />
-          </NFlex>
-        </NFlex>
-      </NFlex>
-    </NListItem>
+    <NListItem><CardUserItem :user=user /></NListItem>
+    <NListItem><CardUserItem :user=user /></NListItem>
+    <NListItem><CardUserItem :user=user /></NListItem>
+    <NListItem><CardUserItem :user=user /></NListItem>
+    <NListItem><CardUserItem :user=user /></NListItem>
+    <NListItem><CardUserItem :user=user /></NListItem>
+    <NListItem><CardUserItem :user=user /></NListItem>
   </NList>
 </template>
 <style scoped>
@@ -42,15 +33,7 @@
     border-radius: 0.5rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.09);
     padding: 1rem;
-    min-width: 14rem;
+    min-width: 16rem;
   }
-  .fio {
-    font-size: x-large;
-  }
-  .academic {
-    font-size: medium;
-  }
-  .fiopost{
-    width: calc(100% - 64px - 2rem);
-  }
+
 </style>
