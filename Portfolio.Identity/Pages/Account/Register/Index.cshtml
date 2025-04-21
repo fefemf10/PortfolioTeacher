@@ -16,20 +16,8 @@
 					<form asp-route="/Account/Register/Index">
 						<input type="hidden" asp-for="Input.ReturnUrl" />
 						<div class="form-group">
-							<label asp-for="Input.LastName">@localizer["LastName"]</label>
-							<input type="text" class="form-control" placeholder="@localizer["LastName"]" asp-for="Input.LastName" autofocus>
-							<label asp-for="Input.FirstName">@localizer["FirstName"]</label>
-							<input type="text" class="form-control" placeholder="@localizer["FirstName"]" asp-for="Input.FirstName" autofocus>
-							<label asp-for="Input.MiddleName">@localizer["MiddleName"]</label>
-							<input type="text" class="form-control" placeholder="@localizer["MiddleName"]" asp-for="Input.MiddleName" autofocus>
-						</div>
-						<div class="form-group">
 							<label asp-for="Input.Email">@localizer["InputEmail"]</label>
 							<input type="email" class="form-control" placeholder="@localizer["InputEmail"]" asp-for="Input.Email" autofocus>
-						</div>
-						<div class="form-group">
-							<label asp-for="Input.Email">@localizer["InputPhone"]</label>
-							<input type="tel" class="form-control" placeholder="@localizer["InputPhone"]" asp-for="Input.Phone" autofocus>
 						</div>
 						<div class="form-group">
 							<label asp-for="Input.Password">@localizer["InputPassword"]</label>
@@ -45,12 +33,6 @@
 							<label asp-for="Input.RoleName">@localizer["RoleName"]</label>
 							<select asp-for="Input.RoleName" class="form-control"
 									asp-items="@Model.View.RolesList">
-							</select>
-						</div>
-						<div class="form-group">
-							<label asp-for="Input.DepartmentId">@localizer["Department"]</label>
-							<select asp-for="Input.DepartmentId" class="form-control"
-									asp-items="@Model.View.FacultyDepartments">
 							</select>
 						</div>
 						<button type="submit" class="btn btn-primary" name="Input.Button" value="register">@localizer["ButtonRegister"]</button>

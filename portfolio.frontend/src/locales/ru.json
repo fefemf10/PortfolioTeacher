@@ -4,6 +4,17 @@
         "BtnLogin": "Войти",
         "BtnLogout": "Выйти"
     },
+    "Placeholders": {
+        "Registration": {
+            "lastName": "Фамилия",
+            "firstName": "Имя",
+            "middleName": "Отчество",
+            "email": "Электронная почта",
+            "phone": "Номер телефона",
+            "department": "Кафедра",
+            "btnSave": "Сохранить"
+        }
+    },
     "Pages": {
         "Home": {
             "NameTitle": "Портфолио"

@@ -19,13 +19,12 @@ public class Index(
 	IAuthenticationSchemeProvider schemeProvider,
 	IIdentityProviderStore identityProviderStore,
 	IEventService events,
-	IHttpClientFactory httpClientFactory,
 	RoleManager<IdentityRole<Guid>> roleManager,
 	UserManager<IdentityUser<Guid>> userManager,
 	SignInManager<IdentityUser<Guid>> signInManager,
 	IStringLocalizer<Roles> localizer) : PageModel
 {
-    public ViewModel View { get; set; }
+	public ViewModel View { get; set; }
 
 	[BindProperty]
 	public InputModel Input { get; set; }
@@ -33,7 +32,6 @@ public class Index(
 	public async Task<IActionResult> OnGet(string returnUrl)
 	{
 		await BuildModelAsync(returnUrl);
-
 		return Page();
 	}
 
@@ -41,54 +39,31 @@ public class Index(
 	{
 		if (ModelState.IsValid)
 		{
-			var user = new IdentityUser<Guid>()
+			IdentityUser<Guid> user = new()
 			{
 				UserName = Input.Email,
 				Email = Input.Email,
 				EmailConfirmed = true,
 			};
-
-			var result = await userManager.CreateAsync(user, Input.Password);
-
+			IdentityResult result = await userManager.CreateAsync(user, Input.Password);
 			if (result.Succeeded)
 			{
 				await userManager.AddToRoleAsync(user, Input.RoleName.ToString());
-				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-				List<ResponseFacultyDepartments> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/faculty/departments");
-				Guid facultyId = requestFacultyDepartments.First().Id;
-				foreach (var faculty in requestFacultyDepartments)
+				var loginresult = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: true);
+				if (loginresult.Succeeded)
 				{
-					var department = faculty.Departments.FirstOrDefault(y => y.Id == Input.DepartmentId);
-                    if (department is not null)
+					if (Url.IsLocalUrl(Input.ReturnUrl))
 					{
-						facultyId = faculty.Id;
-						break;
+						return Redirect(Input.ReturnUrl);
 					}
-				}
-                JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Phone = Input.Phone, FirstName = Input.FirstName, LastName = Input.LastName, MiddleName = Input.MiddleName, Role = Input.RoleName, FacultyId = facultyId, DepartmentId = Input.DepartmentId });
-				HttpResponseMessage httpResponse = await httpClient.PostAsync("api/Teacher", js);
-				if (httpResponse.IsSuccessStatusCode)
-				{
-					var loginresult = await signInManager.PasswordSignInAsync(Input.Email, Input.Password, false, lockoutOnFailure: true);
-					if (loginresult.Succeeded)
+					else if (string.IsNullOrEmpty(Input.ReturnUrl))
 					{
-						if (Url.IsLocalUrl(Input.ReturnUrl))
-						{
-							return Redirect(Input.ReturnUrl);
-						}
-						else if (string.IsNullOrEmpty(Input.ReturnUrl))
-						{
-							return Redirect("~/");
-						}
-						else
-						{
-							throw new Exception("invalid return URL");
-						}
+						return Redirect("~/");
 					}
-				}
-				else
-				{
-					await userManager.DeleteAsync(user);
+					else
+					{
+						throw new Exception("invalid return URL");
+					}
 				}
 			}
 		}
@@ -98,19 +73,11 @@ public class Index(
 
 	private async Task BuildModelAsync(string returnUrl)
 	{
-		HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
 		Input = new InputModel { ReturnUrl = returnUrl };
-        List<ResponseFacultyDepartments> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/Faculty/departments");
-		List<SelectListGroup> facultyList = requestFacultyDepartments.Select(x => new SelectListGroup { Name = x.Name }).ToList();
 		View = new ViewModel
 		{
-            RolesList = new List<SelectListItem>(),
-			FacultyDepartments = new List<SelectListItem>()
+			RolesList = new List<SelectListItem>()
 		};
-		foreach (var faculty in requestFacultyDepartments)
-		{
-			View.FacultyDepartments.AddRange(faculty.Departments.Select(y => new SelectListItem { Value = y.Id.ToString(), Text = y.Name, Group = facultyList.Find(z => z.Name == faculty.Name) }));
-		}
 		View.RolesList.Add(new SelectListItem(localizer[Roles.Teacher.ToString()], Roles.Teacher.ToString()));
 		View.RolesList.Add(new SelectListItem(localizer[Roles.Student.ToString()], Roles.Student.ToString()));
 	}

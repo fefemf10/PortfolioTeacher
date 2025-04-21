@@ -1,16 +1,19 @@
 <script setup lang="ts">
   import { NLayout, NLayoutContent, NLayoutHeader, NLayoutFooter, NText, NButton } from 'naive-ui'
   import { RouterView } from 'vue-router'
-  import { ref, onMounted, onBeforeUnmount } from 'vue'
-  import userManager, { isAuthenticated, login, logout } from './oidc';
+  import { ref, onBeforeMount, onMounted, onBeforeUnmount, watch, watchEffect, computed } from 'vue'
+  import userManager, { isAuthenticated, login, logout, isUserCreated, userCreated } from './oidc';
   import UserPreview from './components/Header/UserPreview.vue';
   import ThemeSwitcher from './components/Footer/ThemeSwitcher.vue';
   import LanguageSwitcher from './components/Footer/LanguageSwitcher.vue';
   import { useI18n } from 'vue-i18n';
+  import router from './Router';
   const { t } = useI18n();
   const auth = ref<boolean>(false);
   const updateAuthState = async () => {
     auth.value = await isAuthenticated();
+    if (auth.value && !userCreated.value)
+      router.replace('/registration');
   };
   onMounted(async () => {
     updateAuthState();
@@ -20,7 +23,7 @@
     });
   });
   onBeforeUnmount(() => {
-    userManager.events.removeUserLoaded(updateAuthState);
+    userManager.events.removeUserLoaded(updateAuthState);;
     userManager.events.removeUserUnloaded(() => {
       auth.value = false;
     });
@@ -30,7 +33,7 @@
   <NLayout>
     <NLayoutHeader class="headfoot">
       <NText>ДонГТУ</NText>
-      <UserPreview class="loginoutbtn" v-if="auth"/>
+      <UserPreview class="loginoutbtn" v-if="auth && userCreated"/>
       <NButton class="loginoutbtn" v-if="auth" :onClick="logout">{{ t('Nav.BtnLogout') }}</NButton>
       <NButton class="loginoutbtn" v-else="auth" :onClick="login">{{ t('Nav.BtnLogin') }}</NButton>
     </NLayoutHeader>

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
@@ -88,19 +89,18 @@ Console.WriteLine(connection);
 ServerVersion serverVersion = ServerVersion.AutoDetect(connection);
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(typeof(ApplicationContext).Assembly)));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-	{
-		options.Authority = builder.Configuration["IdentityServer:Url"];
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
         options.RequireHttpsMetadata = false;
-		options.TokenValidationParameters.ValidateAudience = false;
-		options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
-	});
+        options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
+    });
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("ApiScope", policy =>
 	{
 		policy.RequireAuthenticatedUser();
-		policy.RequireClaim("scope", builder.Configuration["IdentityServer:Scope"]!);
+		//policy.RequireClaim("scope", builder.Configuration["IdentityServer:Scope"]!);
 	});
 
 builder.Services.AddCors();

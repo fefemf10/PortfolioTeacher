@@ -8,17 +8,9 @@ namespace Portfolio.Identity.Pages.Account.Register;
 
 public class InputModel
 {
-    [Required(ErrorMessageResourceName = "LastNameRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
-    public string LastName { get; set; }
-    [Required(ErrorMessageResourceName = "FirstNameRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
-    public string FirstName { get; set; }
-    public string? MiddleName { get; set; }
     [Required(ErrorMessageResourceName = "EmailRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
     [EmailAddress(ErrorMessageResourceName = "EmailError", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
     public string Email { get; set; }
-    [Required(ErrorMessageResourceName = "PhoneRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
-    [Phone(ErrorMessageResourceName = "PhoneError", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
-    public string Phone { get; set; }
     [Required(ErrorMessageResourceName = "PasswordRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
     [MinLength(5, ErrorMessageResourceName = "PasswordLength", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
 	[DataType(DataType.Password)]
@@ -33,6 +25,5 @@ public class InputModel
 	[Required(ErrorMessageResourceName = "RoleRequired", ErrorMessageResourceType = typeof(Resources.Pages.Account.Register.InputModel))]
 	[EnumDataType(typeof(Roles))]
     public Roles RoleName { get; set; }
-    public Guid DepartmentId { get; set; }
 	public string Button { get; set; }
 }

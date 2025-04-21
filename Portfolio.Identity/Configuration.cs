@@ -5,9 +5,9 @@ namespace IdentityServer
 {
 	public static class Configuration
 	{
-		public static IEnumerable<Client> Clients => new Client[]
-		{
-			new Client
+		public static IEnumerable<Client> Clients =>
+        [
+            new Client
 			{
 				ClientId = "m2m",
 				ClientSecrets = { new Secret("client_secret".Sha256()) },
@@ -40,21 +40,21 @@ namespace IdentityServer
 				RequireClientSecret = false,
 				AllowAccessTokensViaBrowser = true,
 			}
-		};
-		public static IEnumerable<ApiResource> ApiResources => new ApiResource[]
-		{
-			new ApiResource("PortfolioServer")
-		};
-		public static IEnumerable<IdentityResource> IdentityResources => new IdentityResource[]
-		{
-			new IdentityResources.OpenId(),
+		];
+		public static IEnumerable<ApiResource> ApiResources =>
+        [
+            new ApiResource("PortfolioServer")
+		];
+		public static IEnumerable<IdentityResource> IdentityResources =>
+        [
+            new IdentityResources.OpenId(),
 			new IdentityResources.Profile(),
 			new IdentityResources.Email()
-		};
-		public static IEnumerable<ApiScope> ApiScopes => new ApiScope[]
-		{
-			new ApiScope("PortfolioServer"),
+		];
+		public static IEnumerable<ApiScope> ApiScopes =>
+        [
+            new ApiScope("PortfolioServer"),
 			new ApiScope(IdentityServerConstants.LocalApi.ScopeName)
-		};
+		];
 	}
 }

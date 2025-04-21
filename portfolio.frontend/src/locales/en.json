@@ -4,6 +4,17 @@
         "BtnLogin": "Login",
         "BtnLogout": "Logout"
     },
+    "Placeholders": {
+        "Registration": {
+            "lastName": "Lastname",
+            "firstName": "Firstname",
+            "middleName": "Middlename",
+            "email": "Email",
+            "phone": "Telephone",
+            "department": "Department",
+            "btnSave": "Save"
+        }
+    },
     "Pages": {
         "Home": {
             "NameTitle": "Home"

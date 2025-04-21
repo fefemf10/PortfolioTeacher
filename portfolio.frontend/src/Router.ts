@@ -22,6 +22,7 @@ const Page403 = () => import('./pages/403.vue')
 const Page500 = () => import('./pages/500.vue')
 const Page418 = () => import('./pages/418.vue')
 
+const Registration = () => import('./pages/Registration.vue')
 const LoginCallback = () => import('./LoginCallback.vue')
 const LogoutCallback = () => import('./LogoutCallback.vue')
 const SilentCallback = () => import('./SilentCallback.vue')
@@ -49,6 +50,7 @@ const routes = [
   { path: "/403", component: Page403 },
   { path: "/500", component: Page500 },
   { path: "/418", component: Page418 },
+  { path: '/registration', component: Registration},
   { path: "/:catchAll(.*)", component: Page404 },
 ]
 

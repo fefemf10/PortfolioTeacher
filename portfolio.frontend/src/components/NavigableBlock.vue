@@ -2,15 +2,7 @@
 import { computed, onMounted, ref } from 'vue';
 import {NTree, NCard, NText, TreeOption} from 'naive-ui'
 import api from '../api';
-interface Department {
-  id: string
-  name: string
-}
-interface Faculty {
-  id: string
-  name: string
-  departments: Department[]
-}
+import { Faculty } from '../classes/Faculty';
 const faculties = ref<Faculty[]>([]);
 const treeData = computed<TreeOption[]>(() =>
   faculties.value.map(faculty => ({
@@ -23,8 +15,7 @@ const treeData = computed<TreeOption[]>(() =>
   }))
 );
 onMounted(async () => {
-  const data = await api.get('api/faculty/departments').json<Faculty[]>();
-  faculties.value = data;
+  faculties.value = await api.get('api/faculty/departments').json<Faculty[]>();
 });
 </script>
 <template>

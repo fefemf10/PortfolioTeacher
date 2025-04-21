@@ -18,8 +18,6 @@ namespace Portfolio.Application.ViewModels.Request
         [Required]
 		[Phone]
         public string Phone { get; set; }
-        [Required]
-		public Roles Role { get; set; }
 		[Required]
 		public Guid FacultyId { get; set; }
         public Guid? DepartmentId { get; set; }
