@@ -11,24 +11,35 @@ using Portfolio.Domain.Services;
 
 namespace Portfolio.API.Controllers.TeacherControllers
 {
-	[Authorize]
 	[Route("api/[controller]")]
 	[ApiController]
 	public class TeacherController(IMapper mapper, ITeacherService teacherService) : ControllerBase
 	{
+        [HttpGet("{id:guid}/short")]
+        public async Task<ActionResult<TeacherShortInfo>> GetByIdShortInfo(Guid id)
+        {
+            return Ok(await teacherService.GetByIdShortInfo(id));
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ResponseTeacher>>> GetInfoAll()
+        {
+            return Ok(mapper.Map<IEnumerable<ResponseTeacher>>(await teacherService.GetAllFromCache()));
+        }
         [HttpGet("{id:guid}")]
 		public async Task<ActionResult<ResponseTeacher>> GetInfo(Guid id)
 		{
             Teacher? teacher = await teacherService.GetByIdFromCache(id) ?? throw new NotFoundByIdException();
-            return mapper.Map<ResponseTeacher>(teacher);
+            return Ok(mapper.Map<ResponseTeacher>(teacher));
 		}
-		[HttpPut]
+        [Authorize]
+        [HttpPut]
 		public async Task<ActionResult> AddInfo([Required][FromBody] RequestTeacher requestTeacher)
 		{
             await teacherService.AddInfo(mapper.Map<Teacher>(requestTeacher));
             return Ok();
 		}
-		[HttpPost]
+        [Authorize]
+        [HttpPost]
 		public async Task<ActionResult<Guid>> AddTeacher([Required][FromBody] RequestAddTeacher requestAddTeacher)
 		{
             return Ok(await teacherService.Add(mapper.Map<Teacher>(requestAddTeacher)));

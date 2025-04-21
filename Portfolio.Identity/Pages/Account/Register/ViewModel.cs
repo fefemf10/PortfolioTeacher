@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Localization;
-using Portfolio.Domain.Models;
 
 namespace IdentityServer.Pages.Account.Register;
 

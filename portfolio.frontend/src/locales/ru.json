@@ -1,7 +1,8 @@
 {
     "Nav": {
         "Lang": "Язык",
-        "BtnLogout": "Выход"
+        "BtnLogin": "Войти",
+        "BtnLogout": "Выйти"
     },
     "Pages": {
         "Home": {
@@ -65,6 +66,35 @@
             "title": "418 Я чайник",
             "description": "В китайском языке чайник — это разновидность «Бэйцзю», что означает «трагедия».",
             "button": "Легко принять правду"
+        }
+    },
+    "Enums": {
+        "Post": {
+            "None": "Нет",
+            "Assistant": "Ассистент",
+            "Teacher": "Преподаватель",
+            "SeniorTeacher": "Старший преподаватель",
+            "Laborant": "Лаборант",
+            "Engineer": "Инженер"
+        },
+        "Role": {
+            "Administrator": "Администратор",
+            "Moderator": "Модератор",
+            "Dean": "Декан",
+            "Deputy": "Зав. кафедрой",
+            "Teacher": "Преподаватель",
+            "Student": "Студент",
+            "IdentityServer": "IdentityServer"
+        },
+        "AcademicDegree": {
+            "None": "Нет",
+            "Candidate": "Кандидат",
+            "Doctor": "Доктор"
+        },
+        "AcademicTitle": {
+            "None": "Нет",
+            "Docent": "Доцент",
+            "Professor": "Профессор"
         }
     }
 }

@@ -1,6 +1,7 @@
 {
     "Nav": {
         "Lang": "Language",
+        "BtnLogin": "Login",
         "BtnLogout": "Logout"
     },
     "Pages": {
@@ -65,6 +66,35 @@
             "title": "418 I'm a Teapot",
             "description": "In Chinese, teapot is a kind of 'Beiju', which means 'tragedy'.",
             "button": "It Is Easy to Take the Truth"
+        }
+    },
+    "Enums": {
+        "Post": {
+            "None": "None",
+            "Assistant": "Assistant",
+            "Teacher": "Teacher",
+            "SeniorTeacher": "Senior Teacher",
+            "Laborant": "Laborant",
+            "Engineer": "Engineer"
+        },
+        "Role": {
+            "Administrator": "Administrator",
+            "Moderator": "Moderator",
+            "Dean": "Dean",
+            "Deputy": "Deputy",
+            "Teacher": "Teacher",
+            "Student": "Student",
+            "IdentityServer": "Identity Server"
+        },
+        "AcademicDegree": {
+            "None": "None",
+            "Candidate": "Candidate",
+            "Doctor": "Doctor"
+        },
+        "AcademicTitle": {
+            "None": "None",
+            "Docent": "Docent",
+            "Professor": "Professor"
         }
     }
 }

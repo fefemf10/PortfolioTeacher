@@ -2,7 +2,7 @@ import ky from 'ky';
 import userManager from './oidc'
 
 const api = ky.create({
-  prefixUrl: 'http://api.pteach.ru',
+  prefixUrl: `${window.location.origin}`,
   hooks: {
     beforeRequest: [
       async request => {

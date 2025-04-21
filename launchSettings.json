@@ -4,12 +4,11 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "identityserver": "StartWithoutDebugging",
-        "database": "StartWithoutDebugging",
-        "portfolioserver": "StartWithoutDebugging",
-        "portfoliosite": "StartWithoutDebugging",
-        "portfolio.identity": "StartDebugging",
-        "portfolio.api": "StartDebugging"
+        "id.portfolio": "StartDebugging",
+        "db.id.portfolio": "StartWithoutDebugging",
+        "db.api.portfolio": "StartWithoutDebugging",
+        "cache": "StartWithoutDebugging",
+        "api.portfolio": "StartDebugging"
       }
     }
   }

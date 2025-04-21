@@ -15,7 +15,10 @@ namespace Portfolio.Application.ViewModels.Request
 		[Required]
 		public string FirstName { get; set; }
 		public string? MiddleName { get; set; }
-		[Required]
+        [Required]
+		[Phone]
+        public string Phone { get; set; }
+        [Required]
 		public Roles Role { get; set; }
 		[Required]
 		public Guid FacultyId { get; set; }

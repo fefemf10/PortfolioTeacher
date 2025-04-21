@@ -11,12 +11,16 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.API.Controllers.TeacherControllers
 {
-    [Authorize]
     [Route("api/Teacher/{id:guid}/[controller]")]
     [ApiController]
     public class AwardController(IMapper mapper, ITeacherAwardService tas) : ControllerBase
     {
-        [HttpGet("/ids")]
+        [HttpGet("short")]
+        public async Task<ActionResult<IEnumerable<ShortItem>>> GetShortAll(Guid id)
+        {
+            return Ok(await tas.GetShortAll(id));
+        }
+        [HttpGet("ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tas.GetAll(id));

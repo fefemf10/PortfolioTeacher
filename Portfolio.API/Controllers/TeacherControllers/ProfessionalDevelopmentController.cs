@@ -1,20 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Domain.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using AutoMapper;
-using Portfolio.Domain.Services;
+using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.ViewModels.Request;
 using Portfolio.Application.ViewModels.Response;
+using Portfolio.Domain.Models;
+using Portfolio.Domain.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.API.Controllers.TeacherControllers
 {
-    [Authorize]
     [Route("api/Teacher/{id:guid}/[controller]")]
     [ApiController]
     public class ProfessionalDevelopmentController(IMapper mapper, ITeacherProfessionalDevelopmentService tpds) : ControllerBase
     {
-        [HttpGet("/ids")]
+        [HttpGet("short")]
+        public async Task<ActionResult<IEnumerable<ShortItem>>> GetShortAll(Guid id)
+        {
+            return Ok(await tpds.GetShortAll(id));
+        }
+        [HttpGet("ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tpds.GetAll(id));

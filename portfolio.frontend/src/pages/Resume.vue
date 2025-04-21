@@ -1,38 +1,30 @@
 <script setup lang="ts">
 import { NFlex } from 'naive-ui';
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { UserProfile } from '../classes/UserProfile';
 import NavMenu from '../components/NavMenu.vue';
 import UserInfo from '../components/UserInfo.vue';
 import CardResume from '../components/CardResume.vue';
 import api from '../api';
+import {useRoute} from 'vue-router'
+import { ShortCardItem } from '../classes/ShortCardItem';
+import { TeacherShortInfo } from '../classes/TeacherShortInfo';
+const route = useRoute();
+const user = ref<UserProfile>(null);
+const userShort = ref<TeacherShortInfo>(new TeacherShortInfo());
 onMounted(async() =>{
-  try {
-      const data = await api.get('api/faculty').json();
-      console.log(data);
-    } catch (error) {
-      console.error('Ошибка API:', error);
-    }
+    user.value = await api.get<UserProfile>('api/teacher/' + route.params.id).json();
+    userShort.value = await api.get<TeacherShortInfo[]>('api/teacher/' + route.params.id + '/short').json();
 });
-const user = new UserProfile();
-user.lastName = "Терентьева";
-user.firstName = "Татьяна";
-user.middleName = "Валерьевна";
-user.academicDegree = "Доктор экономических наук";
-user.academicTitle = "Профессор";
-user.post = "Ректор Кафедра экономики и управления, Профессор";
-user.phone = "+79591112233";
-user.email = "Dean0@yandex.ru";
-user.aud = "ауд.Приемная";
 </script>
 <template>
   <NFlex justify="center" vertical style="gap: 1rem;">
-    <UserInfo :user=user></UserInfo>
+    <UserInfo v-if="user" :user=user></UserInfo>
     <NavMenu></NavMenu>
-    <CardResume/>
-    <CardResume/>
-    <CardResume/>
-    <CardResume/>
-    <CardResume/>
+    <CardResume v-if="userShort" title="Образование" :items="userShort.universities" />
+    <CardResume v-if="userShort" title="Работа" :items="userShort.works" />
+    <CardResume v-if="userShort" title="Научные проекты" :items="userShort.scienceProjects" />
+    <CardResume v-if="userShort" title="Научные проекты" :items="userShort.professionalDevelopments" />
+    <CardResume v-if="userShort" title="Научные проекты" :items="userShort.awards" />
   </NFlex>
 </template>

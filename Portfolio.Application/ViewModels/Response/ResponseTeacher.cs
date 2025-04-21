@@ -15,6 +15,7 @@ namespace Portfolio.Application.ViewModels.Response
         public string FirstName { get; set; }
         public string? MiddleName { get; set; }
         public DateOnly? DateBirthday { get; set; }
+        public string Phone { get; set; }
         public Post Post { get; set; }
         public AcademicDegree AcademicDegree { get; set; }
         public AcademicTitle AcademicTitle { get; set; }

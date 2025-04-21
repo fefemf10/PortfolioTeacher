@@ -1,13 +1,17 @@
-using Duende.IdentityModel.Client;
+﻿using Duende.IdentityModel.Client;
 using Duende.IdentityServer.Services;
+using Duende.IdentityServer.Validation;
 using IdentityServer;
 using IdentityServer.Authentication;
 using IdentityServer.Infrastructure;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
 using MySqlConnector;
+using Portfolio.Identity.Middleware;
+using Portfolio.Identity.Validator;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -77,12 +81,13 @@ builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>(Authenticat
     .AddClaimsPrincipalFactory<ClaimsPrincipalFactory>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddTransient<IRedirectUriValidator, WildcardRedirectUriValidator>();
 builder.Services.AddIdentityServer()
     .AddAspNetIdentity<IdentityUser<Guid>>()
     .AddInMemoryApiScopes(builder.Configuration.GetSection("IdentityServer:ApiScopes"))
     .AddInMemoryApiResources(builder.Configuration.GetSection("IdentityServer:ApiResources"))
     .AddInMemoryIdentityResources(Configuration.IdentityResources)
-    .AddInMemoryClients(Configuration.Clients)
+    .AddInMemoryClients(builder.Configuration.GetSection("IdentityServer:Clients"))
     .AddOperationalStore(options =>
     {
         options.ConfigureDbContext = b => b.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(assembly));
@@ -104,13 +109,20 @@ JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 builder.Services.AddLocalApiAuthentication();
 
 builder.Services.AddCors();
-
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.All;
+    options.ForwardLimit = null;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+    options.AllowedHosts.Clear();
+});
 var app = builder.Build();
+app.UseForwardedHeaders();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     //app.UseHsts();
-
 }
 //app.UseSwagger();
 //app.UseSwaggerUI();
@@ -125,6 +137,17 @@ app.UseRequestLocalization(new RequestLocalizationOptions
     SupportedCultures = supportedCultures,
     SupportedUICultures = supportedCultures
 });
+//app.Use((context, next) =>
+//{
+//    var prefix = context.Request.Headers["X-Forwarded-Prefix"].FirstOrDefault();
+//    if (!string.IsNullOrEmpty(prefix))
+//    {
+//        context.Request.PathBase = prefix;
+        
+//    }
+//    return next();
+//});
+app.UsePathBase("/id");
 app.UseStaticFiles();
 app.UseRouting();
 app.UseIdentityServer();

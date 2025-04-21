@@ -22,7 +22,7 @@ namespace Portfolio.Application.Resources.Localization {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class ValidationFields {
+    internal class ValidationFields {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace Portfolio.Application.Resources.Localization {
         ///   Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Portfolio.Application.Resources.Localization.ValidationFields", typeof(ValidationFields).Assembly);
@@ -51,7 +51,7 @@ namespace Portfolio.Application.Resources.Localization {
         ///   обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Check the email address.
         /// </summary>
-        public static string EmailError {
+        internal static string EmailError {
             get {
                 return ResourceManager.GetString("EmailError", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter a email.
         /// </summary>
-        public static string EmailRequired {
+        internal static string EmailRequired {
             get {
                 return ResourceManager.GetString("EmailRequired", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter your first name.
         /// </summary>
-        public static string FirstNameRequired {
+        internal static string FirstNameRequired {
             get {
                 return ResourceManager.GetString("FirstNameRequired", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter your last name.
         /// </summary>
-        public static string LastNameRequired {
+        internal static string LastNameRequired {
             get {
                 return ResourceManager.GetString("LastNameRequired", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter the name of the organization.
         /// </summary>
-        public static string NameOrganizationRequired {
+        internal static string NameOrganizationRequired {
             get {
                 return ResourceManager.GetString("NameOrganizationRequired", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter a name.
         /// </summary>
-        public static string NameRequired {
+        internal static string NameRequired {
             get {
                 return ResourceManager.GetString("NameRequired", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на The password must consist of 5 or more characters.
         /// </summary>
-        public static string PasswordLength {
+        internal static string PasswordLength {
             get {
                 return ResourceManager.GetString("PasswordLength", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter a password.
         /// </summary>
-        public static string PasswordRequired {
+        internal static string PasswordRequired {
             get {
                 return ResourceManager.GetString("PasswordRequired", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter the position.
         /// </summary>
-        public static string PostRequired {
+        internal static string PostRequired {
             get {
                 return ResourceManager.GetString("PostRequired", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter qualification.
         /// </summary>
-        public static string QualificationRequired {
+        internal static string QualificationRequired {
             get {
                 return ResourceManager.GetString("QualificationRequired", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter specialization.
         /// </summary>
-        public static string SpecializationRequired {
+        internal static string SpecializationRequired {
             get {
                 return ResourceManager.GetString("SpecializationRequired", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на The field Year Graduation must be between {1} and {2}.
         /// </summary>
-        public static string YearGraduationRange {
+        internal static string YearGraduationRange {
             get {
                 return ResourceManager.GetString("YearGraduationRange", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter the year graduate.
         /// </summary>
-        public static string YearGraduationRequired {
+        internal static string YearGraduationRequired {
             get {
                 return ResourceManager.GetString("YearGraduationRequired", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace Portfolio.Application.Resources.Localization {
         /// <summary>
         ///   Ищет локализованную строку, похожую на Enter the year protection.
         /// </summary>
-        public static string YearProtectionRequired {
+        internal static string YearProtectionRequired {
             get {
                 return ResourceManager.GetString("YearProtectionRequired", resourceCulture);
             }

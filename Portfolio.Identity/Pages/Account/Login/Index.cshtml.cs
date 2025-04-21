@@ -58,7 +58,6 @@ public class Index : PageModel
 	{
 		// check if we are in the context of an authorization request
 		var context = await interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
-
 		// the user clicked the "cancel" button
 		if (Input.Button == "cancel")
 		{

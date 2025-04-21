@@ -54,8 +54,7 @@ public class Index(
 			{
 				await userManager.AddToRoleAsync(user, Input.RoleName.ToString());
 				HttpClient httpClient = httpClientFactory.CreateClient("PortfolioServer");
-				List<ResponseFacultyDepartments> requestFacultyDepartments;
-				requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/Faculty/GetAllWithDepartments");
+				List<ResponseFacultyDepartments> requestFacultyDepartments = await httpClient.GetFromJsonAsync<List<ResponseFacultyDepartments>>("api/faculty/departments");
 				Guid facultyId = requestFacultyDepartments.First().Id;
 				foreach (var faculty in requestFacultyDepartments)
 				{
@@ -66,7 +65,7 @@ public class Index(
 						break;
 					}
 				}
-                JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, FirstName = Input.FirstName, LastName = Input.LastName, MiddleName = Input.MiddleName, Role = Input.RoleName, FacultyId = facultyId, DepartmentId = Input.DepartmentId });
+                JsonContent js = JsonContent.Create(new RequestAddTeacher() { Id = user.Id, Email = user.Email, Phone = Input.Phone, FirstName = Input.FirstName, LastName = Input.LastName, MiddleName = Input.MiddleName, Role = Input.RoleName, FacultyId = facultyId, DepartmentId = Input.DepartmentId });
 				HttpResponseMessage httpResponse = await httpClient.PostAsync("api/Teacher", js);
 				if (httpResponse.IsSuccessStatusCode)
 				{

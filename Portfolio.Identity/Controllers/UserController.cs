@@ -142,7 +142,7 @@ namespace IdentityServer.Controllers
 			{
 				await userManager.AddToRoleAsync(user, role.ToString());
 				listUsers.Add(user);
-				listAddTeachers.Add(new RequestAddTeacher() { Id = user.Id, Email = user.Email, FirstName = name.Item2, LastName = name.Item1, MiddleName = name.Item3, Role = role, FacultyId = facultyId, DepartmentId = departmentId });
+				listAddTeachers.Add(new RequestAddTeacher() { Id = user.Id, Email = user.Email, FirstName = name.Item2, LastName = name.Item1, MiddleName = name.Item3, Phone = "+79999999999", Role = role, FacultyId = facultyId, DepartmentId = departmentId });
 			}
 		}
 		private static string GenerateEmail(string prefix, int number) => prefix + number.ToString() + "@yandex.ru";

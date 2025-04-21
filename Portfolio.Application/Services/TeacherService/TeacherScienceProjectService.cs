@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Portfolio.Application.Exceptions;
 using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
@@ -9,9 +10,11 @@ namespace Portfolio.Application.Services.TeacherService
     public class TeacherScienceProjectService : ITeacherScienceProjectService
     {
         private readonly ApplicationContext db;
-        public TeacherScienceProjectService(ApplicationContext db)
+        private readonly IMapper mapper;
+        public TeacherScienceProjectService(ApplicationContext db, IMapper mapper)
         {
             this.db = db;
+            this.mapper = mapper;
         }
 
         public async Task<Guid> Add(Guid id, ScienceProject entity)
@@ -49,6 +52,12 @@ namespace Portfolio.Application.Services.TeacherService
         {
             Teacher? teacher = await db.Teachers.Include(x => x.ScienceProjects).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             return teacher.ScienceProjects;
+        }
+
+        public async Task<IEnumerable<ShortItem>> GetShortAll(Guid id)
+        {
+            Teacher? teacher = await db.Teachers.Include(x => x.ScienceProjects).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+            return mapper.Map<IEnumerable<ShortItem>>(teacher.ScienceProjects.ToList()).OrderBy(x => x.Year);
         }
 
         public async Task Update(Guid id, ScienceProject entity)

@@ -1,30 +1,30 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import LoginCallback from './LoginCallback.vue'
-import LogoutCallback from './LogoutCallback.vue'
-import SilentCallback from './SilentCallback.vue'
 import userManager, { login } from './oidc'
 
-import Home from './pages/Home.vue'
-import About from './pages/About.vue'
-import Awards from './pages/Awards.vue'
-import Dean from './pages/Dean.vue'
-import Deputy from './pages/Deputy.vue'
-import Disciplines from './pages/Disciplines.vue'
-import Dissertation from './pages/Dissertation.vue'
-import ProfessionalDevelopments from './pages/ProfessionalDevelopments.vue'
-import PublicActivities from './pages/PublicActivities.vue'
-import ScienceProjects from './pages/ScienceProjects.vue'
-import Stats from './pages/Stats.vue'
-import University from './pages/University.vue'
-import Work from './pages/Work.vue'
-import Admin from './pages/Admin.vue'
-import Resume from './pages/Resume.vue'
+const Home = () => import('./pages/Home.vue')
+const About = () => import('./pages/About.vue')
+const Awards = () => import('./pages/Awards.vue')
+const Dean = () => import('./pages/Dean.vue')
+const Deputy = () => import('./pages/Deputy.vue')
+const Disciplines = () => import('./pages/Disciplines.vue')
+const Dissertation = () => import('./pages/Dissertation.vue')
+const ProfessionalDevelopments = () => import('./pages/ProfessionalDevelopments.vue')
+const PublicActivities = () => import('./pages/PublicActivities.vue')
+const ScienceProjects = () => import('./pages/ScienceProjects.vue')
+const Stats = () => import('./pages/Stats.vue')
+const University = () => import('./pages/University.vue')
+const Work = () => import('./pages/Work.vue')
+const Admin = () => import('./pages/Admin.vue')
+const Resume = () => import('./pages/Resume.vue')
 
+const Page404 = () => import('./pages/404.vue')
+const Page403 = () => import('./pages/403.vue')
+const Page500 = () => import('./pages/500.vue')
+const Page418 = () => import('./pages/418.vue')
 
-import Page404 from './pages/404.vue'
-import Page403 from './pages/403.vue'
-import Page500 from './pages/500.vue'
-import Page418 from './pages/418.vue'
+const LoginCallback = () => import('./LoginCallback.vue')
+const LogoutCallback = () => import('./LogoutCallback.vue')
+const SilentCallback = () => import('./SilentCallback.vue')
 
 const routes = [
   { path: '/', component: Home },
@@ -54,7 +54,14 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  }
 })
 
 router.beforeEach((to, from, next) => {

@@ -4,7 +4,7 @@
   const { t } = useI18n();
 </script>
 <template>
-  <NFlex justify="center" align="center" style="height: 100vh">
+  <NFlex justify="center" align="center">
     <NResult size="huge" status="418" :title="t('Pages.418.title')" :description="t('Pages.418.description')">
       <template #footer>
         <NButton>{{ t('Pages.418.button') }}</NButton>

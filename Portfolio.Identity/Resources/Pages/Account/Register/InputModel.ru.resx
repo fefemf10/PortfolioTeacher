@@ -150,6 +150,12 @@
   <data name="PasswordRequired" xml:space="preserve">
     <value>Введите пароль</value>
   </data>
+  <data name="PhoneError" xml:space="preserve">
+    <value>Ваш номер телефона неверный</value>
+  </data>
+  <data name="PhoneRequired" xml:space="preserve">
+    <value>Введите номер телефона</value>
+  </data>
   <data name="RoleName" xml:space="preserve">
     <value>Тип учетной записи</value>
   </data>

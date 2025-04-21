@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Component, computed, h, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import {NTree, NCard, NText, TreeOption} from 'naive-ui'
 import api from '../api';
 interface Department {

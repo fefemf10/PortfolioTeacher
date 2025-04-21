@@ -5,9 +5,7 @@ import App from './App.vue'
 const { naiveTheme } = useThemeStore()
 </script>
 <template>
-  <NThemeEditor>
-    <NConfigProvider :theme="naiveTheme">
-      <App />
-    </NConfigProvider>
-  </NThemeEditor>
+  <NConfigProvider :theme="naiveTheme">
+    <App />
+  </NConfigProvider>
 </template>

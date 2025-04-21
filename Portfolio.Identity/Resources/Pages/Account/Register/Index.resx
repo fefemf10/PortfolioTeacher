@@ -138,6 +138,9 @@
   <data name="InputPassword" xml:space="preserve">
     <value>Password</value>
   </data>
+  <data name="InputPhone" xml:space="preserve">
+    <value>Telephone</value>
+  </data>
   <data name="RoleName" xml:space="preserve">
     <value>Type Account</value>
   </data>

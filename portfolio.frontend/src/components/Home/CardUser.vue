@@ -2,26 +2,20 @@
   import { NList, NListItem, NText, TextProps } from 'naive-ui';
   import { UserProfile } from '../../classes/UserProfile';
   import CardUserItem from './CardUserItem.vue';
+  import router from '../../Router';
   const props = defineProps<{
-    user: UserProfile
+    users: UserProfile[]
   }>();
-  type TextThemeOverrides = NonNullable<TextProps['themeOverrides']>
-  const textThemeOverrides: TextThemeOverrides = {
-    pFontSize: '20px',
-  }
+  const click = (id:string) => {
+    router.push('/resume/' + id);
+  };
 </script>
 <template>
-  <NList class="carduser">
+  <NList class="carduser" hoverable clickable>
     <template #header>
       <NText class="cardtitle" type="info">Список сотрудников</NText>
     </template>
-    <NListItem><CardUserItem :user=user /></NListItem>
-    <NListItem><CardUserItem :user=user /></NListItem>
-    <NListItem><CardUserItem :user=user /></NListItem>
-    <NListItem><CardUserItem :user=user /></NListItem>
-    <NListItem><CardUserItem :user=user /></NListItem>
-    <NListItem><CardUserItem :user=user /></NListItem>
-    <NListItem><CardUserItem :user=user /></NListItem>
+    <NListItem v-for="user in users" @click="click(user.id)"><CardUserItem :user=user /></NListItem>
   </NList>
 </template>
 <style scoped>

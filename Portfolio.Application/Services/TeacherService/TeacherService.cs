@@ -9,16 +9,15 @@ using System.Text.Json;
 
 namespace Portfolio.Application.Services.TeacherService
 {
-    public partial class TeacherService : ITeacherService
+    public partial class TeacherService(
+        ApplicationContext db,
+        ITeacherWorkService tws,
+        ITeacherUniversityService tus,
+        ITeacherScienceProjectService tsps,
+        ITeacherProfessionalDevelopmentService tpds,
+        ITeacherAwardService tas,
+        IDistributedCache cache) : ITeacherService
     {
-        private readonly ApplicationContext db;
-        private readonly IDistributedCache cache;
-        public TeacherService(ApplicationContext db, IDistributedCache cache)
-        {
-            this.db = db;
-            this.cache = cache;
-        }
-
         public async Task<Guid> Add(Teacher teacher)
         {
             await db.AddAsync(teacher);
@@ -87,6 +86,17 @@ namespace Portfolio.Application.Services.TeacherService
                 await cache.SetStringAsync("teacherWithDependencies" + id, teacherString);
             }
             return teacher;
+        }
+
+        public async Task<TeacherShortInfo> GetByIdShortInfo(Guid id)
+        {
+            TeacherShortInfo shortInfo = new();
+            shortInfo.Works = await tws.GetShortAll(id);
+            shortInfo.Universities = await tus.GetShortAll(id);
+            shortInfo.ScienceProjects = await tsps.GetShortAll(id);
+            shortInfo.ProfessionalDevelopments = await tpds.GetShortAll(id);
+            shortInfo.Awards = await tas.GetShortAll(id);
+            return shortInfo;
         }
 
         public async Task<Teacher> GetByIdWithDependencies(Guid id)

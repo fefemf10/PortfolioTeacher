@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using MySqlConnector;
 using Portfolio.API;
 using Portfolio.API.Middleware;
 using Portfolio.Infrastructure;
-using StackExchange.Redis;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +14,7 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(Portfolio.Application.AppMappingProfile).Assembly);
 
 builder.Services.AddAPIServices();
 //builder.Services.AddSwaggerGen(options =>
@@ -78,9 +78,15 @@ connectionStringBuilder.Server = builder.Configuration["DBHost"];
 connectionStringBuilder.Database = builder.Configuration["DBDatabase"];
 connectionStringBuilder.UserID = builder.Configuration["DBUser"];
 connectionStringBuilder.Password = builder.Configuration["DBPassword"];
+connectionStringBuilder.Port = 3306;
+Console.WriteLine(builder.Configuration["DBHost"]);
+Console.WriteLine(builder.Configuration["DBDatabase"]);
+Console.WriteLine(builder.Configuration["DBUser"]);
+Console.WriteLine(builder.Configuration["DBPassword"]);
 string connection = connectionStringBuilder.ConnectionString;
-ServerVersion version = ServerVersion.AutoDetect(connection);
-builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(connection, version));
+Console.WriteLine(connection);
+ServerVersion serverVersion = ServerVersion.AutoDetect(connection);
+builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(typeof(ApplicationContext).Assembly)));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 	{
@@ -99,10 +105,19 @@ builder.Services.AddAuthorizationBuilder()
 
 builder.Services.AddCors();
 builder.Services.AddStackExchangeRedisCache(options => {
-    options.Configuration = "localhost";
+    options.Configuration = builder.Configuration["RedisCache"];
     options.InstanceName = "local";
 });
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.All;
+    options.ForwardLimit = null;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+    options.AllowedHosts.Clear();
+});
 var app = builder.Build();
+app.UseForwardedHeaders();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors(builder =>
 {
@@ -123,4 +138,9 @@ app.UseCors(builder =>
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapDefaultControllerRoute().RequireAuthorization("ApiScope");
+using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
+{
+    var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    context.Database.Migrate();
+}
 app.Run();

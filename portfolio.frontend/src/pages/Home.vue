@@ -1,22 +1,18 @@
 <script setup lang="ts">
-  import {NFlex, NText} from 'naive-ui'
+  import {NFlex} from 'naive-ui'
+  import {onMounted, ref} from 'vue'
   import NavigableBlock from '../components/NavigableBlock.vue'
   import CardUser from '../components/Home/CardUser.vue';
   import { UserProfile } from '../classes/UserProfile';
-  const user = new UserProfile();
-  user.lastName = "Терентьева";
-  user.firstName = "Татьяна";
-  user.middleName = "Валерьевна";
-  user.academicDegree = "Доктор экономических наук";
-  user.academicTitle = "Профессор";
-  user.post = "Ректор Кафедра экономики и управления, Профессор";
-  user.phone = "+79591112233";
-  user.email = "Dean0@yandex.ru";
-  user.aud = "ауд.Приемная";
+  import api from '../api'
+  const users = ref<UserProfile[]>([]);
+  onMounted(async () => {
+    users.value = await api.get<UserProfile[]>('api/teacher').json();
+  });
 </script>
 <template>
   <NFlex class="roothome" justify="space-between" size="large">
-      <CardUser class="users" :user=user />
+      <CardUser class="users" :users=users />
       <NavigableBlock class="navblock"/>
   </NFlex>
 </template>

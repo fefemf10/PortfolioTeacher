@@ -138,6 +138,9 @@
   <data name="InputPassword" xml:space="preserve">
     <value>Пароль</value>
   </data>
+  <data name="InputPhone" xml:space="preserve">
+    <value>Телефон</value>
+  </data>
   <data name="RoleName" xml:space="preserve">
     <value>Тип учетной записи</value>
   </data>

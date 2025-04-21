@@ -1,22 +1,44 @@
 services:
-  portfolio.frontend:
-    image: ${DOCKER_REGISTRY-}portfoliofrontend
+  gateway.portfolio:
+    image: ${DOCKER_REGISTRY-}gateway.portfolio
     build:
       context: .
-      dockerfile: PortfolioSite/Dockerfile
-  portfolio.api:
-    image: ${DOCKER_REGISTRY-}portfolioapi
+      dockerfile: Portfolio.Gateway/Dockerfile
+    depends_on:
+      - api.portfolio
+      - id.portfolio
+  frontend.portfolio:
+    image: ${DOCKER_REGISTRY-}frontend.portfolio
+    build:
+      context: .
+      dockerfile: Portfolio.Frontend/Dockerfile
+    depends_on:
+      - api.portfolio
+      - id.portfolio
+  api.portfolio:
+    image: ${DOCKER_REGISTRY-}api.portfolio
     build:
       context: .
       dockerfile: Portfolio.API/Dockerfile
-  portfolio.identity:
-    image: ${DOCKER_REGISTRY-}portfolioidentity
+    depends_on:
+      db.api.portfolio:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
+  id.portfolio:
+    image: ${DOCKER_REGISTRY-}id.portfolio
     build:
       context: .
       dockerfile: Portfolio.Identity/Dockerfile
-  db.api:
-    image: mysql:latest
+    depends_on:
+      db.id.portfolio:
+        condition: service_healthy
+  db.api.portfolio:
+    image: mysql:9.2
     restart: always
-  db.identity:
-    image: mysql:latest
+  db.id.portfolio:
+    image: mysql:9.2
+    restart: always
+  cache:
+    image: redis:latest
     restart: always

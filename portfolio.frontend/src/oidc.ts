@@ -1,8 +1,7 @@
 import { UserManager, WebStorageStateStore, UserManagerSettings, User } from 'oidc-client';
 const oidcConfig:UserManagerSettings = {
-  authority: 'http://id.pteach.ru',
+  authority: `${window.location.origin}/id`,
   client_id: 'PortfolioSite',
-  client_secret: 'client_secret',
   redirect_uri: `${window.location.origin}/authentication/login-callback`,
   post_logout_redirect_uri: `${window.location.origin}/authentication/logout-callback`,
   response_type: 'code',
@@ -18,4 +17,6 @@ const userManager = new UserManager(oidcConfig);
 export const login = () => userManager.signinRedirect();
 export const logout = () => userManager.signoutRedirect();
 export const handleCallback = () => userManager.signinRedirectCallback();
+export const guid = () => userManager.getUser().then(user => { return user?.profile?.sub });
+export const isAuthenticated = () => userManager.getUser().then(user => { return !!user && !user.expired });
 export default userManager;

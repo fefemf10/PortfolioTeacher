@@ -1,11 +1,15 @@
+import { AcademicDegree } from "../enums/AcademicDegree";
+import { AcademicTitle } from "../enums/AcademicTitle";
+import { Post } from "../enums/PostEnum";
 export class UserProfile {
+  id: string;
+  email: string;
   lastName: string;
   firstName: string;
   middleName: string;
-  academicDegree: string;
-  academicTitle: string;
-  post: string;
-  email: string;
+  academicDegree: AcademicDegree;
+  academicTitle: AcademicTitle;
+  post: Post;
+  publicationCount: number;
   phone: string;
-  aud: string;
 }

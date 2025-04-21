@@ -160,6 +160,24 @@ namespace Portfolio.Identity.Resources.Pages.Account.Register {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Your number incorrect.
+        /// </summary>
+        public static string PhoneError {
+            get {
+                return ResourceManager.GetString("PhoneError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Enter your telephone.
+        /// </summary>
+        public static string PhoneRequired {
+            get {
+                return ResourceManager.GetString("PhoneRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Type Account.
         /// </summary>
         public static string RoleName {

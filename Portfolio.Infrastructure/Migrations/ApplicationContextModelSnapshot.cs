@@ -43,7 +43,7 @@ namespace Portfolio.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<DateOnly?>("DateAward")
+                    b.Property<DateOnly>("DateAward")
                         .HasColumnType("date");
 
                     b.Property<string>("Name")
@@ -806,6 +806,10 @@ namespace Portfolio.Infrastructure.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("MiddleName")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

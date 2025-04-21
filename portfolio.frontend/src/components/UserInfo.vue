@@ -3,7 +3,7 @@
   import {NFlex, NAvatar, NDivider, DividerProps, useThemeVars } from 'naive-ui'
   import UserNameInfo from './UserNameInfo.vue';
   import UserDetailsInfo from './UserDetailsInfo.vue';
-  import { ref } from 'vue';
+  import { hashCode } from '../hashCode';
   const props = defineProps<{
     user: UserProfile
   }>();
@@ -16,7 +16,7 @@
 </script>
 <template>
   <NFlex class="UserInfoCard" justify="space-evenly" align="center" reverse>
-    <NAvatar lazy circle :size="200" src="https://avatar.iran.liara.run/public" />
+    <NAvatar lazy circle :size="200" :src='`https://avatar.iran.liara.run/public/${hashCode(user.id) % 100}`' />
     <NFlex vertical>
       <UserNameInfo :lastName=user.lastName :firstName=user.firstName :middleName=user.middleName :academicDegree=user.academicDegree :academicTitle=user.academicTitle />
       <NDivider :theme-overrides="dividerThemeOverrides"/>

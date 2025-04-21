@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "localhost",
+    "Projects": [
+      {
+        "Path": "Portfolio.Gateway\\Portfolio.Gateway.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "Portfolio.Identity\\Portfolio.Identity.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      },
+      {
+        "Path": "Portfolio.API\\Portfolio.API.csproj",
+        "Action": "Start",
+        "DebugTarget": "http"
+      }
+    ]
+  }
+]

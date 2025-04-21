@@ -4,8 +4,7 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
-EXPOSE 7000
-EXPOSE 7001
+EXPOSE 80
 
 
 # Этот этап используется для сборки проекта службы
@@ -13,10 +12,9 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Portfolio.Identity/Portfolio.Identity.csproj", "Portfolio.Identity/"]
-COPY ["Portfolio.API/Portfolio.API.csproj", "Portfolio.API/"]
 COPY ["Portfolio.Application/Portfolio.Application.csproj", "Portfolio.Application/"]
-COPY ["Portfolio.Domain/Portfolio.Domain.csproj", "Portfolio.Domain/"]
 COPY ["Portfolio.Infrastructure/Portfolio.Infrastructure.csproj", "Portfolio.Infrastructure/"]
+COPY ["Portfolio.Domain/Portfolio.Domain.csproj", "Portfolio.Domain/"]
 RUN dotnet restore "./Portfolio.Identity/Portfolio.Identity.csproj"
 COPY . .
 WORKDIR "/src/Portfolio.Identity"

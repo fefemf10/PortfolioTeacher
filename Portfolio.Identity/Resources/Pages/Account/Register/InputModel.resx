@@ -150,6 +150,12 @@
   <data name="PasswordRequired" xml:space="preserve">
     <value>Enter your password</value>
   </data>
+  <data name="PhoneError" xml:space="preserve">
+    <value>Your number incorrect</value>
+  </data>
+  <data name="PhoneRequired" xml:space="preserve">
+    <value>Enter your telephone</value>
+  </data>
   <data name="RoleName" xml:space="preserve">
     <value>Type Account</value>
   </data>

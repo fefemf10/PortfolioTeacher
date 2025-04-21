@@ -14,5 +14,6 @@ namespace Portfolio.Domain.Services
 		Task<Teacher> GetByIdWithDependencies(Guid id);
 		Task<Teacher> GetByIdFromCache(Guid id);
 		Task AddInfo(Teacher teacher);
+		Task<TeacherShortInfo> GetByIdShortInfo(Guid id);
 	}
 }

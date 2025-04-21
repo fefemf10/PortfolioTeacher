@@ -10,12 +10,16 @@ using Portfolio.Domain.Services;
 
 namespace Portfolio.API.Controllers.TeacherControllers
 {
-    [Authorize]
     [Route("api/Teacher/{id:guid}/[controller]")]
     [ApiController]
     public class UniversityController(IMapper mapper, ITeacherUniversityService tus) : ControllerBase
 	{
-        [HttpGet("/ids")]
+        [HttpGet("short")]
+        public async Task<ActionResult<IEnumerable<ShortItem>>> GetShortAll(Guid id)
+        {
+            return Ok(await tus.GetShortAll(id));
+        }
+        [HttpGet("ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tus.GetAll(id));

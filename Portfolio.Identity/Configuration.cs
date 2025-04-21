@@ -23,7 +23,6 @@ namespace IdentityServer
 			new Client
 			{
 				ClientId = "PortfolioSite",
-                ClientSecrets = { new Secret("client_secret".Sha256()) },
                 AllowedGrantTypes = GrantTypes.Code,
 				AllowedScopes =
 				{
@@ -33,10 +32,13 @@ namespace IdentityServer
 					"PortfolioServer",
 				},
 				RedirectUris = {
-					"http://localhost:4000/authentication/login-callback", "http://pteach.ru/authentication/login-callback",
-					"http://localhost:4000/authentication/silent-callback", "http://pteach.ru/authentication/silent-callback"  },
-				PostLogoutRedirectUris = { "http://localhost:4000/authentication/logout-callback", "http://pteach.ru/authentication/logout-callback" },
-				RequireClientSecret = true
+					"http://localhost:4000/authentication/login-callback", "https://pteach.ru/authentication/login-callback", "https://tp6tqkw7-443.euw.devtunnels.ms/authentication/login-callback", "http://localhost/authentication/login-callback",
+                    "http://localhost:4000/authentication/silent-callback", "https://pteach.ru/authentication/silent-callback",
+                    
+                },
+				PostLogoutRedirectUris = { "http://localhost:4000/authentication/logout-callback", "https://pteach.ru/authentication/logout-callback", "https://tp6tqkw7-443.euw.devtunnels.ms/authentication/logout-callback", "http://localhost/authentication/logout-callback" },
+				RequireClientSecret = false,
+				AllowAccessTokensViaBrowser = true,
 			}
 		};
 		public static IEnumerable<ApiResource> ApiResources => new ApiResource[]

@@ -15,7 +15,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
     [ApiController]
     public class PublicationController(IMapper mapper, ITeacherPublicationService tps) : ControllerBase
     {
-        [HttpGet("/ids")]
+        [HttpGet("ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetAll(Guid id)
         {
             return Ok(await tps.GetAll(id));

@@ -8,6 +8,7 @@
         public string FirstName { get; set; }
         public string? MiddleName { get; set; }
         public DateOnly? DateBirthday { get; set; }
+        public string Phone { get; set; }
         public ICollection<Work> Works { get; set; }
         public ICollection<University> Universities { get; set; }
     }
