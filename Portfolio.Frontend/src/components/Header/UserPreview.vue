@@ -10,10 +10,13 @@
   });
 </script>
 <template>
-  <NFlex>
+  <NFlex align="center" style="height: 3rem;" class="userpreview">
     <NAvatar lazy circle :size="32" src="https://avatar.iran.liara.run/public" />
-    <NText class="fio" type="info">{{ user?.lastName }} {{ user?.firstName }} {{ user?.middleName }}</NText>
+    <NText type="info">{{ user?.lastName }} {{ user?.firstName[0] }}.{{ user?.middleName[0] }}.</NText>
   </NFlex>
 </template>
 <style scoped>
+  .userpreview:hover{
+    cursor: pointer;
+  }
 </style>

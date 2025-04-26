@@ -1,30 +1,47 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import {NTree, NCard, NText, TreeOption} from 'naive-ui'
+import { NTree, NCard, NText, TreeOption } from 'naive-ui'
 import api from '../api';
 import { Faculty } from '../classes/Faculty';
 const faculties = ref<Faculty[]>([]);
-const treeData = computed<TreeOption[]>(() =>
-  faculties.value.map(faculty => ({
+const expandedKeys = ref<string[]>(['all']);
+const selectedId = ref<string | null>(null);
+const treeData = computed<TreeOption[]>(() => [{
+  label: 'Все',
+  key: 'all',
+  children: faculties.value.map(faculty => ({
     label: faculty.name,
-    key: faculty.id,
+    key: `faculty ${faculty.id}`,
     children: faculty.departments.map(dep => ({
       label: dep.name,
-      key: dep.id
+      key: `department ${dep.id}`
     }))
   }))
-);
+}]);
 onMounted(async () => {
   faculties.value = await api.get('api/faculty/departments').json<Faculty[]>();
 });
+const emit = defineEmits<{
+  (e: 'selected', id: string | null): void
+}>();
+function handleSelectedKeys(keys){
+  selectedId.value = keys[0];
+  emit('selected', selectedId.value);
+}
+function handleExpandedKeys(keys: string[]) {
+  expandedKeys.value = keys;
+}
 </script>
 <template>
   <NCard class="cards">
     <template #header>
       <NText class="cardtitle" type="success">Организационная структура</NText>
     </template>
-    <NTree :data=treeData block-line expand-on-click :animated=false show-line>
-    </NTree>
+    <NTree :data=treeData block-line :animated=false show-line
+    :selected-keys="[selectedId]"
+    :expanded-keys="expandedKeys"
+    @update:selected-keys="handleSelectedKeys"
+    @update:expanded-keys="handleExpandedKeys" />
   </NCard>
 </template>
 <style scoped>

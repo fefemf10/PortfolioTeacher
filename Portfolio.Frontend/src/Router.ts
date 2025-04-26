@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import userManager, { login } from './oidc'
+import userManager, { login, role } from './oidc'
 
 const Home = () => import('./pages/Home.vue')
 const About = () => import('./pages/About.vue')
@@ -41,8 +41,8 @@ const routes = [
   { path: '/stats', component: Stats },
   { path: '/university', component: University },
   { path: '/work', component: Work },
-  { path: '/admin', component: Admin },
-  { path: '/resume/:id', component: Resume },
+  { path: '/admin', component: Admin, meta: {requiresAuth: true, role: 'Administrator'} },
+  { path: '/resume/:id', component: Resume, meta: {requiresAuth: true, role: 'Teacher'} },
   { path: '/authentication/login-callback', component: LoginCallback },
   { path: '/authentication/logout-callback', component: LogoutCallback },
   { path: '/authentication/silent-callback', component: SilentCallback },
@@ -50,7 +50,7 @@ const routes = [
   { path: "/403", component: Page403 },
   { path: "/500", component: Page500 },
   { path: "/418", component: Page418 },
-  { path: '/registration', component: Registration},
+  { path: '/registration', component: Registration },
   { path: "/:catchAll(.*)", component: Page404 },
 ]
 
@@ -68,10 +68,12 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {
-    userManager.getUser().then(user => {
+    userManager.getUser().then(async user => {
       if (!user || user.expired) {
         login();
       }
+      else if (await role() !== to.meta.role)
+        router.push('/403');
       else {
         next();
       }
