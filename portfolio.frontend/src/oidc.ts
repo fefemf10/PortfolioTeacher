@@ -19,7 +19,6 @@ export const login = () => userManager.signinRedirect();
 export const logout = () => userManager.signoutRedirect();
 export const handleCallback = () => userManager.signinRedirectCallback();
 export const guid = () => userManager.getUser().then(user => { return user?.profile?.sub });
-export const email = () => userManager.getUser().then(user => { return user?.profile?.email });
 export const isAuthenticated = () => userManager.getUser().then(user => { return !!user && !user.expired });
 export const isUserCreated = () => window.localStorage.getItem('user_api_created') === 'true';
 export const userCreated = ref<boolean>(window.localStorage.getItem('user_api_created') === 'true');

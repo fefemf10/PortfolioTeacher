@@ -79,7 +79,6 @@ connectionStringBuilder.Server = builder.Configuration["DBHost"];
 connectionStringBuilder.Database = builder.Configuration["DBDatabase"];
 connectionStringBuilder.UserID = builder.Configuration["DBUser"];
 connectionStringBuilder.Password = builder.Configuration["DBPassword"];
-connectionStringBuilder.Port = 3306;
 Console.WriteLine(builder.Configuration["DBHost"]);
 Console.WriteLine(builder.Configuration["DBDatabase"]);
 Console.WriteLine(builder.Configuration["DBUser"]);
@@ -91,8 +90,14 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(co
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
+        options.Authority = builder.Configuration["Api:Authority"];
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters.ValidateAudience = false;
+        options.TokenValidationParameters.ValidateIssuer = true;
+        options.TokenValidationParameters.ValidIssuers = new[]
+        {
+            "http://localhost/id", "https://localhost/id", "https://pteach.ru/id"
+        };
         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
     });
 

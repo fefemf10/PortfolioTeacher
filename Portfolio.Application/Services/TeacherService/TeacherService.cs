@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using Portfolio.Application.Exceptions;
 using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
@@ -36,7 +37,10 @@ namespace Portfolio.Application.Services.TeacherService
             t.LastName = teacher.LastName;
             t.MiddleName = teacher.MiddleName;
             await db.SaveChangesAsync();
-            await cache.SetStringAsync("teacherWithDependencies" + teacher.Id, JsonSerializer.Serialize(t));
+            await cache.SetStringAsync("teacherWithDependencies" + teacher.Id, JsonSerializer.Serialize(t), options: new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+            });
         }
 
         public async Task DeleteById(Guid id)
@@ -64,7 +68,10 @@ namespace Portfolio.Application.Services.TeacherService
             {
                 teachers = await db.Teachers.IncludeAll(db).AsNoTracking().ToListAsync();
                 teacherString = JsonSerializer.Serialize(teachers);
-                await cache.SetStringAsync("teachersWithDependencies", teacherString);
+                await cache.SetStringAsync("teachersWithDependencies", teacherString, options: new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+                });
             }
             return teachers;
 
@@ -83,7 +90,10 @@ namespace Portfolio.Application.Services.TeacherService
             {
                 teacher = await db.Teachers.IncludeAll(db).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
                 teacherString = JsonSerializer.Serialize(teacher);
-                await cache.SetStringAsync("teacherWithDependencies" + id, teacherString);
+                await cache.SetStringAsync("teacherWithDependencies" + id, teacherString, options: new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+                });
             }
             return teacher;
         }

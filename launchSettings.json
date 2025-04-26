@@ -4,11 +4,13 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "id.portfolio": "StartDebugging",
+        "id.portfolio": "StartWithoutDebugging",
         "db.id.portfolio": "StartWithoutDebugging",
         "db.api.portfolio": "StartWithoutDebugging",
         "cache": "StartWithoutDebugging",
-        "api.portfolio": "StartDebugging"
+        "api.portfolio": "StartWithoutDebugging",
+        "frontend.portfolio": "StartWithoutDebugging",
+        "gateway.portfolio": "StartWithoutDebugging"
       }
     }
   }

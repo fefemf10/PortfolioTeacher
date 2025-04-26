@@ -12,8 +12,6 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Portfolio.Identity/Portfolio.Identity.csproj", "Portfolio.Identity/"]
-COPY ["Portfolio.Application/Portfolio.Application.csproj", "Portfolio.Application/"]
-COPY ["Portfolio.Infrastructure/Portfolio.Infrastructure.csproj", "Portfolio.Infrastructure/"]
 COPY ["Portfolio.Domain/Portfolio.Domain.csproj", "Portfolio.Domain/"]
 RUN dotnet restore "./Portfolio.Identity/Portfolio.Identity.csproj"
 COPY . .

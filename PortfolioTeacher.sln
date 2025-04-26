@@ -23,10 +23,6 @@ EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Portfolio.Frontend", "Portfolio.Frontend\Portfolio.Frontend.esproj", "{0DA0A781-A846-5543-488D-F8FDFB79A124}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Portfolio.Gateway", "Portfolio.Gateway\Portfolio.Gateway.csproj", "{4B6C38F8-F369-42BD-8725-644675A35F44}"
-	ProjectSection(ProjectDependencies) = postProject
-		{DA1DC769-6FC6-4347-8312-578AE4EDD175} = {DA1DC769-6FC6-4347-8312-578AE4EDD175}
-		{EFD6DF34-C6F0-466C-ABFB-0A840FDB19C4} = {EFD6DF34-C6F0-466C-ABFB-0A840FDB19C4}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Localization;
-using Portfolio.Application.ViewModels.Request;
-using Portfolio.Application.ViewModels.Response;
 using Portfolio.Domain.Models;
 using Portfolio.Identity.Pages.Account.Register;
 
@@ -22,7 +20,8 @@ public class Index(
 	RoleManager<IdentityRole<Guid>> roleManager,
 	UserManager<IdentityUser<Guid>> userManager,
 	SignInManager<IdentityUser<Guid>> signInManager,
-	IStringLocalizer<Roles> localizer) : PageModel
+	IStringLocalizer<Roles> localizer,
+    IStringLocalizer<InputModel> inputLocalizer) : PageModel
 {
 	public ViewModel View { get; set; }
 
@@ -39,6 +38,13 @@ public class Index(
 	{
 		if (ModelState.IsValid)
 		{
+            var existingUser = await userManager.FindByEmailAsync(Input.Email);
+			if (existingUser != null)
+			{
+				ModelState.AddModelError(string.Empty, inputLocalizer["UserAlreadyExist"]);
+                await BuildModelAsync(Input.ReturnUrl);
+                return Page();
+            }
 			IdentityUser<Guid> user = new()
 			{
 				UserName = Input.Email,

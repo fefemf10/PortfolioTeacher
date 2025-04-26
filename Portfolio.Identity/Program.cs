@@ -61,7 +61,7 @@ builder.Services.AddIdentityServer()
     .AddProfileService<ProfileService>()
     .AddDeveloperSigningCredential();
 builder.Services.ConfigureApplicationCookie(options => {
-    options.Cookie.SameSite = SameSiteMode.Lax;
+    options.Cookie.SameSite = SameSiteMode.Strict;
 });
 builder.Services.AddScoped<ICorsPolicyService>(sp =>
 {
@@ -119,6 +119,7 @@ app.UseRouting();
 app.UseIdentityServer();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseAntiforgery();
 app.UseCors(builder =>
 {
     builder

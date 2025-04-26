@@ -162,4 +162,7 @@
   <data name="RoleRequired" xml:space="preserve">
     <value>Не выбран тип учетной записи</value>
   </data>
+  <data name="UserAlreadyExist" xml:space="preserve">
+    <value>Пользователь с таким email уже зарегистрирован</value>
+  </data>
 </root>

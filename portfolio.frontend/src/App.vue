@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { NLayout, NLayoutContent, NLayoutHeader, NLayoutFooter, NText, NButton } from 'naive-ui'
   import { RouterView } from 'vue-router'
-  import { ref, onBeforeMount, onMounted, onBeforeUnmount, watch, watchEffect, computed } from 'vue'
-  import userManager, { isAuthenticated, login, logout, isUserCreated, userCreated } from './oidc';
+  import { ref, onMounted, onBeforeUnmount } from 'vue'
+  import userManager, { isAuthenticated, login, logout, userCreated } from './oidc';
   import UserPreview from './components/Header/UserPreview.vue';
   import ThemeSwitcher from './components/Footer/ThemeSwitcher.vue';
   import LanguageSwitcher from './components/Footer/LanguageSwitcher.vue';

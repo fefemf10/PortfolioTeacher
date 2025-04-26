@@ -162,4 +162,7 @@
   <data name="RoleRequired" xml:space="preserve">
     <value>The account type is not selected</value>
   </data>
+  <data name="UserAlreadyExist" xml:space="preserve">
+    <value>The user with this email address is already registered</value>
+  </data>
 </root>

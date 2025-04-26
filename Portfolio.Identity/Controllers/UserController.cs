@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Portfolio.Application.ViewModels.Request;
-using Portfolio.Application.ViewModels.Response;
 using Portfolio.Domain.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Text.Json;
 using static Duende.IdentityServer.IdentityServerConstants;
-using static Duende.IdentityServer.Models.IdentityResources;
 
 namespace IdentityServer.Controllers
 {
@@ -22,8 +16,8 @@ namespace IdentityServer.Controllers
 	{
 		string[] fio;
         List<IdentityUser<Guid>> listUsers = [];
-        List<RequestAddTeacher> listAddTeachers = [];
-		List<ResponseFacultyDepartments> requestFacultyDepartments;
+  //      List<RequestAddTeacher> listAddTeachers = [];
+		//List<ResponseFacultyDepartments> requestFacultyDepartments;
   //      [HttpPost]
 		//public async Task<ActionResult> Add([Required][FromBody] RequestAddUser requestAddUser)
 		//{

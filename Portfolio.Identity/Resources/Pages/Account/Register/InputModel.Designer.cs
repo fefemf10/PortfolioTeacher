@@ -194,5 +194,14 @@ namespace Portfolio.Identity.Resources.Pages.Account.Register {
                 return ResourceManager.GetString("RoleRequired", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на The user with this email address is already registered.
+        /// </summary>
+        public static string UserAlreadyExist {
+            get {
+                return ResourceManager.GetString("UserAlreadyExist", resourceCulture);
+            }
+        }
     }
 }
