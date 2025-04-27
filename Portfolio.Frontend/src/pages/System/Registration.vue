@@ -1,14 +1,18 @@
 <script setup lang="ts">
   import { NForm, NFormItemGi, NGrid, NInput, NButton, FormRules, NSelect, FormInst, SelectOption, NText } from 'naive-ui'
   import { computed, onMounted, ref } from 'vue'
-  import { UserAddProfile } from '../classes/UserAddProfile';
-  import { Faculty } from '../classes/Faculty';
+  import { UserAddProfile } from '@/classes/UserAddProfile';
+  import { Faculty } from '@/classes/Faculty';
   import { useI18n } from 'vue-i18n';
-  import { guid, userCreated } from '../oidc';
-  import api from '../api'
-  import router from '../Router';
+  import { guid, userCreated } from '@/oidc';
+  import api from '@/api'
+  import router from '@/Router';
   const {t} = useI18n();
   const faculties = ref<Faculty[]>([]);
+  const selectGenderOptions = computed<SelectOption[]>(() => [
+    { label: t('Placeholders.Registration.genderMale'), value: 1 },
+    { label: t('Placeholders.Registration.genderFemale'), value: 0 },
+  ]);
   const selectOptions = computed<SelectOption[]>(() =>
     faculties.value.map(faculty => ({
       type: 'group',
@@ -36,6 +40,9 @@
       required: true
     },
     firstName: {
+      required: true
+    },
+    gender: {
       required: true
     },
     phone: {
@@ -82,6 +89,9 @@
       </NFormItemGi>
       <NFormItemGi path="middleName">
         <NInput v-model:value="formValue.middleName" :placeholder="t('Placeholders.Registration.middleName')"/>
+      </NFormItemGi>
+      <NFormItemGi path="gender">
+        <NSelect v-model:value="formValue.gender" :options="selectGenderOptions" :placeholder="t('Placeholders.Registration.gender')" />
       </NFormItemGi>
       <NFormItemGi path="email">
         <NInput v-model:value="formValue.email" :placeholder="t('Placeholders.Registration.email')"/>

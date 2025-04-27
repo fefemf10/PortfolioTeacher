@@ -2,8 +2,8 @@
   import {NFlex, NIcon} from 'naive-ui'
   import { Briefcase, Envelope, Phone, Home } from '@vicons/fa'
   import UserDetailsInfoItem from './UserDetailsInfoItem.vue';
-  import { Post } from '../enums/PostEnum';
-  import { useEnumLocalization } from '../EnumLocalization';
+  import { Post } from '@/enums/PostEnum';
+  import { useEnumLocalization } from '@/EnumLocalization';
   const props = defineProps<{
     email: string,
     post: Post,

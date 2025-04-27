@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import userManager, { userCreated } from './oidc.js';
+import userManager, { userCreated } from '@/oidc';
 
 const router = useRouter();
 

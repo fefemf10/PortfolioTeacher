@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import { NFlex, NText } from 'naive-ui'
-  import { AcademicDegree } from '../enums/AcademicDegree';
-  import { AcademicTitle } from '../enums/AcademicTitle';
-  import { useEnumLocalization } from '../EnumLocalization';
+  import { AcademicDegree } from '@/enums/AcademicDegree';
+  import { AcademicTitle } from '@/enums/AcademicTitle';
+  import { useEnumLocalization } from '@/EnumLocalization';
   const props = defineProps<{
     lastName: string,
     firstName: string,

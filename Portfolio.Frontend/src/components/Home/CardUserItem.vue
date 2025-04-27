@@ -2,10 +2,10 @@
   import { NText, NFlex, NAvatar } from 'naive-ui';
   import { Envelope, Phone } from '@vicons/fa';
   import UserDetailsInfoItem from '../UserDetailsInfoItem.vue';
-  import { UserProfile } from '../../classes/UserProfile';
-  import { Post } from '../../enums/PostEnum';
-  import { hashCode } from '../../hashCode';
-  import { useEnumLocalization } from '../../EnumLocalization';
+  import { UserProfile } from '@/classes/UserProfile';
+  import { Post } from '@/enums/PostEnum';
+  import { hashCode } from '@/hashCode';
+  import { useEnumLocalization } from '@/EnumLocalization';
   const { localizeEnum } = useEnumLocalization();
   const props = defineProps<{
     user: UserProfile

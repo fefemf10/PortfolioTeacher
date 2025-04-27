@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ShortCardItem } from '../classes/ShortCardItem';
+  import { ShortCardItem } from '@/classes/ShortCardItem';
   import { NTimeline, NTimelineItem, NText, NCard } from 'naive-ui';
   const props = defineProps<{
     title: string;

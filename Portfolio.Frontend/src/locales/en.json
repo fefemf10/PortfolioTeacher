@@ -9,6 +9,9 @@
             "lastName": "Lastname",
             "firstName": "Firstname",
             "middleName": "Middlename",
+            "gender": "Gender",
+            "genderMale": "Male",
+            "genderFemale": "Female",
             "email": "Email",
             "phone": "Telephone",
             "department": "Department",
@@ -22,30 +25,6 @@
         "About": {
             "NameTitle": "About"
         },
-        "Awards": {
-            "NameTitle": "Awards"
-        },
-        "Disciplines": {
-            "NameTitle": "Disciplines"
-        },
-        "Dissertation": {
-            "NameTitle": "Dissertation"
-        },
-        "ProfessionalDevelopment": {
-            "NameTitle": "Professional Development"
-        },
-        "PublicActivities": {
-            "NameTitle": "Public Activities"
-        },
-        "ScienceProjects": {
-            "NameTitle": "Science Projects"
-        },
-        "University": {
-            "NameTitle": "University"
-        },
-        "Work": {
-            "NameTitle": "Work"
-        },
         "Stats": {
             "NameTitle": "Stats"
         },
@@ -57,6 +36,94 @@
         },
         "Deputy": {
             "NameTitle": "Deputy"
+        },
+        "Resume": {
+            "NameTitle": "Resume",
+            "Awards": {
+                "NameTitle": "Awards",
+                "CardTitle": "List of awards",
+                "DataColumns": [
+                    "Name",
+                    "Name of organization",
+                    "Date of award"
+                ]
+            },
+            "Disciplines": {
+                "NameTitle": "Disciplines",
+                "CardTitle": "List of disciplines",
+                "DataColumns": [
+                    "Name"
+                ]
+            },
+            "Dissertations": {
+                "NameTitle": "Dissertation",
+                "CardTitle": "List of dissertation",
+                "DataColumns": [
+                    "Name",
+                    "Year of protection"
+                ]
+            },
+            "ProfessionalDevelopments": {
+                "NameTitle": "Professional Development",
+                "CardTitle": "List of professional developments",
+                "DataColumns": [
+                    "Name",
+                    "Name of organization",
+                    "Name of document",
+                    "Seria of document",
+                    "Number of document",
+                    "Date completion",
+                    "Listening time"
+                ]
+            },
+            "PublicActivities": {
+                "NameTitle": "Public Activities",
+                "CardTitle": "List of public activities",
+                "DataColumns": [
+                    "Name"
+                ]
+            },
+            "Publications": {
+                "NameTitle": "Publications",
+                "CardTitle": "List of publications",
+                "DataColumns": [
+                    "Name",
+                    "Form",
+                    "Output data",
+                    "Size",
+                    "CoAuthors"
+                ]
+            },
+            "ScienceProjects": {
+                "NameTitle": "Science Projects",
+                "CardTitle": "List of science projects",
+                "DataColumns": [
+                    "Name",
+                    "Begin time of work",
+                    "End time of work",
+                    "Director"
+                ]
+            },
+            "University": {
+                "NameTitle": "University",
+                "CardTitle": "List of universities",
+                "DataColumns": [
+                    "Name",
+                    "Specialization",
+                    "Qualification",
+                    "Year of graduation"
+                ]
+            },
+            "Work": {
+                "NameTitle": "Work",
+                "CardTitle": "List of works",
+                "DataColumns": [
+                    "Name",
+                    "Post",
+                    "Begin time of work",
+                    "End time of work"
+                ]
+            }
         },
         "404": {
             "title": "404 Not Found",

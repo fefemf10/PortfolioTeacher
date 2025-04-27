@@ -10,10 +10,8 @@ namespace Portfolio.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize]
 	public class FacultyController(IMapper mapper, IFacultyService facultyService) : ControllerBase
 	{
-        [AllowAnonymous]
         [HttpGet]
 		public async Task<ActionResult<IEnumerable<ResponseFaculty>>> GetAll()
 		{

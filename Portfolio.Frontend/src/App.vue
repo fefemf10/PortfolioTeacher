@@ -12,7 +12,7 @@
     SignOutAlt as LogoutIcon,
     User as UserIcon
   } from '@vicons/fa'
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const auth = ref<boolean>(false);
   const updateAuthState = async () => {
     auth.value = await isAuthenticated();
@@ -20,6 +20,7 @@
       router.replace('/registration');
   };
   onMounted(async () => {
+    document.documentElement.lang = locale.value;
     updateAuthState();
     userManager.events.addUserLoaded(updateAuthState);
     userManager.events.addUserUnloaded(() => {

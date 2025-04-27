@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref, watchEffect } from 'vue';
 import { useRouter } from 'vue-router';
-import userManager, { guid, isUserCreated, userCreated } from './oidc';
-import api from './api';
+import userManager, { guid, isUserCreated, userCreated } from '@/oidc';
+import api from '@/api';
 
 const router = useRouter();
 onMounted(() => {

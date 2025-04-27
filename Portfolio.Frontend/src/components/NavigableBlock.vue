@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { NTree, NCard, NText, TreeOption } from 'naive-ui'
-import api from '../api';
-import { Faculty } from '../classes/Faculty';
+import api from '@/api';
+import { Faculty } from '@/classes/Faculty';
 const faculties = ref<Faculty[]>([]);
 const expandedKeys = ref<string[]>(['all']);
 const selectedId = ref<string | null>(null);

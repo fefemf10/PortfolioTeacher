@@ -1,51 +1,60 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router'
 import userManager, { login, role } from './oidc'
+const pages = import.meta.glob('./pages/**/*.vue')
+function lazy(page) {
+  const path = `./pages/${page}.vue`;
+  const loader = pages[path];
+  return loader;
+}
+const Home = lazy('Home')
+const Dean = lazy('Dean')
+const Deputy = lazy('Deputy')
+const Stats = lazy('Stats')
+const Admin = lazy('Admin')
 
-const Home = () => import('./pages/Home.vue')
-const About = () => import('./pages/About.vue')
-const Awards = () => import('./pages/Awards.vue')
-const Dean = () => import('./pages/Dean.vue')
-const Deputy = () => import('./pages/Deputy.vue')
-const Disciplines = () => import('./pages/Disciplines.vue')
-const Dissertation = () => import('./pages/Dissertation.vue')
-const ProfessionalDevelopments = () => import('./pages/ProfessionalDevelopments.vue')
-const PublicActivities = () => import('./pages/PublicActivities.vue')
-const ScienceProjects = () => import('./pages/ScienceProjects.vue')
-const Stats = () => import('./pages/Stats.vue')
-const University = () => import('./pages/University.vue')
-const Work = () => import('./pages/Work.vue')
-const Admin = () => import('./pages/Admin.vue')
-const Resume = () => import('./pages/Resume.vue')
+const Resume = lazy('Resume/Resume')
+const ResumeShort = lazy('Resume/Short')
+const ResumeAwards = lazy('Resume/Awards')
+const ResumeDisciplines = lazy('Resume/Disciplines')
+const ResumeDissertations = lazy('Resume/Dissertations')
+const ResumeProfessionalDevelopments = lazy('Resume/ProfessionalDevelopments')
+const ResumePublicActivities = lazy('Resume/PublicActivities')
+const ResumePublications = lazy('Resume/Publications')
+const ResumeScienceProjects = lazy('Resume/ScienceProjects')
+const ResumeUniversities = lazy('Resume/Universities')
+const ResumeWorks = lazy('Resume/Work')
 
-const Page404 = () => import('./pages/404.vue')
-const Page403 = () => import('./pages/403.vue')
-const Page500 = () => import('./pages/500.vue')
-const Page418 = () => import('./pages/418.vue')
+const Page404 = lazy('System/404')
+const Page403 = lazy('System/403')
+const Page500 = lazy('System/500')
+const Page418 = lazy('System/418')
+const Registration = lazy('System/Registration')
 
-const Registration = () => import('./pages/Registration.vue')
-const LoginCallback = () => import('./LoginCallback.vue')
-const LogoutCallback = () => import('./LogoutCallback.vue')
-const SilentCallback = () => import('./SilentCallback.vue')
+const LoginCallback = lazy('System/LoginCallback')
+const LogoutCallback = lazy('System/LogoutCallback')
 
-const routes = [
+const routes:RouteRecordRaw[] = [
   { path: '/', component: Home },
-  { path: '/about', component: About },
-  { path: '/awards', component: Awards },
   { path: '/dean', component: Dean },
   { path: '/deputy', component: Deputy },
-  { path: '/disciplines', component: Disciplines },
-  { path: '/dissertation', component: Dissertation },
-  { path: '/professionalDevelopments', component: ProfessionalDevelopments },
-  { path: '/publicActivities', component: PublicActivities },
-  { path: '/scienceProjects', component: ScienceProjects },
   { path: '/stats', component: Stats },
-  { path: '/university', component: University },
-  { path: '/work', component: Work },
   { path: '/admin', component: Admin, meta: {requiresAuth: true, role: 'Administrator'} },
-  { path: '/resume/:id', component: Resume, meta: {requiresAuth: true, role: 'Teacher'} },
+  { path: '/resume/:id', component: Resume, meta: {requiresAuth: true, role: 'Teacher'},
+    children: [
+      { path: '', component: ResumeShort },
+      { path: 'awards', component: ResumeAwards },
+      { path: 'disciplines', component: ResumeDisciplines },
+      { path: 'dissertations', component: ResumeDissertations },
+      { path: 'professionalDevelopments', component: ResumeProfessionalDevelopments },
+      { path: 'publicActivities', component: ResumePublicActivities },
+      { path: 'publications', component: ResumePublications },
+      { path: 'scienceProjects', component: ResumeScienceProjects },
+      { path: 'universities', component: ResumeUniversities },
+      { path: 'works', component: ResumeWorks }
+    ]
+  },
   { path: '/authentication/login-callback', component: LoginCallback },
   { path: '/authentication/logout-callback', component: LogoutCallback },
-  { path: '/authentication/silent-callback', component: SilentCallback },
   { path: "/404", component: Page404 },
   { path: "/403", component: Page403 },
   { path: "/500", component: Page500 },

@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import { NList, NListItem, NText, TextProps } from 'naive-ui';
-  import { UserProfile } from '../../classes/UserProfile';
+  import { UserProfile } from '@/classes/UserProfile';
   import CardUserItem from './CardUserItem.vue';
-  import router from '../../Router';
+  import router from '@/Router';
   const props = defineProps<{
     users: UserProfile[]
   }>();
   const click = (id:string) => {
-    router.push('/resume/' + id);
+    router.push(`/resume/${id}`);
   };
 </script>
 <template>

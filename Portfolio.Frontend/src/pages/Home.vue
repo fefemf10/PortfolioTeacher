@@ -1,10 +1,10 @@
 <script setup lang="ts">
-  import {NFlex, NButton} from 'naive-ui'
-  import {onMounted, ref, watchEffect} from 'vue'
-  import NavigableBlock from '../components/NavigableBlock.vue'
-  import CardUser from '../components/Home/CardUser.vue';
-  import { UserProfile } from '../classes/UserProfile';
-  import api from '../api'
+  import { NFlex } from 'naive-ui'
+  import { onMounted, ref } from 'vue'
+  import { UserProfile } from '@/classes/UserProfile';
+  import NavigableBlock from '@/components/NavigableBlock.vue'
+  import CardUser from '@/components/Home/CardUser.vue';
+  import api from '@/api'
   const users = ref<UserProfile[]>([]);
   onMounted(async () => {
     users.value = await api.get<UserProfile[]>('api/teacher').json();

@@ -1,9 +1,9 @@
 <script setup lang="ts">
   import {NFlex, NAvatar, NText} from 'naive-ui'
   import {onMounted, ref} from 'vue';
-  import { UserProfile } from '../../classes/UserProfile';
-  import api from '../../api'
-  import userManager, { guid } from '../../oidc'
+  import { UserProfile } from '@/classes/UserProfile';
+  import api from '@/api'
+  import userManager, { guid } from '@/oidc'
   const user = ref<UserProfile>(null);
   onMounted(async () => {
     user.value = await api.get<UserProfile>('api/teacher/' + await guid()).json();

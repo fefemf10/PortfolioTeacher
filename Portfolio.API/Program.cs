@@ -7,6 +7,7 @@ using Portfolio.API;
 using Portfolio.API.Middleware;
 using Portfolio.Infrastructure;
 using System.Reflection;
+using static System.Net.WebRequestMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
@@ -96,17 +97,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.TokenValidationParameters.ValidateIssuer = true;
         options.TokenValidationParameters.ValidIssuers = new[]
         {
-            "http://localhost/id", "https://localhost/id", "https://pteach.ru/id"
+            "http://localhost/id", "https://localhost/id", "https://pteach.ru/id", "https://tp6tqkw7-443.euw.devtunnels.ms/id",
         };
         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
     });
 
-builder.Services.AddAuthorizationBuilder()
-    .AddPolicy("ApiScope", policy =>
-	{
-		policy.RequireAuthenticatedUser();
+builder.Services.AddAuthorizationBuilder();
+    //.AddPolicy("ApiScope", policy =>
+	//{
+		//policy.RequireAuthenticatedUser();
 		//policy.RequireClaim("scope", builder.Configuration["IdentityServer:Scope"]!);
-	});
+	//});
 
 builder.Services.AddCors();
 builder.Services.AddStackExchangeRedisCache(options => {
@@ -142,7 +143,7 @@ app.UseCors(builder =>
 }
 app.UseAuthentication();
 app.UseAuthorization();
-app.MapDefaultControllerRoute().RequireAuthorization("ApiScope");
+app.MapDefaultControllerRoute();
 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationContext>();

@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { NRadioGroup, NRadioButton, NFlex } from 'naive-ui'
-  import { useThemeStore } from '../../ThemeStore';
+  import { useThemeStore } from '@/ThemeStore';
   const { themePreference } = useThemeStore()
 </script>
 <template>

@@ -15,6 +15,8 @@ namespace Portfolio.Application.ViewModels.Request
 		[Required]
 		public string FirstName { get; set; }
 		public string? MiddleName { get; set; }
+		[Required]
+		public byte Gender {  get; set; }
         [Required]
 		[Phone]
         public string Phone { get; set; }

@@ -19,14 +19,11 @@ const options = ref([
 function changeLocale(lang: string) {
   locale.value = lang;
   localStorage.setItem('locale', lang);
+  document.documentElement.lang = lang;
 }
 </script>
 <template>
-  <NDropdown
-    trigger="click"
-    :options="options"
-    @select="changeLocale"
-  >
+  <NDropdown trigger="click" :options="options" @select="changeLocale">
     <NButton secondary>{{ t('Nav.Lang') }}</NButton>
   </NDropdown>
 </template>

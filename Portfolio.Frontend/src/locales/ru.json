@@ -9,6 +9,9 @@
             "lastName": "Фамилия",
             "firstName": "Имя",
             "middleName": "Отчество",
+            "gender": "Пол",
+            "genderMale": "Мужчина",
+            "genderFemale": "Женщина",
             "email": "Электронная почта",
             "phone": "Номер телефона",
             "department": "Кафедра",
@@ -22,30 +25,6 @@
         "About": {
             "NameTitle": "Обо мне"
         },
-        "Awards": {
-            "NameTitle": "Награды"
-        },
-        "Disciplines": {
-            "NameTitle": "Дисциплины"
-        },
-        "Dissertation": {
-            "NameTitle": "Диссертации"
-        },
-        "ProfessionalDevelopment": {
-            "NameTitle": "Повышения квалификации"
-        },
-        "PublicActivities": {
-            "NameTitle": "Общественные проекты"
-        },
-        "ScienceProjects": {
-            "NameTitle": "Научные проекты"
-        },
-        "University": {
-            "NameTitle": "Образование"
-        },
-        "Work": {
-            "NameTitle": "Работа"
-        },
         "Stats": {
             "NameTitle": "Статистика"
         },
@@ -57,6 +36,93 @@
         },
         "Deputy": {
             "NameTitle": "Зав. каф"
+        },
+        "Resume": {
+            "Awards": {
+                "NameTitle": "Награды",
+                "CardTitle": "Список наград",
+                "DataColumns": [
+                    "Название",
+                    "Организация",
+                    "Дата получения"
+                ]
+            },
+            "Disciplines": {
+                "NameTitle": "Дисциплины",
+                "CardTitle": "Список преподаваемых дисциплин",
+                "DataColumns": [
+                    "Название"
+                ]
+            },
+            "Dissertations": {
+                "NameTitle": "Диссертации",
+                "CardTitle": "Список диссертаций",
+                "DataColumns": [
+                    "Название",
+                    "Год защиты"
+                ]
+            },
+            "ProfessionalDevelopments": {
+                "NameTitle": "Повышения квалификации",
+                "CardTitle": "Список повышений квалификации",
+                "DataColumns": [
+                    "Название",
+                    "Организация",
+                    "Название документа",
+                    "Серия документа",
+                    "Номер документа",
+                    "Дата завершения",
+                    "Прослушанных часов"
+                ]
+            },
+            "PublicActivities": {
+                "NameTitle": "Общественные проекты",
+                "CardTitle": "Список общественных проектов",
+                "DataColumns": [
+                    "Название"
+                ]
+            },
+            "Publications": {
+                "NameTitle": "Публикации",
+                "CardTitle": "Список публикаций",
+                "DataColumns": [
+                    "Название",
+                    "Форма",
+                    "Выходные данные",
+                    "Размер",
+                    "Соавторы"
+                ]
+            },
+            "ScienceProjects": {
+                "NameTitle": "Научные проекты",
+                "CardTitle": "Список научных проектов",
+                "DataColumns": [
+                    "Название",
+                    "Начало работы",
+                    "Окончание работы",
+                    "Директор"
+                ]
+            },
+            "University": {
+                "NameTitle": "Образование",
+                "CardTitle": "Список университетов",
+                "DataColumns": [
+                    "Название",
+                    "Специализация",
+                    "Квалификация",
+                    "Год выпуска"
+                ]
+            },
+            "Work": {
+                "NameTitle": "Работа",
+                "CardTitle": "Список работ",
+                "DataColumns": [
+                    "Название",
+                    "Должность",
+                    "Начало работы",
+                    "Окончание работы"
+                ]
+            }
         },
         "404": {
             "title": "404 Такой страницы не существует",
