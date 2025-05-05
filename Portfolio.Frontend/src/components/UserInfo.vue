@@ -22,7 +22,7 @@
       <NFlex vertical>
         <UserNameInfo :lastName=user.lastName :firstName=user.firstName :middleName=user.middleName :academicDegree=user.academicDegree :academicTitle=user.academicTitle />
         <NDivider :theme-overrides="dividerThemeOverrides"/>
-        <UserDetailsInfo :post=user.post :email=user.email :phone=user.phone aud="" />
+        <UserDetailsInfo :posts=user.posts :email=user.email :phone=user.phone aud="" />
       </NFlex>
     </NFlex>
   </MyNCard>

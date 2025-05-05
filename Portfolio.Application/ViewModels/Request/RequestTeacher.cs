@@ -18,14 +18,11 @@ namespace Portfolio.Application.ViewModels.Request
         [Required]
         public DateOnly? DateBirthday { get; set; }
         [Required]
-        public Post Post { get; set; }
+        public List<RequestPost> Posts { get; set; }
         [Required]
         public AcademicDegree AcademicDegree { get; set; }
         [Required]
         public AcademicTitle AcademicTitle { get; set; }
-        [Required]
-        public Guid FacultyId { get; set; }
-        public Guid? DepartmentId { get; set; }
         [Required]
         public uint PublicationCount { get; set; }
 	}

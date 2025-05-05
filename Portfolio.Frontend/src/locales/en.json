@@ -149,11 +149,20 @@
     "Enums": {
         "Post": {
             "None": "None",
+            "Laborant": "Laborant",
+            "Engineer": "Engineer",
             "Assistant": "Assistant",
             "Teacher": "Teacher",
             "SeniorTeacher": "Senior Teacher",
-            "Laborant": "Laborant",
-            "Engineer": "Engineer"
+            "Deputy": "Deputy",
+            "Docent": "Docent",
+            "Professor": "Professor",
+            "Dean": "Dean",
+            "Specialist": "Specialist",
+            "Manager": "Manager",
+            "AssociateDirector": "Associate Director",
+            "Director": "Director",
+            "Rector": "Rector"
         },
         "Role": {
             "Administrator": "Administrator",

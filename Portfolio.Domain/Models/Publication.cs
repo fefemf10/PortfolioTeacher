@@ -2,16 +2,20 @@
 
 namespace Portfolio.Domain.Models
 {
+    public enum PublicationType
+    {
+        Thesis,
+        Article,
+        Monography,
+        Dissertation
+    }
     public class Publication
     {
         public Guid Id { get; set; }
 		public string Name { get; set; }
-        public string Form { get; set; }
-        public string OutputData { get; set; }
-        public uint Size { get; set; }
-        public string? CoAuthor { get; set; }
-        public Guid TeacherId { get; set; }
-        [JsonIgnore]
-        public Teacher Teacher { get; set; }
+        public PublicationType PublicationType { get; protected set; }
+        public int YearPublication { get; set; }
+        public List<Teacher> CoAuthors { get; set; } = new();
+        public List<UserFile> Files { get; set; } = new();
     }
 }

@@ -20,7 +20,7 @@ namespace Portfolio.Application.ViewModels.Request
 		[Required]
 		public Roles Role { get; set; }
 		[Required]
-		public Guid FacultyId { get; set; }
+		public Guid ParentDepartmentId { get; set; }
         [Required]
         public Guid? DepartmentId { get; set; }
 	}

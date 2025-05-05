@@ -22,7 +22,7 @@ namespace Portfolio.Application.Services.TeacherService
             Teacher? teacher = await db.Teachers.Include(x => x.ProfessionalDevelopments).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             ProfessionalDevelopment? professionalDevelopment = teacher.ProfessionalDevelopments.SingleOrDefault(x => x.Name == entity.Name && x.NumberDocument == entity.NumberDocument && x.SeriaDocument == entity.SeriaDocument && x.DateСompletion == entity.DateСompletion && x.ListeningTime == entity.ListeningTime && x.NameDocument == entity.NameDocument && x.NameOrganization == entity.NameOrganization);
             if (professionalDevelopment is not null)
-                throw new AlredyExistException();
+                throw new AlreadyExistException();
             teacher.ProfessionalDevelopments.Add(entity);
             await db.SaveChangesAsync();
             return entity.Id;

@@ -3,14 +3,15 @@
   import { Envelope, Phone } from '@vicons/fa';
   import UserDetailsInfoItem from '../UserDetailsInfoItem.vue';
   import { UserProfile } from '@/classes/UserProfile';
-  import { Post } from '@/enums/PostEnum';
+  import { PostType } from '@/enums/PostType';
   import { hashCode } from '@/hashCode';
   import { useEnumLocalization } from '@/EnumLocalization';
+import { useDepartmentStore } from '@/stores/departmentStore';
   const { localizeEnum } = useEnumLocalization();
   const props = defineProps<{
     user: UserProfile
   }>();
-
+  const departmentStore = useDepartmentStore();
 </script>
 <template>
   <NFlex>
@@ -18,7 +19,7 @@
         <NFlex class="fiopost" justify="space-between">
           <NFlex vertical>
             <NText class="fio" type="info">{{ user.lastName }} {{ user.firstName }} {{ user.middleName }}</NText>
-            <NText class="post" type="info">{{ localizeEnum(user.post, Post, 'Post') }}</NText>
+            <NText class="post" type="info" v-for="post of user.posts">{{ localizeEnum(post.postType, PostType, 'Post') }} в подразделении {{ departmentStore.getDepartmentById(post.departmentId)?.name }}</NText>
           </NFlex>
           <NFlex vertical>
             <UserDetailsInfoItem :icon=Envelope :value=user.email />

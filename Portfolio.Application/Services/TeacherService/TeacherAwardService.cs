@@ -22,7 +22,7 @@ namespace Portfolio.Application.Services.TeacherService
             Teacher? teacher = await db.Teachers.Include(x => x.Awards).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             Award? award = teacher.Awards.SingleOrDefault(x => x.Name == entity.Name && x.NameOrganization == entity.NameOrganization && x.DateAward == entity.DateAward);
             if (award is not null)
-                throw new AlredyExistException();
+                throw new AlreadyExistException();
             teacher.Awards.Add(entity);
             await db.SaveChangesAsync();
             return entity.Id;

@@ -31,7 +31,7 @@ namespace Portfolio.API.Middleware
             ExceptionResponse response = exception switch
             {
                 NotFoundByIdException _ => new ExceptionResponse(HttpStatusCode.NotFound, "Not Found By Id."),
-                AlredyExistException _ => new ExceptionResponse(HttpStatusCode.BadRequest, "Alredy Exist of Element"),
+                AlreadyExistException _ => new ExceptionResponse(HttpStatusCode.BadRequest, "Alredy Exist of Element"),
                 UnauthorizedAccessException _ => new ExceptionResponse(HttpStatusCode.Unauthorized, "Unauthorized."),
                 AutoMapperMappingException _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Automapper mapping error"),
                 _ => new ExceptionResponse(HttpStatusCode.InternalServerError, "Internal server error. Please retry later.")

@@ -13,13 +13,16 @@ namespace Portfolio.Infrastructure
 		public DbSet<Discipline> Disciplines { get; set; }
 		public DbSet<Award> Awards { get; set; }
 		public DbSet<Publication> Publications { get; set; }
+		public DbSet<Monography> Monographies { get; set; }
+		public DbSet<Article> Articles{ get; set; }
+		public DbSet<Thesis> Theses { get; set; }
 		public DbSet<Dissertation> Dissertations { get; set; }
 		public DbSet<ProfessionalDevelopment> ProfessionalDevelopments { get; set; }
 		public DbSet<PublicActivity> PublicActivities { get; set; }
 		public DbSet<Department> Departments { get; set; }
-		public DbSet<Faculty> Faculties { get; set; }
 		public DbSet<Teacher> Teachers { get; set; }
-		public DbSet<Student> Students { get; set; }
+		public DbSet<UserFile> UserFiles { get; set; }
+		public DbSet<Post> Posts { get; set; }
 		public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
 		{
 		}

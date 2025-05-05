@@ -8,12 +8,36 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Portfolio.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Departments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    DepartmentType = table.Column<int>(type: "int", nullable: false),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ShortName = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ParentDepartmentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Departments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Departments_Departments_ParentDepartmentId",
+                        column: x => x.ParentDepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
@@ -31,18 +55,134 @@ namespace Portfolio.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Faculties",
+                name: "Publications",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    FullName = table.Column<string>(type: "longtext", nullable: false)
+                    PublicationType = table.Column<int>(type: "int", nullable: false),
+                    YearPublication = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Publications", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Articles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Journal = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IssueNumber = table.Column<int>(type: "int", nullable: false),
+                    PrintedSheets = table.Column<int>(type: "int", nullable: false),
+                    BeginPage = table.Column<int>(type: "int", nullable: false),
+                    EndPage = table.Column<int>(type: "int", nullable: false),
+                    URL = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Faculties", x => x.Id);
+                    table.PrimaryKey("PK_Articles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Articles_Publications_Id",
+                        column: x => x.Id,
+                        principalTable: "Publications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Dissertations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dissertations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Dissertations_Publications_Id",
+                        column: x => x.Id,
+                        principalTable: "Publications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Monographies",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Publisher = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Сirculation = table.Column<int>(type: "int", nullable: false),
+                    CountPages = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Monographies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Monographies_Publications_Id",
+                        column: x => x.Id,
+                        principalTable: "Publications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Theses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Type = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Collection = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BeginPage = table.Column<int>(type: "int", nullable: false),
+                    EndPage = table.Column<int>(type: "int", nullable: false),
+                    Place = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DateEvent = table.Column<DateOnly>(type: "date", nullable: false),
+                    CountPages = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Theses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Theses_Publications_Id",
+                        column: x => x.Id,
+                        principalTable: "Publications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UserFiles",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FileType = table.Column<int>(type: "int", nullable: false),
+                    Size = table.Column<long>(type: "bigint", nullable: false),
+                    PublicationId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserFiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserFiles_Publications_PublicationId",
+                        column: x => x.PublicationId,
+                        principalTable: "Publications",
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -59,47 +199,45 @@ namespace Portfolio.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     MiddleName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateBirthday = table.Column<DateOnly>(type: "date", nullable: true)
+                    Gender = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    DateBirthday = table.Column<DateOnly>(type: "date", nullable: true),
+                    Phone = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    AvatarId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Departments",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    FacultyId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Departments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Departments_Faculties_FacultyId",
-                        column: x => x.FacultyId,
-                        principalTable: "Faculties",
+                        name: "FK_Users_UserFiles_AvatarId",
+                        column: x => x.AvatarId,
+                        principalTable: "UserFiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Students",
+                name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PostType = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    DepartmentId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Students_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Posts_Departments_DepartmentId",
+                        column: x => x.DepartmentId,
+                        principalTable: "Departments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Posts_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -111,26 +249,12 @@ namespace Portfolio.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Post = table.Column<int>(type: "int", nullable: false),
                     AcademicDegree = table.Column<int>(type: "int", nullable: false),
-                    AcademicTitle = table.Column<int>(type: "int", nullable: false),
-                    FacultyId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    DepartmentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
+                    AcademicTitle = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Teachers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Teachers_Departments_DepartmentId",
-                        column: x => x.DepartmentId,
-                        principalTable: "Departments",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Teachers_Faculties_FacultyId",
-                        column: x => x.FacultyId,
-                        principalTable: "Faculties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Teachers_Users_Id",
                         column: x => x.Id,
@@ -141,30 +265,53 @@ namespace Portfolio.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "AwardStudent",
+                name: "Universities",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateAward = table.Column<DateOnly>(type: "date", nullable: true),
-                    TeacherId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci"),
-                    StudentId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    Specialization = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Qualification = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    YearGraduation = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AwardStudent", x => x.Id);
+                    table.PrimaryKey("PK_Universities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AwardStudent_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
+                        name: "FK_Universities_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Works",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Name = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Post = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BeginTimeWork = table.Column<DateOnly>(type: "date", nullable: false),
+                    EndTimeWork = table.Column<DateOnly>(type: "date", nullable: true),
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Works", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AwardStudent_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
-                        principalColumn: "Id");
+                        name: "FK_Works_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -177,7 +324,7 @@ namespace Portfolio.Infrastructure.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NameOrganization = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    DateAward = table.Column<DateOnly>(type: "date", nullable: true),
+                    DateAward = table.Column<DateOnly>(type: "date", nullable: false),
                     TeacherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
@@ -211,28 +358,6 @@ namespace Portfolio.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_DisciplineTeacher_Teachers_TeachersId",
                         column: x => x.TeachersId,
-                        principalTable: "Teachers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Dissertations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    YearProtection = table.Column<DateOnly>(type: "date", nullable: false),
-                    TeacherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Dissertations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Dissertations_Teachers_TeacherId",
-                        column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -292,27 +417,24 @@ namespace Portfolio.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Publications",
+                name: "PublicationTeacher",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Form = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    OutputData = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Size = table.Column<uint>(type: "int unsigned", nullable: false),
-                    CoAuthor = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    TeacherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    CoAuthorsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    PublicationsId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Publications", x => x.Id);
+                    table.PrimaryKey("PK_PublicationTeacher", x => new { x.CoAuthorsId, x.PublicationsId });
                     table.ForeignKey(
-                        name: "FK_Publications_Teachers_TeacherId",
-                        column: x => x.TeacherId,
+                        name: "FK_PublicationTeacher_Publications_PublicationsId",
+                        column: x => x.PublicationsId,
+                        principalTable: "Publications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PublicationTeacher_Teachers_CoAuthorsId",
+                        column: x => x.CoAuthorsId,
                         principalTable: "Teachers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -343,68 +465,17 @@ namespace Portfolio.Infrastructure.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
-            migrationBuilder.CreateTable(
-                name: "Universities",
-                columns: table => new
+            migrationBuilder.InsertData(
+                table: "Departments",
+                columns: new[] { "Id", "DepartmentType", "Name", "ParentDepartmentId", "ShortName" },
+                values: new object[,]
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Specialization = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Qualification = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    YearGraduation = table.Column<int>(type: "int", nullable: false),
-                    TeacherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    StudentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Universities", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Universities_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Universities_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Works",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Post = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    BeginTimeWork = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndTimeWork = table.Column<DateOnly>(type: "date", nullable: true),
-                    TeacherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
-                    StudentId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Works", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Works_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Works_Teachers_TeacherId",
-                        column: x => x.TeacherId,
-                        principalTable: "Teachers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
+                    { new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"), 1, "Горный", null, "Горный" },
+                    { new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), 1, "Фундаментального Инженерного Образования и Инноваций", null, "ФИОИ" },
+                    { new Guid("7217294e-e4de-4725-a522-8d64555fe142"), 1, "Автоматизации Производственных Процессов", null, "АПП" },
+                    { new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), 1, "Экономики и Бизнеса", null, "ЭБ" },
+                    { new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), 1, "Металлургического и Машиностроительного Производства", null, "ММП" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Disciplines",
@@ -468,58 +539,36 @@ namespace Portfolio.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Faculties",
-                columns: new[] { "Id", "FullName", "Name" },
-                values: new object[,]
-                {
-                    { new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"), "Горный", "Горный" },
-                    { new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Фундаментального Инженерного Образования и Инноваций", "ФИОИ" },
-                    { new Guid("7217294e-e4de-4725-a522-8d64555fe142"), "Автоматизации Производственных Процессов", "АПП" },
-                    { new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), "Экономики и Бизнеса", "ЭБ" },
-                    { new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), "Металлургического и Машиностроительного Производства", "ММП" }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Departments",
-                columns: new[] { "Id", "FacultyId", "Name" },
+                columns: new[] { "Id", "DepartmentType", "Name", "ParentDepartmentId", "ShortName" },
                 values: new object[,]
                 {
-                    { new Guid("0530b037-7b07-452e-a950-53840e398c26"), new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), "Теории и практики перевода и общего языкознания" },
-                    { new Guid("0de1c062-0a18-43b0-8626-78c4570056ce"), new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), "Технологии и организации машиностроительного производства" },
-                    { new Guid("2a416a4e-d08b-4e3d-a837-8e75f6770324"), new Guid("7217294e-e4de-4725-a522-8d64555fe142"), "Специализированных компьютерных систем" },
-                    { new Guid("2ac044d9-8ba2-442c-abfd-217231c784e9"), new Guid("7217294e-e4de-4725-a522-8d64555fe142"), "Автоматизированных электромеханических систем имени проф. А.Б. Зеленова" },
-                    { new Guid("2d49b107-3731-40aa-8d26-04f244c178b7"), new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Промышленного строительства" },
-                    { new Guid("3cb7b753-2655-4931-80ca-ec591bf88871"), new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Архитектурного дизайна и строительных конструкций" },
-                    { new Guid("4acc78ce-009f-4e24-a288-b66a79372e78"), new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Информационных технологий" },
-                    { new Guid("62831566-6eb9-44a7-9481-323164b741b4"), new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"), "Экологии и безопасности жизнедеятельности" },
-                    { new Guid("6c06bf14-1f60-493d-9fa3-afc6c857c873"), new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), "Финансов" },
-                    { new Guid("70bdc85c-b82c-4af7-b3b6-da4d84ca7e05"), new Guid("7217294e-e4de-4725-a522-8d64555fe142"), "Автоматизированного управления технологическими процессами" },
-                    { new Guid("8104c9b6-05b4-45c4-8b25-317414740310"), new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"), "Геотехнологий и безопасности производств" },
-                    { new Guid("91a675f9-38a3-40c8-9406-317260c857a8"), new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Инженерной механики и строительства" },
-                    { new Guid("933b1fc2-624c-43fb-b118-2ecffa5ce63a"), new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Языковой подготовки специалистов" },
-                    { new Guid("979cabfa-c56d-4770-b1c3-5c876567dc54"), new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"), "Горных энергомеханических систем" },
-                    { new Guid("a782c774-4557-4168-b12d-d667db3eae29"), new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), "Менеджмента" },
-                    { new Guid("ad968ac8-8ce7-4a12-a23a-59875e3b43b1"), new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), "Государственного аудита" },
-                    { new Guid("b44db6d6-388d-45d6-9790-155adf52b3b7"), new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Управления инновациями в промышленности" },
-                    { new Guid("c8ba340f-3e02-47b7-ad4d-5a3c750e2210"), new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), "Физического воспитания и спорта" },
-                    { new Guid("ca42d0d8-d0ab-4ee5-b9b0-6acbc7387885"), new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Социально-гуманитарных дисциплин" },
-                    { new Guid("cb2d93ba-258a-4178-a6d1-c5343309ee15"), new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), "Высшей математики" },
-                    { new Guid("d23201aa-46ed-4ea4-9dde-8e895901b913"), new Guid("7217294e-e4de-4725-a522-8d64555fe142"), "Электроники и радиофизики" },
-                    { new Guid("d695edb2-9d4c-45f8-8a4b-e6a71c668fc5"), new Guid("7217294e-e4de-4725-a522-8d64555fe142"), "Электрических машин и аппаратов" },
-                    { new Guid("dd0c290c-b7c4-4e64-bddd-99b32622a934"), new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), "Металлургических технологий" },
-                    { new Guid("eb0f963d-0691-4c84-b093-697e8fb2b5c1"), new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), "Машин металлургического комплекса" },
-                    { new Guid("ff819604-b34c-4eb8-a9b0-39426a00eedc"), new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), "Экономики и управления" }
+                    { new Guid("0530b037-7b07-452e-a950-53840e398c26"), 0, "Теории и практики перевода и общего языкознания", new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), null },
+                    { new Guid("0de1c062-0a18-43b0-8626-78c4570056ce"), 0, "Технологии и организации машиностроительного производства", new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), null },
+                    { new Guid("2a416a4e-d08b-4e3d-a837-8e75f6770324"), 0, "Специализированных компьютерных систем", new Guid("7217294e-e4de-4725-a522-8d64555fe142"), null },
+                    { new Guid("2ac044d9-8ba2-442c-abfd-217231c784e9"), 0, "Автоматизированных электромеханических систем имени проф. А.Б. Зеленова", new Guid("7217294e-e4de-4725-a522-8d64555fe142"), null },
+                    { new Guid("2d49b107-3731-40aa-8d26-04f244c178b7"), 0, "Промышленного строительства", new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), null },
+                    { new Guid("3cb7b753-2655-4931-80ca-ec591bf88871"), 0, "Архитектурного дизайна и строительных конструкций", new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), null },
+                    { new Guid("4acc78ce-009f-4e24-a288-b66a79372e78"), 0, "Информационных технологий", new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), null },
+                    { new Guid("62831566-6eb9-44a7-9481-323164b741b4"), 0, "Экологии и безопасности жизнедеятельности", new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"), null },
+                    { new Guid("6c06bf14-1f60-493d-9fa3-afc6c857c873"), 0, "Финансов", new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), null },
+                    { new Guid("70bdc85c-b82c-4af7-b3b6-da4d84ca7e05"), 0, "Автоматизированного управления технологическими процессами", new Guid("7217294e-e4de-4725-a522-8d64555fe142"), null },
+                    { new Guid("8104c9b6-05b4-45c4-8b25-317414740310"), 0, "Геотехнологий и безопасности производств", new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"), null },
+                    { new Guid("91a675f9-38a3-40c8-9406-317260c857a8"), 0, "Инженерной механики и строительства", new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), null },
+                    { new Guid("933b1fc2-624c-43fb-b118-2ecffa5ce63a"), 0, "Языковой подготовки специалистов", new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), null },
+                    { new Guid("979cabfa-c56d-4770-b1c3-5c876567dc54"), 0, "Горных энергомеханических систем", new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"), null },
+                    { new Guid("a782c774-4557-4168-b12d-d667db3eae29"), 0, "Менеджмента", new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), null },
+                    { new Guid("ad968ac8-8ce7-4a12-a23a-59875e3b43b1"), 0, "Государственного аудита", new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), null },
+                    { new Guid("b44db6d6-388d-45d6-9790-155adf52b3b7"), 0, "Управления инновациями в промышленности", new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), null },
+                    { new Guid("c8ba340f-3e02-47b7-ad4d-5a3c750e2210"), 0, "Физического воспитания и спорта", new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), null },
+                    { new Guid("ca42d0d8-d0ab-4ee5-b9b0-6acbc7387885"), 0, "Социально-гуманитарных дисциплин", new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), null },
+                    { new Guid("cb2d93ba-258a-4178-a6d1-c5343309ee15"), 0, "Высшей математики", new Guid("69e1105a-042f-45e4-9df8-c817e270447e"), null },
+                    { new Guid("d23201aa-46ed-4ea4-9dde-8e895901b913"), 0, "Электроники и радиофизики", new Guid("7217294e-e4de-4725-a522-8d64555fe142"), null },
+                    { new Guid("d695edb2-9d4c-45f8-8a4b-e6a71c668fc5"), 0, "Электрических машин и аппаратов", new Guid("7217294e-e4de-4725-a522-8d64555fe142"), null },
+                    { new Guid("dd0c290c-b7c4-4e64-bddd-99b32622a934"), 0, "Металлургических технологий", new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), null },
+                    { new Guid("eb0f963d-0691-4c84-b093-697e8fb2b5c1"), 0, "Машин металлургического комплекса", new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"), null },
+                    { new Guid("ff819604-b34c-4eb8-a9b0-39426a00eedc"), 0, "Экономики и управления", new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"), null }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AwardStudent_StudentId",
-                table: "AwardStudent",
-                column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AwardStudent_TeacherId",
-                table: "AwardStudent",
-                column: "TeacherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Awards_TeacherId",
@@ -527,9 +576,9 @@ namespace Portfolio.Infrastructure.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Departments_FacultyId",
+                name: "IX_Departments_ParentDepartmentId",
                 table: "Departments",
-                column: "FacultyId");
+                column: "ParentDepartmentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DisciplineTeacher_TeachersId",
@@ -537,9 +586,14 @@ namespace Portfolio.Infrastructure.Migrations
                 column: "TeachersId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Dissertations_TeacherId",
-                table: "Dissertations",
-                column: "TeacherId");
+                name: "IX_Posts_DepartmentId",
+                table: "Posts",
+                column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UserId",
+                table: "Posts",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProfessionalDevelopments_TeacherId",
@@ -552,9 +606,9 @@ namespace Portfolio.Infrastructure.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Publications_TeacherId",
-                table: "Publications",
-                column: "TeacherId");
+                name: "IX_PublicationTeacher_PublicationsId",
+                table: "PublicationTeacher",
+                column: "PublicationsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ScienceProjects_TeacherId",
@@ -562,41 +616,31 @@ namespace Portfolio.Infrastructure.Migrations
                 column: "TeacherId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Teachers_DepartmentId",
-                table: "Teachers",
-                column: "DepartmentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Teachers_FacultyId",
-                table: "Teachers",
-                column: "FacultyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Universities_StudentId",
+                name: "IX_Universities_UserId",
                 table: "Universities",
-                column: "StudentId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Universities_TeacherId",
-                table: "Universities",
-                column: "TeacherId");
+                name: "IX_UserFiles_PublicationId",
+                table: "UserFiles",
+                column: "PublicationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Works_StudentId",
+                name: "IX_Users_AvatarId",
+                table: "Users",
+                column: "AvatarId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Works_UserId",
                 table: "Works",
-                column: "StudentId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Works_TeacherId",
-                table: "Works",
-                column: "TeacherId");
+                column: "UserId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "AwardStudent");
+                name: "Articles");
 
             migrationBuilder.DropTable(
                 name: "Awards");
@@ -608,16 +652,25 @@ namespace Portfolio.Infrastructure.Migrations
                 name: "Dissertations");
 
             migrationBuilder.DropTable(
+                name: "Monographies");
+
+            migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
                 name: "ProfessionalDevelopments");
 
             migrationBuilder.DropTable(
                 name: "PublicActivities");
 
             migrationBuilder.DropTable(
-                name: "Publications");
+                name: "PublicationTeacher");
 
             migrationBuilder.DropTable(
                 name: "ScienceProjects");
+
+            migrationBuilder.DropTable(
+                name: "Theses");
 
             migrationBuilder.DropTable(
                 name: "Universities");
@@ -629,19 +682,19 @@ namespace Portfolio.Infrastructure.Migrations
                 name: "Disciplines");
 
             migrationBuilder.DropTable(
-                name: "Students");
+                name: "Departments");
 
             migrationBuilder.DropTable(
                 name: "Teachers");
 
             migrationBuilder.DropTable(
-                name: "Departments");
-
-            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Faculties");
+                name: "UserFiles");
+
+            migrationBuilder.DropTable(
+                name: "Publications");
         }
     }
 }

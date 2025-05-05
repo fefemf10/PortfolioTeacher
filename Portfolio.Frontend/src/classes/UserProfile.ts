@@ -1,6 +1,7 @@
 import { AcademicDegree } from "@/enums/AcademicDegree";
 import { AcademicTitle } from "@/enums/AcademicTitle";
-import { Post } from "@/enums/PostEnum";
+import { Post } from "./Post";
+
 export class UserProfile {
   id: string;
   email: string;
@@ -9,7 +10,7 @@ export class UserProfile {
   middleName: string;
   academicDegree: AcademicDegree;
   academicTitle: AcademicTitle;
-  post: Post;
+  posts: Post[];
   publicationCount: number;
   phone: string;
 }

@@ -28,8 +28,7 @@ namespace Portfolio.Application.Services.TeacherService
 
         public async Task AddInfo(Teacher teacher)
         {
-            Teacher t = await db.Teachers.IncludeAll(db).SingleOrDefaultAsync(x => x.Id == teacher.Id) ?? throw new NotFoundByIdException();
-            t.Post = teacher.Post;
+            Teacher t = await db.Teachers.IncludeAll(db).AsSplitQuery().SingleOrDefaultAsync(x => x.Id == teacher.Id) ?? throw new NotFoundByIdException();
             t.DateBirthday = teacher.DateBirthday;
             t.AcademicDegree = teacher.AcademicDegree;
             t.AcademicTitle = teacher.AcademicTitle;
@@ -56,7 +55,7 @@ namespace Portfolio.Application.Services.TeacherService
 
         public async Task<IEnumerable<Teacher>> GetAllDependencies()
         {
-            return await db.Teachers.IncludeAll(db).AsNoTracking().ToListAsync();
+            return await db.Teachers.IncludeAll(db).AsSplitQuery().AsNoTracking().ToListAsync();
         }
 
         public async Task<IEnumerable<Teacher>> GetAllFromCache()
@@ -66,7 +65,7 @@ namespace Portfolio.Application.Services.TeacherService
             if (teacherString != null) teachers = JsonSerializer.Deserialize<IEnumerable<Teacher>>(teacherString) ?? [];
             if (!teachers.Any())
             {
-                teachers = await db.Teachers.IncludeAll(db).AsNoTracking().ToListAsync();
+                teachers = await db.Teachers.IncludeAll(db).AsSplitQuery().AsNoTracking().ToListAsync();
                 teacherString = JsonSerializer.Serialize(teachers);
                 await cache.SetStringAsync("teachersWithDependencies", teacherString, options: new DistributedCacheEntryOptions
                 {
@@ -88,7 +87,7 @@ namespace Portfolio.Application.Services.TeacherService
             if (teacherString != null) teacher = JsonSerializer.Deserialize<Teacher>(teacherString);
             if (teacher is null)
             {
-                teacher = await db.Teachers.IncludeAll(db).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
+                teacher = await db.Teachers.IncludeAll(db).AsSplitQuery().SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
                 teacherString = JsonSerializer.Serialize(teacher);
                 await cache.SetStringAsync("teacherWithDependencies" + id, teacherString, options: new DistributedCacheEntryOptions
                 {
@@ -111,7 +110,7 @@ namespace Portfolio.Application.Services.TeacherService
 
         public async Task<Teacher> GetByIdWithDependencies(Guid id)
         {
-            return await db.Teachers.IncludeAll(db).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException(); ;
+            return await db.Teachers.IncludeAll(db).AsSplitQuery().SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException(); ;
         }
         public async Task Update(Teacher teacher)
         {

@@ -10,12 +10,10 @@
     users.value = await api.get<UserProfile[]>('api/teacher').json();
   });
   async function handleSelectedKey(id: string) {
-    if (id?.startsWith('department'))
-      users.value = await api.get<UserProfile[]>(`api/department/${id.split(' ')[1]}/teachers`).json();
-    else if (id?.startsWith('faculty'))
-      users.value = await api.get<UserProfile[]>(`api/faculty/${id.split(' ')[1]}/teachers`).json();
-    else
+    if (id === 'all')
       users.value = await api.get<UserProfile[]>('api/teacher').json();
+    else
+      users.value = await api.get<UserProfile[]>(`api/department/${id}/teachers`).json();
   }
 </script>
 <template>

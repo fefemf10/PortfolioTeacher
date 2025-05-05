@@ -22,7 +22,7 @@ namespace Portfolio.Application.Services.TeacherService
             Teacher? teacher = await db.Teachers.Include(x => x.Works).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             Work? work = teacher.Works.SingleOrDefault(x => x.Name == entity.Name && x.Post == entity.Post && x.BeginTimeWork == entity.BeginTimeWork && x.EndTimeWork == entity.EndTimeWork);
             if (work is not null)
-                throw new AlredyExistException();
+                throw new AlreadyExistException();
             teacher.Works.Add(entity);
             await db.SaveChangesAsync();
             return entity.Id;

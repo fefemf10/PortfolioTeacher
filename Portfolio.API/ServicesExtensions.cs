@@ -8,7 +8,6 @@ namespace Portfolio.API
     {
         public static IServiceCollection AddAPIServices(this IServiceCollection services)
         {
-            services.AddScoped<IFacultyService, FacultyService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IDisciplineService, DisciplineService>();
             services.AddScoped<ITeacherService, TeacherService>();
@@ -16,8 +15,6 @@ namespace Portfolio.API
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<ITeacherAwardService, TeacherAwardService>();
             services.AddScoped<ITeacherDisciplineService, TeacherDisciplineService>();
-            services.AddScoped<ITeacherDepartmentService, TeacherDepartmentService>();
-            services.AddScoped<ITeacherDissertationService, TeacherDissertationService>();
             services.AddScoped<ITeacherProfessionalDevelopmentService, TeacherProfessionalDevelopmentService>();
             services.AddScoped<ITeacherPublicActivityService, TeacherPublicActivityService>();
             services.AddScoped<ITeacherPublicationService, TeacherPublicationService>();

@@ -1,6 +1,5 @@
 import { AcademicTitle } from "@/enums/AcademicTitle";
 import { AcademicDegree } from "@/enums/AcademicDegree";
-import { Post } from "@/enums/PostEnum";
 
 export class UserAddProfile {
   id: string;
@@ -10,6 +9,4 @@ export class UserAddProfile {
   middleName?: string;
   gender: number;
   phone: string;
-  facultyId: string;
-  departmentId?: string;
 }

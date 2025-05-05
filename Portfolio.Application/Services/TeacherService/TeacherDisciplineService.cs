@@ -18,7 +18,7 @@ namespace Portfolio.Application.Services.TeacherService
         {
             Teacher? teacher = await db.Teachers.Include(x => x.Disciplines).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             Discipline? disciplineTeacher = teacher.Disciplines.SingleOrDefault(x => x.Id == entityId);
-            if (disciplineTeacher is not null) throw new AlredyExistException();
+            if (disciplineTeacher is not null) throw new AlreadyExistException();
             Discipline? discipline = await db.Disciplines.FindAsync(entityId) ?? throw new NotFoundByIdException();
             teacher.Disciplines.Add(discipline);
             await db.SaveChangesAsync();

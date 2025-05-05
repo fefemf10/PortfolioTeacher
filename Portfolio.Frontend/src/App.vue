@@ -2,7 +2,7 @@
   import { NLayout, NLayoutContent, NLayoutHeader, NLayoutFooter, NText, NButton, NFlex, NDropdown, NIcon } from 'naive-ui'
   import { RouterView } from 'vue-router'
   import { ref, onMounted, onBeforeUnmount, Component, h } from 'vue'
-  import userManager, { isAuthenticated, login, logout, userCreated } from './oidc';
+  import userManager, { isAuthenticated, login, logout, role, userCreated } from './oidc';
   import UserPreview from './components/Header/UserPreview.vue';
   import ThemeSwitcher from './components/Footer/ThemeSwitcher.vue';
   import LanguageSwitcher from './components/Footer/LanguageSwitcher.vue';
@@ -12,11 +12,13 @@
     SignOutAlt as LogoutIcon,
     User as UserIcon
   } from '@vicons/fa'
+  import { useDepartmentStore } from './stores/departmentStore';
   const { t, locale } = useI18n();
   const auth = ref<boolean>(false);
+  const departmentStore = useDepartmentStore();
   const updateAuthState = async () => {
     auth.value = await isAuthenticated();
-    if (auth.value && !userCreated.value)
+    if (auth.value && !userCreated.value && await role() !== 'Administrator')
       router.replace('/registration');
   };
   onMounted(async () => {
@@ -26,6 +28,7 @@
     userManager.events.addUserUnloaded(() => {
       auth.value = false;
     });
+    departmentStore.fetchDepartments();
   });
   onBeforeUnmount(() => {
     userManager.events.removeUserLoaded(updateAuthState);;
@@ -55,7 +58,7 @@
       <NFlex>
         <NDropdown trigger="click" :options="options" @select="handleSelect">
           <div>
-          <UserPreview class="loginoutbtn" v-if="auth && userCreated" />
+          <UserPreview class="loginoutbtn" v-if="auth && userCreated && role().then(role => { return role !== 'Administrator'})" />
           </div>
         </NDropdown>
         <NButton class="loginoutbtn" v-if="!auth" :onClick="login">{{ t('Nav.BtnLogin') }}</NButton>

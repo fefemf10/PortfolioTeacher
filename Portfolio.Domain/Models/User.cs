@@ -10,7 +10,10 @@
         public bool Gender { get; set; }
         public DateOnly? DateBirthday { get; set; }
         public string Phone { get; set; }
-        public ICollection<Work> Works { get; set; }
-        public ICollection<University> Universities { get; set; }
+        public Guid? AvatarId { get; set; }
+        public UserFile? Avatar { get; set; }
+        public List<Post> Posts { get; set; }
+        public List<Work> Works { get; set; }
+        public List<University> Universities { get; set; }
     }
 }

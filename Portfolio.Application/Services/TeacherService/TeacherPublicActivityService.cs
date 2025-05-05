@@ -19,7 +19,7 @@ namespace Portfolio.Application.Services.TeacherService
             Teacher? teacher = await db.Teachers.Include(x => x.PublicActivities).SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
             PublicActivity? publicActivity = teacher.PublicActivities.SingleOrDefault(x => x.Name == entity.Name);
             if (publicActivity is not null)
-                throw new AlredyExistException();
+                throw new AlreadyExistException();
             teacher.PublicActivities.Add(entity);
             await db.SaveChangesAsync();
             return entity.Id;

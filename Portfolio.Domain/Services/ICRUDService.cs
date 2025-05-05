@@ -19,7 +19,6 @@ namespace Portfolio.Domain.Services
     public interface ITeacherDissertationService : ICRUDService<Dissertation>, IShortItemService;
     public interface ITeacherProfessionalDevelopmentService : ICRUDService<ProfessionalDevelopment>, IShortItemService;
     public interface ITeacherPublicActivityService : ICRUDService<PublicActivity>;
-    public interface ITeacherPublicationService : ICRUDService<Publication>;
     public interface ITeacherScienceProjectService : ICRUDService<ScienceProject>, IShortItemService;
     public interface ITeacherUniversityService : ICRUDService<University>, IShortItemService;
     public interface ITeacherWorkService : ICRUDService<Work>, IShortItemService;

@@ -1,26 +1,22 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { NTree, NCard, NText, TreeOption } from 'naive-ui'
-import api from '@/api';
-import { Faculty } from '@/classes/Faculty';
-const faculties = ref<Faculty[]>([]);
+import { useDepartmentStore } from '@/stores/departmentStore';
+const departmentStore = useDepartmentStore();
 const expandedKeys = ref<string[]>(['all']);
 const selectedId = ref<string | null>(null);
 const treeData = computed<TreeOption[]>(() => [{
   label: 'Все',
   key: 'all',
-  children: faculties.value.map(faculty => ({
-    label: faculty.name,
-    key: `faculty ${faculty.id}`,
-    children: faculty.departments.map(dep => ({
+  children: departmentStore.departments.map(faculty => ({
+    label: faculty.shortName,
+    key: `${faculty.id}`,
+    children: faculty.childDepartments.map(dep => ({
       label: dep.name,
-      key: `department ${dep.id}`
+      key: `${dep.id}`
     }))
   }))
 }]);
-onMounted(async () => {
-  faculties.value = await api.get('api/faculty/departments').json<Faculty[]>();
-});
 const emit = defineEmits<{
   (e: 'selected', id: string | null): void
 }>();

@@ -25,7 +25,7 @@ namespace Portfolio.Application.Services
         {
             Discipline? d = await db.Disciplines.SingleOrDefaultAsync(x => x.Name == discipline.Name);
             if (d is not null)
-                throw new AlredyExistException();
+                throw new AlreadyExistException();
             await db.Disciplines.AddAsync(discipline);
             await db.SaveChangesAsync();
             return discipline.Id;

@@ -23,10 +23,10 @@ namespace Portfolio.API.Controllers
 		//		return BadRequest();
 		//	return Ok((uint)department.Teachers.Count);
 		//}
-  //      [HttpGet("[action]/{facultyId:guid}")]
-  //      public async Task<ActionResult<uint>> GetCountTeacherInFaculty(Guid facultyId)
+  //      [HttpGet("[action]/{ParentDepartmentId:guid}")]
+  //      public async Task<ActionResult<uint>> GetCountTeacherInFaculty(Guid ParentDepartmentId)
   //      {
-  //          Faculty? faculty = await db.Faculties.AsNoTracking().Include(x => x.Departments).ThenInclude(y => y.Teachers).SingleAsync(x => x.Id == facultyId);
+  //          Faculty? faculty = await db.Faculties.AsNoTracking().Include(x => x.Departments).ThenInclude(y => y.Teachers).SingleAsync(x => x.Id == ParentDepartmentId);
   //          if (faculty is null)
   //              return BadRequest();
   //          return Ok((uint)faculty.Departments.Sum(x => x.Teachers.Count));
@@ -38,10 +38,10 @@ namespace Portfolio.API.Controllers
 		//	List<ResponseTeacher> responseTeachers = teachers.Where(x => x.DepartmentId == departmentId).Select(x => new ResponseTeacher(x.Id, x.Email, x.FirstName, x.MiddleName, x.LastName, x.DateBirthday, x.Post, x.AcademicDegree, x.AcademicTitle, new RequestFaculty(x.Faculty.Id, x.Faculty.Name), (x.Department is not null) ? new RequestDepartment(x.Department.Id, x.Department.Name) : null, (uint)x.Publications.Count)).ToList();
   //          return Ok(responseTeachers);
   //      }
-  //      [HttpGet("[action]/{facultyId:guid}")]
-  //      public async Task<ActionResult<List<ResponseTeacher>>> GetTopTeacherDisciplinesInFaculty(Guid facultyId)
+  //      [HttpGet("[action]/{ParentDepartmentId:guid}")]
+  //      public async Task<ActionResult<List<ResponseTeacher>>> GetTopTeacherDisciplinesInFaculty(Guid ParentDepartmentId)
   //      {
-  //          List<Teacher> teachers = await db.Teachers.AsNoTracking().Include(x => x.Publications).Include(x => x.Disciplines).Include(x => x.Department).Include(x => x.Faculty).Where(x => x.FacultyId == facultyId).OrderByDescending(x => x.Disciplines.Count).Take(5).ToListAsync();
+  //          List<Teacher> teachers = await db.Teachers.AsNoTracking().Include(x => x.Publications).Include(x => x.Disciplines).Include(x => x.Department).Include(x => x.Faculty).Where(x => x.ParentDepartmentId == ParentDepartmentId).OrderByDescending(x => x.Disciplines.Count).Take(5).ToListAsync();
   //          List<ResponseTeacher> responseTeachers = teachers.Select(x => new ResponseTeacher(x.Id, x.Email, x.FirstName, x.MiddleName, x.LastName, x.DateBirthday, x.Post, x.AcademicDegree, x.AcademicTitle, new RequestFaculty(x.Faculty.Id, x.Faculty.Name), (x.Department is not null) ? new RequestDepartment(x.Department.Id, x.Department.Name) : null, (uint)x.Publications.Count)).ToList();
   //          return Ok(responseTeachers);
   //      }
@@ -52,10 +52,10 @@ namespace Portfolio.API.Controllers
   //          List<ResponseTeacher> responseTeachers = teachers.Where(x => x.DepartmentId == departmentId).Select(x => new ResponseTeacher(x.Id, x.Email, x.FirstName, x.MiddleName, x.LastName, x.DateBirthday, x.Post, x.AcademicDegree, x.AcademicTitle, new RequestFaculty(x.Faculty.Id, x.Faculty.Name), (x.Department is not null) ? new RequestDepartment(x.Department.Id, x.Department.Name) : null, (uint)x.Publications.Count)).ToList();
   //          return Ok(responseTeachers);
   //      }
-  //      [HttpGet("[action]/{facultyId:guid}")]
-  //      public async Task<ActionResult<List<ResponseTeacher>>> GetTopTeacherPublicationsInFaculty(Guid facultyId)
+  //      [HttpGet("[action]/{ParentDepartmentId:guid}")]
+  //      public async Task<ActionResult<List<ResponseTeacher>>> GetTopTeacherPublicationsInFaculty(Guid ParentDepartmentId)
   //      {
-  //          List<Teacher> teachers = await db.Teachers.AsNoTracking().Include(x => x.Publications).Include(x => x.Department).Include(x => x.Faculty).Where(x => x.FacultyId == facultyId).OrderByDescending(x => x.Publications.Count).Take(5).ToListAsync();
+  //          List<Teacher> teachers = await db.Teachers.AsNoTracking().Include(x => x.Publications).Include(x => x.Department).Include(x => x.Faculty).Where(x => x.ParentDepartmentId == ParentDepartmentId).OrderByDescending(x => x.Publications.Count).Take(5).ToListAsync();
   //          List<ResponseTeacher> responseTeachers = teachers.Select(x => new ResponseTeacher(x.Id, x.Email, x.FirstName, x.MiddleName, x.LastName, x.DateBirthday, x.Post, x.AcademicDegree, x.AcademicTitle, new RequestFaculty(x.Faculty.Id, x.Faculty.Name), (x.Department is not null) ? new RequestDepartment(x.Department.Id, x.Department.Name) : null, (uint)x.Publications.Count)).ToList();
   //          return Ok(responseTeachers);
   //      }
@@ -65,10 +65,10 @@ namespace Portfolio.API.Controllers
   //          DateOnly date = GetDate((long)db.Teachers.AsNoTracking().Where(x => x.DateBirthday.HasValue && x.DepartmentId == departmentId).Average(x => GetDifferent(x.DateBirthday.Value, DateOnly.FromDateTime(DateTime.UtcNow))));
   //          return Ok(date.Year);
   //      }
-  //      [HttpGet("[action]/{facultyId:guid}")]
-  //      public async Task<ActionResult<uint>> GetAvarageAgeTeacherInFaculty(Guid facultyId)
+  //      [HttpGet("[action]/{ParentDepartmentId:guid}")]
+  //      public async Task<ActionResult<uint>> GetAvarageAgeTeacherInFaculty(Guid ParentDepartmentId)
   //      {
-  //          var teachers = db.Teachers.AsNoTracking().Where(x => x.DateBirthday.HasValue && x.FacultyId == facultyId).ToList();
+  //          var teachers = db.Teachers.AsNoTracking().Where(x => x.DateBirthday.HasValue && x.ParentDepartmentId == ParentDepartmentId).ToList();
   //          var ticks = teachers.Select(x => new DateTime(x.DateBirthday.Value, new TimeOnly()).Ticks).ToList();
   //          ticks.Sort();
   //          long tick = ticks[ticks.Count / 2];

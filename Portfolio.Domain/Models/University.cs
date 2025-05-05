@@ -9,8 +9,8 @@ namespace Portfolio.Domain.Models
 		public string Specialization { get; set; }
 		public string Qualification { get; set; }
 		public int YearGraduation { get; set; }
-		public Guid TeacherId { get; set; }
+		public Guid UserId { get; set; }
         [JsonIgnore]
-        public Teacher Teacher { get; set; }
+        public User User { get; set; }
 	}
 }

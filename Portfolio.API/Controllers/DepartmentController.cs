@@ -14,7 +14,7 @@ namespace Portfolio.API.Controllers
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<ResponseDepartment>>> GetAll()
 		{
-			return Ok(mapper.Map<IEnumerable<ResponseDepartment>>(await departmentService.GetAll()));
+			return Ok(mapper.Map<IEnumerable<ResponseDepartment>>(await departmentService.GetAllRecursive()));
 		}
         [HttpGet("{id:guid}/teachers/ids")]
         public async Task<ActionResult<IEnumerable<Guid>>> GetTeacherIds(Guid id)

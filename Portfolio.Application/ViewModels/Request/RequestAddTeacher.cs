@@ -1,5 +1,4 @@
-﻿using Portfolio.Domain.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.Application.ViewModels.Request
 {
@@ -20,8 +19,5 @@ namespace Portfolio.Application.ViewModels.Request
         [Required]
 		[Phone]
         public string Phone { get; set; }
-		[Required]
-		public Guid FacultyId { get; set; }
-        public Guid? DepartmentId { get; set; }
 	}
 }

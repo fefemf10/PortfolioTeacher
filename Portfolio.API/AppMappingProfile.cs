@@ -10,9 +10,7 @@ namespace Portfolio.API
         public AppMappingProfile()
         {
             CreateMap<Domain.Models.User, ResponseUser>();
-            CreateMap<Domain.Models.Faculty, ResponseFaculty>();
             CreateMap<Domain.Models.Department, ResponseDepartment>();
-            CreateMap<Domain.Models.Faculty, ResponseFacultyDepartments>();
             CreateMap<Domain.Models.Discipline, ResponseDiscipline>();
             CreateMap<Domain.Models.Work, ResponseWork>();
             CreateMap<Domain.Models.University, ResponseUniversity>();

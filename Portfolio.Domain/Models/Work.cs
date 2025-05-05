@@ -9,8 +9,8 @@ namespace Portfolio.Domain.Models
 		public string Post { get; set; }
 		public DateOnly BeginTimeWork { get; set; }
 		public DateOnly? EndTimeWork { get; set; }
-		public Guid TeacherId { get; set; }
+		public Guid UserId { get; set; }
         [JsonIgnore]
-        public Teacher Teacher { get; set; }
+        public User User { get; set; }
 	}
 }

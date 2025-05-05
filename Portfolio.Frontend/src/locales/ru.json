@@ -148,11 +148,20 @@
     "Enums": {
         "Post": {
             "None": "Нет",
+            "Laborant": "Лаборант",
+            "Engineer": "Инженер",
             "Assistant": "Ассистент",
             "Teacher": "Преподаватель",
             "SeniorTeacher": "Старший преподаватель",
-            "Laborant": "Лаборант",
-            "Engineer": "Инженер"
+            "Deputy": "Зав. кафедрой",
+            "Docent": "Доцент",
+            "Professor": "Профессор",
+            "Dean": "Декан",
+            "Specialist": "Специалист",
+            "Manager": "Менеджер",
+            "AssociateDirector": "Зам. Директора",
+            "Director": "Директор",
+            "Rector": "Ректор"
         },
         "Role": {
             "Administrator": "Администратор",

@@ -2,13 +2,8 @@
 
 namespace Portfolio.Domain.Models
 {
-    public class Dissertation
+    public class Dissertation : Publication
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public DateOnly YearProtection { get; set; }
-        public Guid TeacherId { get; set; }
-        [JsonIgnore]
-        public Teacher Teacher { get; set; }
+        public Dissertation() { PublicationType = PublicationType.Dissertation; }
     }
 }

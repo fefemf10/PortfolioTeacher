@@ -12,8 +12,8 @@ using Portfolio.Infrastructure;
 namespace Portfolio.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250427201022_Added Gender")]
-    partial class AddedGender
+    [Migration("20250503133207_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -67,203 +67,241 @@ namespace Portfolio.Infrastructure.Migrations
                     b.ToTable("Awards");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.AwardStudent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateOnly?>("DateAward")
-                        .HasColumnType("date");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("StudentId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid?>("TeacherId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("StudentId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("AwardStudent");
-                });
-
             modelBuilder.Entity("Portfolio.Domain.Models.Department", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid>("FacultyId")
-                        .HasColumnType("char(36)");
+                    b.Property<int>("DepartmentType")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<Guid?>("ParentDepartmentId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("ShortName")
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("FacultyId");
+                    b.HasIndex("ParentDepartmentId");
 
                     b.ToTable("Departments");
 
                     b.HasData(
                         new
                         {
+                            Id = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
+                            DepartmentType = 1,
+                            Name = "Горный",
+                            ShortName = "Горный"
+                        },
+                        new
+                        {
+                            Id = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
+                            DepartmentType = 1,
+                            Name = "Металлургического и Машиностроительного Производства",
+                            ShortName = "ММП"
+                        },
+                        new
+                        {
+                            Id = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
+                            DepartmentType = 1,
+                            Name = "Автоматизации Производственных Процессов",
+                            ShortName = "АПП"
+                        },
+                        new
+                        {
+                            Id = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
+                            DepartmentType = 1,
+                            Name = "Фундаментального Инженерного Образования и Инноваций",
+                            ShortName = "ФИОИ"
+                        },
+                        new
+                        {
+                            Id = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
+                            DepartmentType = 1,
+                            Name = "Экономики и Бизнеса",
+                            ShortName = "ЭБ"
+                        },
+                        new
+                        {
                             Id = new Guid("8104c9b6-05b4-45c4-8b25-317414740310"),
-                            FacultyId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
-                            Name = "Геотехнологий и безопасности производств"
+                            DepartmentType = 0,
+                            Name = "Геотехнологий и безопасности производств",
+                            ParentDepartmentId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728")
                         },
                         new
                         {
                             Id = new Guid("979cabfa-c56d-4770-b1c3-5c876567dc54"),
-                            FacultyId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
-                            Name = "Горных энергомеханических систем"
+                            DepartmentType = 0,
+                            Name = "Горных энергомеханических систем",
+                            ParentDepartmentId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728")
                         },
                         new
                         {
                             Id = new Guid("62831566-6eb9-44a7-9481-323164b741b4"),
-                            FacultyId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
-                            Name = "Экологии и безопасности жизнедеятельности"
+                            DepartmentType = 0,
+                            Name = "Экологии и безопасности жизнедеятельности",
+                            ParentDepartmentId = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728")
                         },
                         new
                         {
                             Id = new Guid("dd0c290c-b7c4-4e64-bddd-99b32622a934"),
-                            FacultyId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
-                            Name = "Металлургических технологий"
+                            DepartmentType = 0,
+                            Name = "Металлургических технологий",
+                            ParentDepartmentId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb")
                         },
                         new
                         {
                             Id = new Guid("0de1c062-0a18-43b0-8626-78c4570056ce"),
-                            FacultyId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
-                            Name = "Технологии и организации машиностроительного производства"
+                            DepartmentType = 0,
+                            Name = "Технологии и организации машиностроительного производства",
+                            ParentDepartmentId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb")
                         },
                         new
                         {
                             Id = new Guid("eb0f963d-0691-4c84-b093-697e8fb2b5c1"),
-                            FacultyId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
-                            Name = "Машин металлургического комплекса"
+                            DepartmentType = 0,
+                            Name = "Машин металлургического комплекса",
+                            ParentDepartmentId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb")
                         },
                         new
                         {
                             Id = new Guid("c8ba340f-3e02-47b7-ad4d-5a3c750e2210"),
-                            FacultyId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
-                            Name = "Физического воспитания и спорта"
+                            DepartmentType = 0,
+                            Name = "Физического воспитания и спорта",
+                            ParentDepartmentId = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb")
                         },
                         new
                         {
                             Id = new Guid("d695edb2-9d4c-45f8-8a4b-e6a71c668fc5"),
-                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
-                            Name = "Электрических машин и аппаратов"
+                            DepartmentType = 0,
+                            Name = "Электрических машин и аппаратов",
+                            ParentDepartmentId = new Guid("7217294e-e4de-4725-a522-8d64555fe142")
                         },
                         new
                         {
                             Id = new Guid("d23201aa-46ed-4ea4-9dde-8e895901b913"),
-                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
-                            Name = "Электроники и радиофизики"
+                            DepartmentType = 0,
+                            Name = "Электроники и радиофизики",
+                            ParentDepartmentId = new Guid("7217294e-e4de-4725-a522-8d64555fe142")
                         },
                         new
                         {
                             Id = new Guid("2ac044d9-8ba2-442c-abfd-217231c784e9"),
-                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
-                            Name = "Автоматизированных электромеханических систем имени проф. А.Б. Зеленова"
+                            DepartmentType = 0,
+                            Name = "Автоматизированных электромеханических систем имени проф. А.Б. Зеленова",
+                            ParentDepartmentId = new Guid("7217294e-e4de-4725-a522-8d64555fe142")
                         },
                         new
                         {
                             Id = new Guid("2a416a4e-d08b-4e3d-a837-8e75f6770324"),
-                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
-                            Name = "Специализированных компьютерных систем"
+                            DepartmentType = 0,
+                            Name = "Специализированных компьютерных систем",
+                            ParentDepartmentId = new Guid("7217294e-e4de-4725-a522-8d64555fe142")
                         },
                         new
                         {
                             Id = new Guid("70bdc85c-b82c-4af7-b3b6-da4d84ca7e05"),
-                            FacultyId = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
-                            Name = "Автоматизированного управления технологическими процессами"
+                            DepartmentType = 0,
+                            Name = "Автоматизированного управления технологическими процессами",
+                            ParentDepartmentId = new Guid("7217294e-e4de-4725-a522-8d64555fe142")
                         },
                         new
                         {
                             Id = new Guid("cb2d93ba-258a-4178-a6d1-c5343309ee15"),
-                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            Name = "Высшей математики"
+                            DepartmentType = 0,
+                            Name = "Высшей математики",
+                            ParentDepartmentId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e")
                         },
                         new
                         {
                             Id = new Guid("3cb7b753-2655-4931-80ca-ec591bf88871"),
-                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            Name = "Архитектурного дизайна и строительных конструкций"
+                            DepartmentType = 0,
+                            Name = "Архитектурного дизайна и строительных конструкций",
+                            ParentDepartmentId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e")
                         },
                         new
                         {
                             Id = new Guid("91a675f9-38a3-40c8-9406-317260c857a8"),
-                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            Name = "Инженерной механики и строительства"
+                            DepartmentType = 0,
+                            Name = "Инженерной механики и строительства",
+                            ParentDepartmentId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e")
                         },
                         new
                         {
                             Id = new Guid("ca42d0d8-d0ab-4ee5-b9b0-6acbc7387885"),
-                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            Name = "Социально-гуманитарных дисциплин"
+                            DepartmentType = 0,
+                            Name = "Социально-гуманитарных дисциплин",
+                            ParentDepartmentId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e")
                         },
                         new
                         {
                             Id = new Guid("933b1fc2-624c-43fb-b118-2ecffa5ce63a"),
-                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            Name = "Языковой подготовки специалистов"
+                            DepartmentType = 0,
+                            Name = "Языковой подготовки специалистов",
+                            ParentDepartmentId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e")
                         },
                         new
                         {
                             Id = new Guid("4acc78ce-009f-4e24-a288-b66a79372e78"),
-                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            Name = "Информационных технологий"
+                            DepartmentType = 0,
+                            Name = "Информационных технологий",
+                            ParentDepartmentId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e")
                         },
                         new
                         {
                             Id = new Guid("b44db6d6-388d-45d6-9790-155adf52b3b7"),
-                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            Name = "Управления инновациями в промышленности"
+                            DepartmentType = 0,
+                            Name = "Управления инновациями в промышленности",
+                            ParentDepartmentId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e")
                         },
                         new
                         {
                             Id = new Guid("2d49b107-3731-40aa-8d26-04f244c178b7"),
-                            FacultyId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            Name = "Промышленного строительства"
+                            DepartmentType = 0,
+                            Name = "Промышленного строительства",
+                            ParentDepartmentId = new Guid("69e1105a-042f-45e4-9df8-c817e270447e")
                         },
                         new
                         {
                             Id = new Guid("ff819604-b34c-4eb8-a9b0-39426a00eedc"),
-                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
-                            Name = "Экономики и управления"
+                            DepartmentType = 0,
+                            Name = "Экономики и управления",
+                            ParentDepartmentId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c")
                         },
                         new
                         {
                             Id = new Guid("ad968ac8-8ce7-4a12-a23a-59875e3b43b1"),
-                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
-                            Name = "Государственного аудита"
+                            DepartmentType = 0,
+                            Name = "Государственного аудита",
+                            ParentDepartmentId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c")
                         },
                         new
                         {
                             Id = new Guid("6c06bf14-1f60-493d-9fa3-afc6c857c873"),
-                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
-                            Name = "Финансов"
+                            DepartmentType = 0,
+                            Name = "Финансов",
+                            ParentDepartmentId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c")
                         },
                         new
                         {
                             Id = new Guid("a782c774-4557-4168-b12d-d667db3eae29"),
-                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
-                            Name = "Менеджмента"
+                            DepartmentType = 0,
+                            Name = "Менеджмента",
+                            ParentDepartmentId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c")
                         },
                         new
                         {
                             Id = new Guid("0530b037-7b07-452e-a950-53840e398c26"),
-                            FacultyId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
-                            Name = "Теории и практики перевода и общего языкознания"
+                            DepartmentType = 0,
+                            Name = "Теории и практики перевода и общего языкознания",
+                            ParentDepartmentId = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c")
                         });
                 });
 
@@ -554,78 +592,28 @@ namespace Portfolio.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Dissertation", b =>
+            modelBuilder.Entity("Portfolio.Domain.Models.Post", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("TeacherId")
+                    b.Property<Guid>("DepartmentId")
                         .HasColumnType("char(36)");
 
-                    b.Property<DateOnly>("YearProtection")
-                        .HasColumnType("date");
+                    b.Property<int>("PostType")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("DepartmentId");
 
-                    b.ToTable("Dissertations");
-                });
+                    b.HasIndex("UserId");
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Faculty", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Faculties");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("57390fd9-34f1-430a-bb8c-093bf3d34728"),
-                            FullName = "Горный",
-                            Name = "Горный"
-                        },
-                        new
-                        {
-                            Id = new Guid("eb9a4659-4663-421a-97ad-e54104e751cb"),
-                            FullName = "Металлургического и Машиностроительного Производства",
-                            Name = "ММП"
-                        },
-                        new
-                        {
-                            Id = new Guid("7217294e-e4de-4725-a522-8d64555fe142"),
-                            FullName = "Автоматизации Производственных Процессов",
-                            Name = "АПП"
-                        },
-                        new
-                        {
-                            Id = new Guid("69e1105a-042f-45e4-9df8-c817e270447e"),
-                            FullName = "Фундаментального Инженерного Образования и Инноваций",
-                            Name = "ФИОИ"
-                        },
-                        new
-                        {
-                            Id = new Guid("7ce42d42-826e-49a9-80c7-11575f891a7c"),
-                            FullName = "Экономики и Бизнеса",
-                            Name = "ЭБ"
-                        });
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.ProfessionalDevelopment", b =>
@@ -694,32 +682,21 @@ namespace Portfolio.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("CoAuthor")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Form")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("OutputData")
-                        .IsRequired()
-                        .HasColumnType("longtext");
+                    b.Property<int>("PublicationType")
+                        .HasColumnType("int");
 
-                    b.Property<uint>("Size")
-                        .HasColumnType("int unsigned");
-
-                    b.Property<Guid>("TeacherId")
-                        .HasColumnType("char(36)");
+                    b.Property<int>("YearPublication")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TeacherId");
-
                     b.ToTable("Publications");
+
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.ScienceProject", b =>
@@ -769,10 +746,7 @@ namespace Portfolio.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("StudentId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("TeacherId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.Property<int>("YearGraduation")
@@ -780,9 +754,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId");
-
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Universities");
                 });
@@ -791,6 +763,9 @@ namespace Portfolio.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("AvatarId")
                         .HasColumnType("char(36)");
 
                     b.Property<DateOnly?>("DateBirthday")
@@ -820,9 +795,37 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AvatarId");
+
                     b.ToTable("Users");
 
                     b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.UserFile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<int>("FileType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid?>("PublicationId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<long>("Size")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PublicationId");
+
+                    b.ToTable("UserFiles");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Work", b =>
@@ -845,26 +848,108 @@ namespace Portfolio.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid?>("StudentId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("TeacherId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StudentId");
-
-                    b.HasIndex("TeacherId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Works");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Student", b =>
+            modelBuilder.Entity("PublicationTeacher", b =>
                 {
-                    b.HasBaseType("Portfolio.Domain.Models.User");
+                    b.Property<Guid>("CoAuthorsId")
+                        .HasColumnType("char(36)");
 
-                    b.ToTable("Students");
+                    b.Property<Guid>("PublicationsId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("CoAuthorsId", "PublicationsId");
+
+                    b.HasIndex("PublicationsId");
+
+                    b.ToTable("PublicationTeacher");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Article", b =>
+                {
+                    b.HasBaseType("Portfolio.Domain.Models.Publication");
+
+                    b.Property<int>("BeginPage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EndPage")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IssueNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Journal")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("PrintedSheets")
+                        .HasColumnType("int");
+
+                    b.Property<string>("URL")
+                        .HasColumnType("longtext");
+
+                    b.ToTable("Articles");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Dissertation", b =>
+                {
+                    b.HasBaseType("Portfolio.Domain.Models.Publication");
+
+                    b.ToTable("Dissertations");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Monography", b =>
+                {
+                    b.HasBaseType("Portfolio.Domain.Models.Publication");
+
+                    b.Property<int>("CountPages")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Publisher")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Сirculation")
+                        .HasColumnType("int");
+
+                    b.ToTable("Monographies");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Thesis", b =>
+                {
+                    b.HasBaseType("Portfolio.Domain.Models.Publication");
+
+                    b.Property<int>("BeginPage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Collection")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("CountPages")
+                        .HasColumnType("int");
+
+                    b.Property<DateOnly>("DateEvent")
+                        .HasColumnType("date");
+
+                    b.Property<int>("EndPage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Place")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.ToTable("Theses");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Teacher", b =>
@@ -876,19 +961,6 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.Property<int>("AcademicTitle")
                         .HasColumnType("int");
-
-                    b.Property<Guid?>("DepartmentId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<Guid>("FacultyId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<int>("Post")
-                        .HasColumnType("int");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("FacultyId");
 
                     b.ToTable("Teachers");
                 });
@@ -919,43 +991,33 @@ namespace Portfolio.Infrastructure.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.AwardStudent", b =>
-                {
-                    b.HasOne("Portfolio.Domain.Models.Student", "Student")
-                        .WithMany("AwardStudents")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Portfolio.Domain.Models.Teacher", "Teacher")
-                        .WithMany("AwardStudents")
-                        .HasForeignKey("TeacherId");
-
-                    b.Navigation("Student");
-
-                    b.Navigation("Teacher");
-                });
-
             modelBuilder.Entity("Portfolio.Domain.Models.Department", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Models.Faculty", "Faculty")
-                        .WithMany("Departments")
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Portfolio.Domain.Models.Department", "ParentDepartment")
+                        .WithMany("ChildDepartments")
+                        .HasForeignKey("ParentDepartmentId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("Faculty");
+                    b.Navigation("ParentDepartment");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Dissertation", b =>
+            modelBuilder.Entity("Portfolio.Domain.Models.Post", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Models.Teacher", "Teacher")
-                        .WithMany("Dissertations")
-                        .HasForeignKey("TeacherId")
+                    b.HasOne("Portfolio.Domain.Models.Department", "Department")
+                        .WithMany("Posts")
+                        .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Teacher");
+                    b.HasOne("Portfolio.Domain.Models.User", "User")
+                        .WithMany("Posts")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.ProfessionalDevelopment", b =>
@@ -980,17 +1042,6 @@ namespace Portfolio.Infrastructure.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Publication", b =>
-                {
-                    b.HasOne("Portfolio.Domain.Models.Teacher", "Teacher")
-                        .WithMany("Publications")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Teacher");
-                });
-
             modelBuilder.Entity("Portfolio.Domain.Models.ScienceProject", b =>
                 {
                     b.HasOne("Portfolio.Domain.Models.Teacher", "Teacher")
@@ -1004,79 +1055,119 @@ namespace Portfolio.Infrastructure.Migrations
 
             modelBuilder.Entity("Portfolio.Domain.Models.University", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Models.Student", null)
+                    b.HasOne("Portfolio.Domain.Models.User", "User")
                         .WithMany("Universities")
-                        .HasForeignKey("StudentId");
-
-                    b.HasOne("Portfolio.Domain.Models.Teacher", "Teacher")
-                        .WithMany("Universities")
-                        .HasForeignKey("TeacherId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Teacher");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.User", b =>
+                {
+                    b.HasOne("Portfolio.Domain.Models.UserFile", "Avatar")
+                        .WithMany()
+                        .HasForeignKey("AvatarId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Avatar");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.UserFile", b =>
+                {
+                    b.HasOne("Portfolio.Domain.Models.Publication", null)
+                        .WithMany("Files")
+                        .HasForeignKey("PublicationId");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Work", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Models.Student", null)
+                    b.HasOne("Portfolio.Domain.Models.User", "User")
                         .WithMany("Works")
-                        .HasForeignKey("StudentId");
-
-                    b.HasOne("Portfolio.Domain.Models.Teacher", "Teacher")
-                        .WithMany("Works")
-                        .HasForeignKey("TeacherId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Teacher");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Student", b =>
+            modelBuilder.Entity("PublicationTeacher", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Models.User", null)
+                    b.HasOne("Portfolio.Domain.Models.Teacher", null)
+                        .WithMany()
+                        .HasForeignKey("CoAuthorsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Portfolio.Domain.Models.Publication", null)
+                        .WithMany()
+                        .HasForeignKey("PublicationsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Article", b =>
+                {
+                    b.HasOne("Portfolio.Domain.Models.Publication", null)
                         .WithOne()
-                        .HasForeignKey("Portfolio.Domain.Models.Student", "Id")
+                        .HasForeignKey("Portfolio.Domain.Models.Article", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Dissertation", b =>
+                {
+                    b.HasOne("Portfolio.Domain.Models.Publication", null)
+                        .WithOne()
+                        .HasForeignKey("Portfolio.Domain.Models.Dissertation", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Monography", b =>
+                {
+                    b.HasOne("Portfolio.Domain.Models.Publication", null)
+                        .WithOne()
+                        .HasForeignKey("Portfolio.Domain.Models.Monography", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Thesis", b =>
+                {
+                    b.HasOne("Portfolio.Domain.Models.Publication", null)
+                        .WithOne()
+                        .HasForeignKey("Portfolio.Domain.Models.Thesis", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Teacher", b =>
                 {
-                    b.HasOne("Portfolio.Domain.Models.Department", "Department")
-                        .WithMany("Teachers")
-                        .HasForeignKey("DepartmentId");
-
-                    b.HasOne("Portfolio.Domain.Models.Faculty", "Faculty")
-                        .WithMany()
-                        .HasForeignKey("FacultyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Portfolio.Domain.Models.User", null)
                         .WithOne()
                         .HasForeignKey("Portfolio.Domain.Models.Teacher", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Department");
-
-                    b.Navigation("Faculty");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Department", b =>
                 {
-                    b.Navigation("Teachers");
+                    b.Navigation("ChildDepartments");
+
+                    b.Navigation("Posts");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Faculty", b =>
+            modelBuilder.Entity("Portfolio.Domain.Models.Publication", b =>
                 {
-                    b.Navigation("Departments");
+                    b.Navigation("Files");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Student", b =>
+            modelBuilder.Entity("Portfolio.Domain.Models.User", b =>
                 {
-                    b.Navigation("AwardStudents");
+                    b.Navigation("Posts");
 
                     b.Navigation("Universities");
 
@@ -1085,23 +1176,13 @@ namespace Portfolio.Infrastructure.Migrations
 
             modelBuilder.Entity("Portfolio.Domain.Models.Teacher", b =>
                 {
-                    b.Navigation("AwardStudents");
-
                     b.Navigation("Awards");
-
-                    b.Navigation("Dissertations");
 
                     b.Navigation("ProfessionalDevelopments");
 
                     b.Navigation("PublicActivities");
 
-                    b.Navigation("Publications");
-
                     b.Navigation("ScienceProjects");
-
-                    b.Navigation("Universities");
-
-                    b.Navigation("Works");
                 });
 #pragma warning restore 612, 618
         }
