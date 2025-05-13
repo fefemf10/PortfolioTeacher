@@ -2,8 +2,22 @@
 
 namespace Portfolio.Domain.Models
 {
-    public class Dissertation : Publication
+    public enum DissertationType
     {
-        public Dissertation() { PublicationType = PublicationType.Dissertation; }
+        None,
+        Master,
+        Candidate,
+        Doctor
+    }
+    public class Dissertation
+    {
+        public Guid Id { get; set; }
+        public DissertationType Type { get; set; }
+        public int YearProtection { get; set; }
+        public string Topic { get; set; }
+        public string Specialization { get; set; }
+        public Guid TeacherId { get; set; }
+        [JsonIgnore]
+        public Teacher Teacher { get; set; }
     }
 }

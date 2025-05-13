@@ -19,10 +19,26 @@ const ResumeDisciplines = lazy('Resume/Disciplines')
 const ResumeDissertations = lazy('Resume/Dissertations')
 const ResumeProfessionalDevelopments = lazy('Resume/ProfessionalDevelopments')
 const ResumePublicActivities = lazy('Resume/PublicActivities')
-const ResumePublications = lazy('Resume/Publications')
+const ResumeMonographies = lazy('Resume/Monographies')
+const ResumeTheses = lazy('Resume/Theses')
+const ResumeArticles= lazy('Resume/Articles')
 const ResumeScienceProjects = lazy('Resume/ScienceProjects')
 const ResumeUniversities = lazy('Resume/Universities')
 const ResumeWorks = lazy('Resume/Work')
+
+const Me = lazy('Me/Me')
+const MeShort = lazy('Me/Short')
+const MeAwards = lazy('Me/Awards')
+const MeDisciplines = lazy('Me/Disciplines')
+const MeDissertations = lazy('Me/Dissertations')
+const MeProfessionalDevelopments = lazy('Me/ProfessionalDevelopments')
+const MePublicActivities = lazy('Me/PublicActivities')
+const MeMonographies = lazy('Me/Monographies')
+const MeTheses = lazy('Me/Theses')
+const MeArticles= lazy('Me/Articles')
+const MeScienceProjects = lazy('Me/ScienceProjects')
+const MeUniversities = lazy('Me/Universities')
+const MeWorks = lazy('Me/Work')
 
 const Page404 = lazy('System/404')
 const Page403 = lazy('System/403')
@@ -47,10 +63,28 @@ const routes:RouteRecordRaw[] = [
       { path: 'dissertations', component: ResumeDissertations },
       { path: 'professionalDevelopments', component: ResumeProfessionalDevelopments },
       { path: 'publicActivities', component: ResumePublicActivities },
-      { path: 'publications', component: ResumePublications },
+      { path: 'monographies', component: ResumeMonographies },
+      { path: 'theses', component: ResumeTheses },
+      { path: 'articles', component: ResumeArticles },
       { path: 'scienceProjects', component: ResumeScienceProjects },
       { path: 'universities', component: ResumeUniversities },
       { path: 'works', component: ResumeWorks }
+    ]
+  },
+  { path: '/me', component: Me, meta: {requiresAuth: false},
+    children: [
+      { path: '', component: MeShort },
+      { path: 'awards', component: MeAwards },
+      { path: 'disciplines', component: MeDisciplines },
+      { path: 'dissertations', component: MeDissertations },
+      { path: 'professionalDevelopments', component: MeProfessionalDevelopments },
+      { path: 'publicActivities', component: MePublicActivities },
+      { path: 'monographies', component: MeMonographies },
+      { path: 'theses', component: MeTheses },
+      { path: 'articles', component: MeArticles },
+      { path: 'scienceProjects', component: MeScienceProjects },
+      { path: 'universities', component: MeUniversities },
+      { path: 'works', component: MeWorks }
     ]
   },
   { path: '/authentication/login-callback', component: LoginCallback },

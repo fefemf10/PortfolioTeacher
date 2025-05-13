@@ -12,8 +12,8 @@ using Portfolio.Infrastructure;
 namespace Portfolio.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250503171207_nullable avatar")]
-    partial class nullableavatar
+    [Migration("20250509211631_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -592,6 +592,36 @@ namespace Portfolio.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Portfolio.Domain.Models.Dissertation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Specialization")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<Guid>("TeacherId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Topic")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("YearProtection")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("Dissertations");
+                });
+
             modelBuilder.Entity("Portfolio.Domain.Models.Post", b =>
                 {
                     b.Property<Guid>("Id")
@@ -898,13 +928,6 @@ namespace Portfolio.Infrastructure.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Dissertation", b =>
-                {
-                    b.HasBaseType("Portfolio.Domain.Models.Publication");
-
-                    b.ToTable("Dissertations");
-                });
-
             modelBuilder.Entity("Portfolio.Domain.Models.Monography", b =>
                 {
                     b.HasBaseType("Portfolio.Domain.Models.Publication");
@@ -999,6 +1022,17 @@ namespace Portfolio.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("ParentDepartment");
+                });
+
+            modelBuilder.Entity("Portfolio.Domain.Models.Dissertation", b =>
+                {
+                    b.HasOne("Portfolio.Domain.Models.Teacher", "Teacher")
+                        .WithMany("Dissertations")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Post", b =>
@@ -1115,15 +1149,6 @@ namespace Portfolio.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Portfolio.Domain.Models.Dissertation", b =>
-                {
-                    b.HasOne("Portfolio.Domain.Models.Publication", null)
-                        .WithOne()
-                        .HasForeignKey("Portfolio.Domain.Models.Dissertation", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Portfolio.Domain.Models.Monography", b =>
                 {
                     b.HasOne("Portfolio.Domain.Models.Publication", null)
@@ -1175,6 +1200,8 @@ namespace Portfolio.Infrastructure.Migrations
             modelBuilder.Entity("Portfolio.Domain.Models.Teacher", b =>
                 {
                     b.Navigation("Awards");
+
+                    b.Navigation("Dissertations");
 
                     b.Navigation("ProfessionalDevelopments");
 

@@ -10,6 +10,7 @@ namespace Portfolio.Infrastructure.Configurations
         {
             builder.HasMany(teacher => teacher.ScienceProjects).WithOne(scienceProject => scienceProject.Teacher).HasForeignKey(scienceProject => scienceProject.TeacherId);
             builder.HasMany(teacher => teacher.Publications).WithMany(publication => publication.CoAuthors);
+            builder.HasMany(teacher => teacher.Dissertations).WithOne(dissertation => dissertation.Teacher).HasForeignKey(dissertation => dissertation.TeacherId);
             builder.HasMany(teacher => teacher.Awards).WithOne(award => award.Teacher).HasForeignKey(award => award.TeacherId);
             builder.HasMany(teacher => teacher.ProfessionalDevelopments).WithOne(professionalDevelopment => professionalDevelopment.Teacher).HasForeignKey(professionalDevelopment => professionalDevelopment.TeacherId);
             builder.HasMany(teacher => teacher.PublicActivities).WithOne(publicActivity => publicActivity.Teacher).HasForeignKey(publicActivity => publicActivity.TeacherId);

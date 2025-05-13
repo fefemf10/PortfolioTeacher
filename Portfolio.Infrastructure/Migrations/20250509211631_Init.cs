@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Portfolio.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,24 +89,6 @@ namespace Portfolio.Infrastructure.Migrations
                     table.PrimaryKey("PK_Articles", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Articles_Publications_Id",
-                        column: x => x.Id,
-                        principalTable: "Publications",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Dissertations",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Dissertations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Dissertations_Publications_Id",
                         column: x => x.Id,
                         principalTable: "Publications",
                         principalColumn: "Id",
@@ -203,7 +185,7 @@ namespace Portfolio.Infrastructure.Migrations
                     DateBirthday = table.Column<DateOnly>(type: "date", nullable: true),
                     Phone = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    AvatarId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                    AvatarId = table.Column<Guid>(type: "char(36)", nullable: true, collation: "ascii_general_ci")
                 },
                 constraints: table =>
                 {
@@ -212,8 +194,7 @@ namespace Portfolio.Infrastructure.Migrations
                         name: "FK_Users_UserFiles_AvatarId",
                         column: x => x.AvatarId,
                         principalTable: "UserFiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -358,6 +339,31 @@ namespace Portfolio.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_DisciplineTeacher_Teachers_TeachersId",
                         column: x => x.TeachersId,
+                        principalTable: "Teachers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Dissertations",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
+                    Type = table.Column<int>(type: "int", nullable: false),
+                    YearProtection = table.Column<int>(type: "int", nullable: false),
+                    Topic = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Specialization = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TeacherId = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Dissertations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Dissertations_Teachers_TeacherId",
+                        column: x => x.TeacherId,
                         principalTable: "Teachers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -584,6 +590,11 @@ namespace Portfolio.Infrastructure.Migrations
                 name: "IX_DisciplineTeacher_TeachersId",
                 table: "DisciplineTeacher",
                 column: "TeachersId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Dissertations_TeacherId",
+                table: "Dissertations",
+                column: "TeacherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_DepartmentId",

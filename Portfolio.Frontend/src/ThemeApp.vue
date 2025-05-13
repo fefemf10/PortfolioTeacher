@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { NConfigProvider } from 'naive-ui'
+import { NConfigProvider, NDialogProvider, NMessageProvider } from 'naive-ui'
 import { useThemeStore } from './ThemeStore'
 import App from './App.vue'
 const { naiveTheme } = useThemeStore()
 </script>
 <template>
   <NConfigProvider :theme="naiveTheme">
-    <App />
+    <NDialogProvider>
+      <NMessageProvider>
+        <App />
+      </NMessageProvider>
+    </NDialogProvider>
   </NConfigProvider>
 </template>

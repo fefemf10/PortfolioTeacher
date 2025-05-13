@@ -17,9 +17,9 @@ import { useDepartmentStore } from '@/stores/departmentStore';
 </script>
 <template>
   <NFlex vertical>
-      <UserDetailsInfoItem v-for="post of posts" :icon=Briefcase :value="`${localizeEnum(post.postType, PostType, 'Post')} в подразделении ${departmentStore.getDepartmentById(post.departmentId)?.name}`" />
-      <UserDetailsInfoItem :icon=Envelope :value=email />
-      <UserDetailsInfoItem :icon=Phone :value=phone />
-      <UserDetailsInfoItem :icon=Home :value=aud />
+      <UserDetailsInfoItem v-for="post of posts" :icon=Briefcase>{{localizeEnum(post.postType, PostType, 'Post')}} в подразделении <RouterLink to='/'>{{departmentStore.getDepartmentById(post.departmentId)?.name}}</RouterLink></UserDetailsInfoItem>
+      <UserDetailsInfoItem :icon=Envelope>{{ email }}</UserDetailsInfoItem>
+      <UserDetailsInfoItem :icon=Phone>{{ phone }}</UserDetailsInfoItem>
+      <UserDetailsInfoItem :icon=Home>{{ aud }}</UserDetailsInfoItem>
   </NFlex>
 </template>

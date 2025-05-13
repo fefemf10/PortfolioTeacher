@@ -14,7 +14,14 @@ namespace Portfolio.Application.ViewModels.Response
     public record ResponseWork(Guid Id, string Name, string Post, DateOnly BeginTimeWork, DateOnly? EndTimeWork);
     public record ResponseTeacherShort(Guid Id, string LastName, string FirstName, string? MiddleName);
     public record ResponsePublication(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files);
-    public record ResponseDissertation(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files) : ResponsePublication(Id, Name, PublicationType, YearPublication, CoAuthors, Files);
+    public class ResponseDissertation
+    {
+        public Guid Id { get; set; }
+        public string Topic { get; set; }
+        public string Specialization { get; set; }
+        public DissertationType Type { get; set; }
+        public int YearProtection { get; set;  }
+    }
     public record ResponseMonography(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files, string? Publisher, int Сirculation, int CountPages) : ResponsePublication(Id, Name, PublicationType, YearPublication, CoAuthors, Files);
     public record ResponseArticle(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files, string? Journal, int IssueNumber, int PrintedSheets, int BeginPage, int EndPage, string? URL) : ResponsePublication(Id, Name, PublicationType, YearPublication, CoAuthors, Files);
     public record ResponseThesis(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files, string Type, string Collection, int BeginPage, int EndPage, string Place, DateOnly DateEvent, int CountPages) : ResponsePublication(Id, Name, PublicationType, YearPublication, CoAuthors, Files);

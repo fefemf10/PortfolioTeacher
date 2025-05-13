@@ -8,10 +8,7 @@
   import LanguageSwitcher from './components/Footer/LanguageSwitcher.vue';
   import { useI18n } from 'vue-i18n';
   import router from './Router';
-  import {
-    SignOutAlt as LogoutIcon,
-    User as UserIcon
-  } from '@vicons/fa'
+  import { SignOutAlt as LogoutIcon, User as UserIcon} from '@vicons/fa'
   import { useDepartmentStore } from './stores/departmentStore';
   const { t, locale } = useI18n();
   const auth = ref<boolean>(false);
@@ -41,6 +38,11 @@
   }
   const options = [
     {
+      label: t('Nav.Profile'),
+      key: 'profile',
+      icon: renderIcon(UserIcon)
+    },
+    {
       label: t('Nav.BtnLogout'),
       key: 'logout',
       icon: renderIcon(LogoutIcon)
@@ -49,6 +51,8 @@
   function handleSelect(key: string | number) {
     if (key === 'logout')
       logout();
+    else if (key === 'profile')
+      router.replace('/me');
   }
 </script>
 <template>
@@ -58,7 +62,7 @@
       <NFlex>
         <NDropdown trigger="click" :options="options" @select="handleSelect">
           <div>
-          <UserPreview class="loginoutbtn" v-if="auth && userCreated && role().then(role => { return role !== 'Administrator'})" />
+          <UserPreview class="loginoutbtn" v-if="auth && role().then(role => { return role !== 'Administrator'})" />
           </div>
         </NDropdown>
         <NButton class="loginoutbtn" v-if="!auth" :onClick="login">{{ t('Nav.BtnLogin') }}</NButton>

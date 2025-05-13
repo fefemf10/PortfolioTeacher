@@ -22,8 +22,8 @@ import { useDepartmentStore } from '@/stores/departmentStore';
             <NText class="post" type="info" v-for="post of user.posts">{{ localizeEnum(post.postType, PostType, 'Post') }} в подразделении {{ departmentStore.getDepartmentById(post.departmentId)?.name }}</NText>
           </NFlex>
           <NFlex vertical>
-            <UserDetailsInfoItem :icon=Envelope :value=user.email />
-            <UserDetailsInfoItem v-if="user.phone" :icon=Phone :value=user.phone />
+            <UserDetailsInfoItem :icon=Envelope>{{ user.email }}</UserDetailsInfoItem>
+            <UserDetailsInfoItem v-if="user.phone" :icon=Phone>{{ user.phone }}</UserDetailsInfoItem>
           </NFlex>
         </NFlex>
       </NFlex>

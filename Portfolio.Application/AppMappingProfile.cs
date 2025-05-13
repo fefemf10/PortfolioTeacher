@@ -25,7 +25,6 @@ namespace Portfolio.Application
             CreateMap<Teacher, ResponseTeacherShort>();
 
             CreateMap<Publication, ResponsePublication>()
-                .Include<Dissertation, ResponseDissertation>()
                 .Include<Monography, ResponseMonography>()
                 .Include<Article, ResponseArticle>()
                 .Include<Thesis, ResponseThesis>();
@@ -38,7 +37,6 @@ namespace Portfolio.Application
             CreateMap<RequestPublication, Publication>()
                 .ForMember(dest => dest.CoAuthors, opt => opt.Ignore())
                 .ForMember(dest => dest.Files, opt => opt.Ignore())
-                .Include<RequestDissertation, Dissertation>()
                 .Include<RequestMonography, Monography>()
                 .Include<RequestArticle, Article>()
                 .Include<RequestThesis, Thesis>();

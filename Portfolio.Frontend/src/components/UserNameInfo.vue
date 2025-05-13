@@ -15,7 +15,10 @@
 <template>
   <NFlex vertical style="gap:unset">
     <NText class="fio" type="info">{{lastName }} {{firstName}} {{middleName}}</NText>
-    <NText class="academic" type="info">{{ localizeEnum(academicDegree, AcademicDegree, 'AcademicDegree') }}, {{ localizeEnum(academicTitle, AcademicTitle, 'AcademicTitle') }}</NText>
+    <NFlex>
+      <NText v-if="academicDegree !== AcademicDegree.None" class="academic" type="info">{{ localizeEnum(academicDegree, AcademicDegree, 'AcademicDegree') }} </NText>
+      <NText v-if="academicTitle !== AcademicTitle.None" class="academic" type="info">{{ localizeEnum(academicTitle, AcademicTitle, 'AcademicTitle') }}</NText>
+    </NFlex>
   </NFlex>
 </template>
 <style scoped>

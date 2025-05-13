@@ -7,6 +7,9 @@
 </script>
 <template>
   <NCard class="cards">
+    <template #header-extra>
+      <slot name="header-extra"></slot>
+    </template>
     <template #header>
       <NText v-if=title class="cardtitle" type="success">{{ title }}</NText>
     </template>

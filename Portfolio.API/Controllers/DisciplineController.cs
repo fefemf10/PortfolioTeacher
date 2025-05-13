@@ -17,7 +17,7 @@ namespace Portfolio.API.Controllers
         {
             return Ok(mapper.Map<IEnumerable<ResponseDiscipline>>(await disciplineService.GetAll()));
         }
-		[HttpGet("[action]/{id:guid}")]
+		[HttpGet("{id:guid}")]
 		public async Task<ActionResult<List<ResponseDiscipline>>> Get(Guid id)
 		{
 			return Ok(mapper.Map<ResponseDiscipline>(await disciplineService.GetById(id)));

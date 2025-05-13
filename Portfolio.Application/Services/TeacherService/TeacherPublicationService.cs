@@ -28,12 +28,6 @@ namespace Portfolio.Application.Services.TeacherService
             return teacher.Publications;
         }
 
-        public async Task<IEnumerable<Dissertation>> GetAllDissertations(Guid id)
-        {
-            Teacher? teacher = await GetTeacherWithPublications(id);
-            return teacher.Publications.OfType<Dissertation>();
-        }
-
         public async Task<IEnumerable<Monography>> GetAllMonographies(Guid id)
         {
             Teacher? teacher = await GetTeacherWithPublications(id);
@@ -58,12 +52,6 @@ namespace Portfolio.Application.Services.TeacherService
             return teacher.Publications.SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
         }
 
-        public async Task<Dissertation> GetDissertation(Guid id, Guid entityId)
-        {
-            Teacher? teacher = await GetTeacherWithPublications(id);
-            return teacher.Publications.OfType<Dissertation>().SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
-        }
-
         public async Task<Monography> GetMonography(Guid id, Guid entityId)
         {
             Teacher? teacher = await GetTeacherWithPublications(id);
@@ -82,11 +70,6 @@ namespace Portfolio.Application.Services.TeacherService
             return teacher.Publications.OfType<Article>().SingleOrDefault(x => x.Id == entityId) ?? throw new NotFoundByIdException();
         }
 
-        public async Task<Guid> AddDissertation(Guid id, Dissertation entity)
-        {
-            return await AddPublication(id, entity, entity.CoAuthors.Select(c => c.Id).ToList(), entity.Files.Select(f => f.Id).ToList());
-        }
-
         public async Task<Guid> AddMonography(Guid id, Monography entity)
         {
             return await AddPublication(id, entity, entity.CoAuthors.Select(c => c.Id).ToList(), entity.Files.Select(f => f.Id).ToList());
@@ -100,11 +83,6 @@ namespace Portfolio.Application.Services.TeacherService
         public async Task<Guid> AddArticle(Guid id, Article entity)
         {
             return await AddPublication(id, entity, entity.CoAuthors.Select(c => c.Id).ToList(), entity.Files.Select(f => f.Id).ToList());
-        }
-
-        public async Task UpdateDissertation(Guid id, Dissertation entity)
-        {
-            await UpdatePublication(id, entity);
         }
 
         public async Task UpdateMonography(Guid id, Monography entity)

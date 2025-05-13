@@ -6,17 +6,17 @@ import UserInfo from '@/components/UserInfo.vue';
 import { useRoute } from 'vue-router'
 import { onMounted, ref } from 'vue'
 import api from '@/api';
-const route = useRoute();
+import { guid } from '@/oidc';
 const user = ref<UserProfile>(null);
 
 onMounted(async () => {
-  user.value = await api.get<UserProfile>(`api/teacher/${route.params.id}`).json();
+  user.value = await api.get<UserProfile>(`api/teacher/${await guid()}`).json();
 });
 </script>
 <template>
   <NFlex justify="center" vertical style="gap: 1rem;">
     <UserInfo v-if="user" :user=user></UserInfo>
-    <NavMenu :route="`/resume/${route.params.id}`"/>
+    <NavMenu route="/me" />
     <RouterView></RouterView>
   </NFlex>
 </template>

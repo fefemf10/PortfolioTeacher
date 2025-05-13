@@ -1,8 +1,23 @@
 {
+    "Common": {
+        "ConfirmDelete": "Подтвердите удаление",
+        "DeleteConfirmation": "Подтверждение удаления",
+        "Delete": "Удалить",
+        "Cancel": "Отмена",
+        "Add": "Добавить",
+        "Save": "Сохранить",
+        "Edit": "Изменить",
+        "DeletedSuccessfully": "Успешно удалено",
+        "UpdatedSuccessfully": "Успешно обновлено",
+        "AddedSuccessfully": "Успешно добавлено",
+        "UpdateError": "Ошибка обновления",
+        "AddError": "Ошибка добавления"
+    },
     "Nav": {
         "Lang": "Язык",
         "BtnLogin": "Войти",
-        "BtnLogout": "Выйти"
+        "BtnLogout": "Выйти",
+        "Profile": "Профиль"
     },
     "Placeholders": {
         "Registration": {
@@ -52,15 +67,9 @@
                 "CardTitle": "Список преподаваемых дисциплин",
                 "DataColumns": [
                     "Название"
-                ]
-            },
-            "Dissertations": {
-                "NameTitle": "Диссертации",
-                "CardTitle": "Список диссертаций",
-                "DataColumns": [
-                    "Название",
-                    "Год защиты"
-                ]
+                ],
+                "DialogTitle": "Выбирите дисциплину",
+                "SelectPlaceholder": "Выберите дисциплину"
             },
             "ProfessionalDevelopments": {
                 "NameTitle": "Повышения квалификации",
@@ -84,13 +93,46 @@
             },
             "Publications": {
                 "NameTitle": "Публикации",
-                "CardTitle": "Список публикаций",
+                "CardTitle": "Список публикаций"
+            },
+            "Dissertations": {
+                "NameTitle": "Диссертации",
+                "CardTitle": "Список диссертаций",
                 "DataColumns": [
+                    "Год защиты",
+                    "Тип",
+                    "Специализация",
+                    "Тема"
+                ]
+            },
+            "Monographies": {
+                "NameTitle": "Монографии",
+                "CardTitle": "Список монографий",
+                "DataColumns": [
+                    "Со-Авторы",
                     "Название",
-                    "Форма",
-                    "Выходные данные",
-                    "Размер",
-                    "Соавторы"
+                    "Издатель",
+                    "Год публикации"
+                ]
+            },
+            "Theses": {
+                "NameTitle": "Доклады",
+                "CardTitle": "Список докладов",
+                "DataColumns": [
+                    "Со-Авторы",
+                    "Название",
+                    "Сборник",
+                    "Год публикации"
+                ]
+            },
+            "Articles": {
+                "NameTitle": "Статьи",
+                "CardTitle": "Список статей",
+                "DataColumns": [
+                    "Со-Авторы",
+                    "Название",
+                    "Журнал",
+                    "Год публикации"
                 ]
             },
             "ScienceProjects": {
@@ -181,6 +223,12 @@
             "None": "Нет",
             "Docent": "Доцент",
             "Professor": "Профессор"
+        },
+        "Dissertation":{
+            "None": "Нет",
+            "Master": "Магистерская",
+            "Candidate": "Кандидатская",
+            "Doctor": "Докторская"
         }
     }
 }

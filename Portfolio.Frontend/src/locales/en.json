@@ -1,8 +1,23 @@
 {
+    "Common": {
+        "ConfirmDelete": "Confirm delete",
+        "DeleteConfirmation": "Delete confirmation",
+        "Delete": "Delete",
+        "Cancel": "Cancel",
+        "Add": "Add",
+        "Save": "Save",
+        "Edit": "Edit",
+        "DeletedSuccessfully": "Deleted Successfully",
+        "UpdatedSuccessfully": "Updated Successfully",
+        "AddedSuccessfully": "Added Successfully",
+        "UpdateError": "Update Error",
+        "AddError": "Add Error"
+    },
     "Nav": {
         "Lang": "Language",
         "BtnLogin": "Login",
-        "BtnLogout": "Logout"
+        "BtnLogout": "Logout",
+        "Profile": "Profile"
     },
     "Placeholders": {
         "Registration": {
@@ -53,15 +68,9 @@
                 "CardTitle": "List of disciplines",
                 "DataColumns": [
                     "Name"
-                ]
-            },
-            "Dissertations": {
-                "NameTitle": "Dissertation",
-                "CardTitle": "List of dissertation",
-                "DataColumns": [
-                    "Name",
-                    "Year of protection"
-                ]
+                ],
+                "DialogTitle": "Select discipline",
+                "SelectPlaceholder": "Select discipline"
             },
             "ProfessionalDevelopments": {
                 "NameTitle": "Professional Development",
@@ -85,13 +94,46 @@
             },
             "Publications": {
                 "NameTitle": "Publications",
-                "CardTitle": "List of publications",
+                "CardTitle": "List of publications"
+            },
+            "Dissertations": {
+                "NameTitle": "Dissertation",
+                "CardTitle": "List of dissertation",
                 "DataColumns": [
+                    "Year of protection",
+                    "Type",
+                    "Specialization",
+                    "Topic"
+                ]
+            },
+            "Monographies": {
+                "NameTitle": "Monographies",
+                "CardTitle": "List of monographies",
+                "DataColumns": [
+                    "CoAuthors",
                     "Name",
-                    "Form",
-                    "Output data",
-                    "Size",
-                    "CoAuthors"
+                    "Publisher",
+                    "Year of publication"
+                ]
+            },
+            "Theses": {
+                "NameTitle": "Theses",
+                "CardTitle": "List of theses",
+                "DataColumns": [
+                    "CoAuthors",
+                    "Name",
+                    "Collection",
+                    "Year of publication"
+                ]
+            },
+            "Articles": {
+                "NameTitle": "Articles",
+                "CardTitle": "List of articles",
+                "DataColumns": [
+                    "CoAuthors",
+                    "Name",
+                    "Journal",
+                    "Year of publication"
                 ]
             },
             "ScienceProjects": {
@@ -182,6 +224,12 @@
             "None": "None",
             "Docent": "Docent",
             "Professor": "Professor"
+        },
+        "Dissertation":{
+            "None": "None",
+            "Master": "Master",
+            "Candidate": "Candidate",
+            "Doctor": "Doctor"
         }
     }
 }

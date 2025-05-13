@@ -69,8 +69,10 @@ namespace Portfolio.Application.Services
 				{
 					return new Dissertation()
 					{
-						Name = $"Диссертация 1",
-						YearPublication = Random.Shared.Next(1980, 2025)
+						Topic = $"Диссертация {Random.Shared.Next(1, 10)}",
+						YearProtection = Random.Shared.Next(1980, 2025),
+						Type = (DissertationType)Random.Shared.Next(1, 4),
+						Specialization = $"Специализация {Random.Shared.Next(1, 10)}"
 					};
 				});
 				List<Monography> monographies = GenerateRandomLengthArray(() =>
@@ -167,6 +169,7 @@ namespace Portfolio.Application.Services
 					Disciplines = ShuffleCollection(db.Disciplines.ToList(), Random.Shared.Next() % db.Disciplines.Count()),
 					Works = works,
 					Universities = universities,
+					Dissertations = dissertations,
 					Publications = new List<Publication>(),
 					Posts = new List<Post>(),
 					ProfessionalDevelopments = professionalDevelopments,
@@ -177,7 +180,6 @@ namespace Portfolio.Application.Services
 				teacher.Publications.AddRange(articles);
 				teacher.Publications.AddRange(monographies);
 				teacher.Publications.AddRange(theses);
-				teacher.Publications.AddRange(dissertations);
 				teacher.Posts.AddRange(posts);
 				await db.Teachers.AddAsync(teacher);
 				await db.SaveChangesAsync();

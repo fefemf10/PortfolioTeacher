@@ -6,8 +6,7 @@ namespace Portfolio.Domain.Models
     {
         Thesis,
         Article,
-        Monography,
-        Dissertation
+        Monography
     }
     public class Publication
     {
