@@ -16,9 +16,9 @@ namespace Portfolio.Domain.Services
         Task<Guid> AddMonography(Guid id, Monography entity);
         Task<Guid> AddThesis(Guid id, Thesis entity);
         Task<Guid> AddArticle(Guid id, Article entity);
-        Task UpdateMonography(Guid id, Monography entity);
-        Task UpdateThesis(Guid id, Thesis entity);
-        Task UpdateArticle(Guid id, Article entity);
+        Task UpdateMonography(Guid id, Guid publicationId, Monography entity);
+        Task UpdateThesis(Guid id, Guid publicationId, Thesis entity);
+        Task UpdateArticle(Guid id, Guid publicationId, Article entity);
         Task Delete(Guid id, Guid entityId);
     }
 }

@@ -13,6 +13,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="SeedData\FIO.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Resources\Pages\Account\Login\InputModel.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

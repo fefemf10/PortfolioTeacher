@@ -4,25 +4,26 @@
   import { computed, h, onMounted, ref } from 'vue';
   import api from '@/api';
   import MyNCard from '@/components/MyNCard.vue';
+  import ActionButtons from '@/components/Me/ActionButtons.vue';
   import { useI18n } from 'vue-i18n';
   import { DissertationType } from '@/enums/DissertationType';
   import { useEnumLocalization } from '@/EnumLocalization';
   import { guid } from '@/oidc';
-  import { Trash as TrashIcon, Plus as PlusIcon, PencilAlt as PencilIcon } from '@vicons/fa';
+  import { Plus as PlusIcon } from '@vicons/fa';
   const {t} = useI18n();
   const { localizeEnum } = useEnumLocalization();
   const dialog = useDialog();
   const message = useMessage()
   const data = ref<Dissertation[]>([]);
   const showModal = ref(false);
-  interface DissertationForm {
+  interface Form {
     id?: string;
     yearProtection: number | null;
     type: DissertationType | null;
     specialization: string;
     topic: string;
   }
-  const currentDissertation = ref<DissertationForm>({
+  const currentForm = ref<Form>({
     yearProtection: null,
     type: null,
     specialization: '',
@@ -50,22 +51,15 @@
       {
         key: 'actions',
         width: 120,
-        render: (row: Dissertation) => h('div', { style: 'display: flex; gap: 5px;' }, [
-          h(NButton, {
-            size: 'small',
-            type: 'primary',
-            onClick: () => handleEdit(row)
-          }, { default: () => h(NIcon, { component: PencilIcon }) }),
-          h(NButton, {
-            size: 'small',
-            type: 'error',
-            onClick: () => handleDelete(row.id)
-          }, { default: () => h(NIcon, { component: TrashIcon }) })
-        ])
+        render: (row: Dissertation) => h(ActionButtons<Dissertation>, {
+          row,
+          onEdit: handleEdit,
+          onDelete: handleDelete
+        })
       }
   ]);
   const handleAdd = () => {
-    currentDissertation.value = {
+    currentForm.value = {
       yearProtection: new Date().getFullYear(),
       type: 1,
       specialization: '',
@@ -73,8 +67,8 @@
     };
     showModal.value = true;
   };
-  const handleEdit = (dissertation: Dissertation) => {
-    currentDissertation.value = { ...dissertation };
+  const handleEdit = (formValue: Dissertation) => {
+    currentForm.value = { ...formValue };
     showModal.value = true;
   };
   const handleDelete = async (id: string) => {
@@ -95,24 +89,24 @@
     });
   };
   const submitForm = async () => {
-    if (!currentDissertation.value) return;
+    if (!currentForm.value) return;
 
     loading.value = true;
     try {
-      if (currentDissertation.value.id) {
-        const { id, ...dissertationWithoutId } = currentDissertation.value;
-        await api.put(`api/teacher/${await guid()}/dissertation/${id}`, { json: dissertationWithoutId });
-        data.value = data.value.map(item => item.id === id ? new Dissertation({ ...currentDissertation.value }) : item);
+      if (currentForm.value.id) {
+        const { id, ...withoutId } = currentForm.value;
+        await api.put(`api/teacher/${await guid()}/dissertation/${id}`, { json: withoutId });
+        data.value = data.value.map(item => item.id === id ? new Dissertation({ ...currentForm.value }) : item);
         message.success(t('Common.UpdatedSuccessfully'));
       } else {
-        const response = await api.post(`api/teacher/${await guid()}/dissertation`, { json: currentDissertation.value }).json<string>();
-        currentDissertation.value.id = response;
-        data.value = [...data.value, new Dissertation({ ...currentDissertation.value })];
+        const response = await api.post(`api/teacher/${await guid()}/dissertation`, { json: currentForm.value }).json<string>();
+        currentForm.value.id = response;
+        data.value = [...data.value, new Dissertation({ ...currentForm.value })];
         message.success(t('Common.AddedSuccessfully'));
       }
       showModal.value = false;
     } catch (error) {
-      message.error(t(currentDissertation.value.id ? 'Common.UpdateError' : 'Common.AddError'));
+      message.error(t(currentForm.value.id ? 'Common.UpdateError' : 'Common.AddError'));
       console.error('Error saving dissertation:', error);
     } finally {
       loading.value = false;
@@ -139,29 +133,29 @@
       </NButton>
     </template>
     <NDataTable :columns="columns" :data="data" bordered />
-    <NModal v-model:show="showModal" preset="dialog" :title="currentDissertation?.id ? t('Common.Edit') : t('Common.Add')">
+    <NModal v-model:show="showModal" preset="dialog" :title="currentForm?.id ? t('Common.Edit') : t('Common.Add')">
       <NForm>
         <NFormItem :label="t('Pages.Resume.Dissertations.DataColumns.0')">
-          <NInputNumber v-model:value="currentDissertation.yearProtection" />
+          <NInputNumber v-model:value="currentForm.yearProtection" />
         </NFormItem>
 
         <NFormItem :label="t('Pages.Resume.Dissertations.DataColumns.1')">
-          <NSelect v-model:value="currentDissertation.type" :options="getTypeOptions()" />
+          <NSelect v-model:value="currentForm.type" :options="getTypeOptions()" />
         </NFormItem>
 
         <NFormItem :label="t('Pages.Resume.Dissertations.DataColumns.2')">
-          <NInput v-model:value="currentDissertation.specialization" />
+          <NInput v-model:value="currentForm.specialization" :placeholder="t('Placeholders.Dissertation.specialization')" />
         </NFormItem>
 
         <NFormItem :label="t('Pages.Resume.Dissertations.DataColumns.3')">
-          <NInput v-model:value="currentDissertation.topic" />
+          <NInput v-model:value="currentForm.topic" :placeholder="t('Placeholders.Dissertation.topic')" />
         </NFormItem>
       </NForm>
 
       <template #action>
         <NSpace justify="end">
           <NButton @click="showModal = false">{{ t('Common.Cancel') }}</NButton>
-          <NButton type="primary" :loading="loading" @click="submitForm">{{ currentDissertation?.id ? t('Common.Save') : t('Common.Add') }}</NButton>
+          <NButton type="primary" :loading="loading" @click="submitForm">{{ currentForm?.id ? t('Common.Save') : t('Common.Add') }}</NButton>
         </NSpace>
       </template>
     </NModal>

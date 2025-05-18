@@ -1,4 +1,6 @@
-﻿using Portfolio.Application.Services;
+﻿using Microsoft.Extensions.Options;
+using Minio;
+using Portfolio.Application.Services;
 using Portfolio.Application.Services.TeacherService;
 using Portfolio.Domain.Services;
 
@@ -8,6 +10,11 @@ namespace Portfolio.API
     {
         public static IServiceCollection AddAPIServices(this IServiceCollection services)
         {
+            services.AddSingleton<IMinioClient>(serviceProvider =>
+            {
+                var config = serviceProvider.GetRequiredService<IOptions<MinioConfig>>().Value;
+                return new MinioClient().WithEndpoint(config.Endpoint).WithCredentials(config.AccessKey, config.SecretKey).WithSSL(config.UseSsl).Build();
+            });
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IDisciplineService, DisciplineService>();
             services.AddScoped<ITeacherService, TeacherService>();

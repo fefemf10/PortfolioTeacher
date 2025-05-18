@@ -4,7 +4,7 @@
     {
         public Monography() { PublicationType = PublicationType.Monography; }
         public string? Publisher { get; set; }
-        public int Сirculation { get; set; }
+        public int Circulation { get; set; }
         public int CountPages { get; set; }
     }
 }

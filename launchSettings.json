@@ -10,7 +10,8 @@
         "cache": "StartWithoutDebugging",
         "api.portfolio": "StartWithoutDebugging",
         "frontend.portfolio": "StartWithoutDebugging",
-        "gateway.portfolio": "StartWithoutDebugging"
+        "gateway.portfolio": "StartWithoutDebugging",
+        "s3.portfolio": "StartWithoutDebugging"
       }
     }
   }

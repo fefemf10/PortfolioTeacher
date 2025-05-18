@@ -85,19 +85,66 @@ namespace Portfolio.Application.Services.TeacherService
             return await AddPublication(id, entity, entity.CoAuthors.Select(c => c.Id).ToList(), entity.Files.Select(f => f.Id).ToList());
         }
 
-        public async Task UpdateMonography(Guid id, Monography entity)
+        public async Task UpdateMonography(Guid id, Guid publicationId, Monography entity)
         {
-            await UpdatePublication(id, entity);
+            Teacher? teacher = await GetTeacherWithPublications(id);
+            Monography monography = teacher.Publications.OfType<Monography>().SingleOrDefault(x => x.Id == publicationId) ?? throw new NotFoundByIdException();
+            monography.Name = entity.Name;
+            monography.YearPublication = entity.YearPublication;
+            monography.CoAuthors.Clear();
+            monography.CoAuthors.Add(teacher);
+            var coAuthorToRemove = entity.CoAuthors.FirstOrDefault(c => c.Id == id);
+            entity.CoAuthors.Remove(coAuthorToRemove);
+            foreach (var coAuthor in entity.CoAuthors.DistinctBy(c => c.Id))
+            {
+                db.Teachers.Attach(coAuthor);
+                monography.CoAuthors.Add(coAuthor);
+            }
+            monography.Files.Clear();
+            foreach (var file in entity.Files.DistinctBy(f => f.Id))
+            {
+                db.UserFiles.Attach(file);
+                monography.Files.Add(file);
+            }
+            monography.Publisher = entity.Publisher;
+            monography.Circulation = entity.Circulation;
+            monography.CountPages = entity.CountPages;
+            await db.SaveChangesAsync();
         }
 
-        public async Task UpdateThesis(Guid id, Thesis entity)
+        public async Task UpdateThesis(Guid id, Guid publicationId, Thesis entity)
         {
-            await UpdatePublication(id, entity);
+            Teacher? teacher = await GetTeacherWithPublications(id);
+            Thesis thesis = teacher.Publications.OfType<Thesis>().SingleOrDefault(x => x.Id == publicationId) ?? throw new NotFoundByIdException();
+            thesis.Name = entity.Name;
+            thesis.YearPublication = entity.YearPublication;
+            thesis.CoAuthors = entity.CoAuthors;
+            thesis.Files = entity.Files;
+            thesis.BeginPage = entity.BeginPage;
+            thesis.EndPage = entity.EndPage;
+            thesis.CountPages = entity.CountPages;
+            thesis.Collection = entity.Collection;
+            thesis.DateEvent = entity.DateEvent;
+            thesis.Place = entity.Place;
+            thesis.Type = entity.Type;
+            await db.SaveChangesAsync();
         }
 
-        public async Task UpdateArticle(Guid id, Article entity)
+        public async Task UpdateArticle(Guid id, Guid publicationId, Article entity)
         {
-            await UpdatePublication(id, entity);
+            Teacher? teacher = await GetTeacherWithPublications(id);
+            Article article = teacher.Publications.OfType<Article>().SingleOrDefault(x => x.Id == publicationId) ?? throw new NotFoundByIdException();
+            article.Name = entity.Name;
+            article.YearPublication = entity.YearPublication;
+            article.CoAuthors = entity.CoAuthors;
+            article.Files = entity.Files;
+            article.IssueNumber = entity.IssueNumber;
+            article.BeginPage = entity.BeginPage;
+            article.EndPage = entity.EndPage;
+            article.Journal = entity.Journal;
+            article.PrintedSheets = entity.PrintedSheets;
+            article.URL = entity.URL;
+            await db.SaveChangesAsync();
         }
 
         public async Task Delete(Guid id, Guid entityId)
@@ -129,10 +176,10 @@ namespace Portfolio.Application.Services.TeacherService
             return publication.Id;
         }
 
-        private async Task UpdatePublication<T>(Guid teacherId, T entity) where T : Publication
+        private async Task UpdatePublication<T>(Guid teacherId, Guid publicationId, T entity) where T : Publication
         {
             Teacher? teacher = await GetTeacherWithPublications(teacherId);
-            var publication = teacher.Publications.OfType<T>().SingleOrDefault(x => x.Id == entity.Id) ?? throw new NotFoundByIdException();
+            var publication = teacher.Publications.OfType<T>().SingleOrDefault(x => x.Id == publicationId) ?? throw new NotFoundByIdException();
             mapper.Map(entity, publication);
             await db.SaveChangesAsync();
         }

@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Minio;
+using Minio.DataModel.Args;
 using MySqlConnector;
 using Portfolio.API;
 using Portfolio.API.Middleware;
 using Portfolio.Infrastructure;
 using System.Reflection;
-using static System.Net.WebRequestMethods;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
@@ -17,7 +18,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(Portfolio.Application.AppMappingProfile).Assembly);
-
+builder.Services.Configure<Portfolio.API.MinioConfig>(builder.Configuration.GetSection("Minio"));
 builder.Services.AddAPIServices();
 //builder.Services.AddSwaggerGen(options =>
 //{
@@ -75,6 +76,7 @@ builder.Services.AddAPIServices();
 //	});
 //});
 builder.Configuration.AddUserSecrets<Program>();
+
 var connectionStringBuilder = new MySqlConnectionStringBuilder();
 connectionStringBuilder.Server = builder.Configuration["DBHost"];
 connectionStringBuilder.Database = builder.Configuration["DBDatabase"];
@@ -103,14 +105,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorizationBuilder();
-    //.AddPolicy("ApiScope", policy =>
-	//{
-		//policy.RequireAuthenticatedUser();
-		//policy.RequireClaim("scope", builder.Configuration["IdentityServer:Scope"]!);
-	//});
+//.AddPolicy("ApiScope", policy =>
+//{
+//policy.RequireAuthenticatedUser();
+//policy.RequireClaim("scope", builder.Configuration["IdentityServer:Scope"]!);
+//});
 
 builder.Services.AddCors();
-builder.Services.AddStackExchangeRedisCache(options => {
+builder.Services.AddStackExchangeRedisCache(options =>
+{
     options.Configuration = builder.Configuration["RedisCache"];
     options.InstanceName = "local";
 });
@@ -123,6 +126,19 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.AllowedHosts.Clear();
 });
 var app = builder.Build();
+{
+    using var scope = app.Services.CreateScope();
+    var minioClient = scope.ServiceProvider.GetRequiredService<IMinioClient>();
+    var minioConfig = scope.ServiceProvider.GetRequiredService<IOptions<Portfolio.API.MinioConfig>>().Value;
+
+    var bucketExistsArgs = new BucketExistsArgs().WithBucket(minioConfig.BucketName);
+    bool found = await minioClient.BucketExistsAsync(bucketExistsArgs);
+    if (!found)
+    {
+        var makeBucketArgs = new MakeBucketArgs().WithBucket(minioConfig.BucketName);
+        await minioClient.MakeBucketAsync(makeBucketArgs);
+    }
+}
 app.UseForwardedHeaders();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors(builder =>

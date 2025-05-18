@@ -103,7 +103,7 @@ namespace Portfolio.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "char(36)", nullable: false, collation: "ascii_general_ci"),
                     Publisher = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Сirculation = table.Column<int>(type: "int", nullable: false),
+                    Circulation = table.Column<int>(type: "int", nullable: false),
                     CountPages = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

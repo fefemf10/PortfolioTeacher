@@ -55,7 +55,7 @@ const routes:RouteRecordRaw[] = [
   { path: '/deputy', component: Deputy },
   { path: '/stats', component: Stats },
   { path: '/admin', component: Admin, meta: {requiresAuth: true, role: 'Administrator'} },
-  { path: '/resume/:id', component: Resume, meta: {requiresAuth: true, role: 'Teacher'},
+  { path: '/resume/:id', component: Resume,
     children: [
       { path: '', component: ResumeShort },
       { path: 'awards', component: ResumeAwards },
@@ -63,7 +63,7 @@ const routes:RouteRecordRaw[] = [
       { path: 'dissertations', component: ResumeDissertations },
       { path: 'professionalDevelopments', component: ResumeProfessionalDevelopments },
       { path: 'publicActivities', component: ResumePublicActivities },
-      { path: 'monographies', component: ResumeMonographies },
+      { path: 'monographies/:eid?', component: ResumeMonographies },
       { path: 'theses', component: ResumeTheses },
       { path: 'articles', component: ResumeArticles },
       { path: 'scienceProjects', component: ResumeScienceProjects },

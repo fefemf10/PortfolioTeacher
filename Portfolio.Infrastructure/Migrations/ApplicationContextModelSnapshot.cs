@@ -34,7 +34,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("TeachersId");
 
-                    b.ToTable("DisciplineTeacher");
+                    b.ToTable("DisciplineTeacher", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Award", b =>
@@ -61,7 +61,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Awards");
+                    b.ToTable("Awards", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Department", b =>
@@ -87,7 +87,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("ParentDepartmentId");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
 
                     b.HasData(
                         new
@@ -314,7 +314,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Disciplines");
+                    b.ToTable("Disciplines", (string)null);
 
                     b.HasData(
                         new
@@ -616,7 +616,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("Dissertations");
+                    b.ToTable("Dissertations", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Post", b =>
@@ -640,7 +640,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.ProfessionalDevelopment", b =>
@@ -680,7 +680,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("ProfessionalDevelopments");
+                    b.ToTable("ProfessionalDevelopments", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.PublicActivity", b =>
@@ -700,7 +700,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("PublicActivities");
+                    b.ToTable("PublicActivities", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Publication", b =>
@@ -721,7 +721,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Publications");
+                    b.ToTable("Publications", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -752,7 +752,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("ScienceProjects");
+                    b.ToTable("ScienceProjects", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.University", b =>
@@ -783,7 +783,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Universities");
+                    b.ToTable("Universities", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.User", b =>
@@ -824,7 +824,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("AvatarId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.UseTptMappingStrategy();
                 });
@@ -852,7 +852,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("PublicationId");
 
-                    b.ToTable("UserFiles");
+                    b.ToTable("UserFiles", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Work", b =>
@@ -882,7 +882,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Works");
+                    b.ToTable("Works", (string)null);
                 });
 
             modelBuilder.Entity("PublicationTeacher", b =>
@@ -897,7 +897,7 @@ namespace Portfolio.Infrastructure.Migrations
 
                     b.HasIndex("PublicationsId");
 
-                    b.ToTable("PublicationTeacher");
+                    b.ToTable("PublicationTeacher", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Article", b =>
@@ -922,12 +922,15 @@ namespace Portfolio.Infrastructure.Migrations
                     b.Property<string>("URL")
                         .HasColumnType("longtext");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Monography", b =>
                 {
                     b.HasBaseType("Portfolio.Domain.Models.Publication");
+
+                    b.Property<int>("Circulation")
+                        .HasColumnType("int");
 
                     b.Property<int>("CountPages")
                         .HasColumnType("int");
@@ -935,10 +938,7 @@ namespace Portfolio.Infrastructure.Migrations
                     b.Property<string>("Publisher")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Сirculation")
-                        .HasColumnType("int");
-
-                    b.ToTable("Monographies");
+                    b.ToTable("Monographies", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Thesis", b =>
@@ -969,7 +969,7 @@ namespace Portfolio.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.ToTable("Theses");
+                    b.ToTable("Theses", (string)null);
                 });
 
             modelBuilder.Entity("Portfolio.Domain.Models.Teacher", b =>
@@ -982,7 +982,7 @@ namespace Portfolio.Infrastructure.Migrations
                     b.Property<int>("AcademicTitle")
                         .HasColumnType("int");
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Teachers", (string)null);
                 });
 
             modelBuilder.Entity("DisciplineTeacher", b =>

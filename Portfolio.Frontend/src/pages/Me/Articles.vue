@@ -40,7 +40,7 @@
       }
   ]);
   onMounted(async () => {
-    data.value = await api.get<Article[]>(`api/teacher/${await guid()}/publication/articles`).json();
+    data.value = await api.get<Article[]>(`api/teacher/${await guid()}/publication/article`).json();
   });
 </script>
 <template>

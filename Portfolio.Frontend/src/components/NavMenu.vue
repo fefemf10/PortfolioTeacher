@@ -35,7 +35,6 @@
     <RouterLink :to="`${route}/dissertations`"><NButton :render-icon=renderIcon(BookIcon)>{{ t('Pages.Resume.Dissertations.NameTitle') }}</NButton></RouterLink>
     <RouterLink :to="`${route}/professionalDevelopments`"><NButton :render-icon=renderIcon(AwardIcon)>{{ t('Pages.Resume.ProfessionalDevelopments.NameTitle') }}</NButton></RouterLink>
     <RouterLink :to="`${route}/publicActivities`"><NButton :render-icon=renderIcon(WalkingIcon)>{{ t('Pages.Resume.PublicActivities.NameTitle') }}</NButton></RouterLink>
-    <RouterLink :to="`${route}/dissertations`"><NButton :render-icon=renderIcon(WalkingIcon)>{{ t('Pages.Resume.Dissertations.NameTitle') }}</NButton></RouterLink>
     <NDropdown :options="menuOptions"><NButton :render-icon=renderIcon(WalkingIcon)>{{ t('Pages.Resume.Publications.NameTitle') }}</NButton></NDropdown>
     <RouterLink :to="`${route}/scienceProjects`"><NButton :render-icon=renderIcon(FlaskIcon)>{{ t('Pages.Resume.ScienceProjects.NameTitle') }}</NButton></RouterLink>
     <RouterLink :to="`${route}/universities`"><NButton :render-icon=renderIcon(UniversityIcon)>{{ t('Pages.Resume.University.NameTitle') }}</NButton></RouterLink>

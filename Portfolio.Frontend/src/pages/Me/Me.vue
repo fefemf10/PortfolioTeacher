@@ -15,7 +15,7 @@ onMounted(async () => {
 </script>
 <template>
   <NFlex justify="center" vertical style="gap: 1rem;">
-    <UserInfo v-if="user" :user=user></UserInfo>
+    <UserInfo v-if="user" :user=user :upload=true></UserInfo>
     <NavMenu route="/me" />
     <RouterView></RouterView>
   </NFlex>

@@ -39,73 +39,73 @@ namespace Portfolio.API.Controllers.TeacherControllers
         #endregion
 
         #region Monography Endpoints
-        [HttpGet("Monographies")]
+        [HttpGet("Monography")]
         public async Task<ActionResult<IEnumerable<ResponseMonography>>> GetAllMonographies(Guid id)
         {
             return Ok(mapper.Map<IEnumerable<ResponseMonography>>(await tps.GetAllMonographies(id)));
         }
-        [HttpGet("Monographies/{publicationId:guid}")]
+        [HttpGet("Monography/{publicationId:guid}")]
         public async Task<ActionResult<ResponseMonography>> GetMonography(Guid id, Guid publicationId)
         {
             return Ok(mapper.Map<ResponseMonography>(await tps.GetMonography(id, publicationId)));
         }
-        [HttpPost("Monographies")]
+        [HttpPost("Monography")]
         public async Task<ActionResult<Guid>> AddMonography(Guid id, [Required][FromBody] RequestMonography publication)
         {
             return Ok(await tps.AddMonography(id, mapper.Map<Monography>(publication)));
         }
-        [HttpPut("Monographies")]
-        public async Task<ActionResult> UpdateMonography(Guid id, [Required][FromBody] RequestMonography publication)
+        [HttpPut("Monography/{publicationId:guid}")]
+        public async Task<ActionResult> UpdateMonography(Guid id, Guid publicationId, [Required][FromBody] RequestMonography publication)
         {
-            await tps.UpdateMonography(id, mapper.Map<Monography>(publication));
+            await tps.UpdateMonography(id, publicationId, mapper.Map<Monography>(publication));
             return Ok();
         }
         #endregion
 
         #region Thesis Endpoints
-        [HttpGet("Theses")]
+        [HttpGet("Thesis")]
         public async Task<ActionResult<IEnumerable<ResponseThesis>>> GetAllTheses(Guid id)
         {
             return Ok(mapper.Map<IEnumerable<ResponseThesis>>(await tps.GetAllTheses(id)));
         }
-        [HttpGet("Theses/{publicationId:guid}")]
+        [HttpGet("Thesis/{publicationId:guid}")]
         public async Task<ActionResult<ResponseThesis>> GetThesis(Guid id, Guid publicationId)
         {
             return Ok(mapper.Map<ResponseThesis>(await tps.GetThesis(id, publicationId)));
         }
-        [HttpPost("Theses")]
+        [HttpPost("Thesis")]
         public async Task<ActionResult<Guid>> AddThesis(Guid id, [Required][FromBody] RequestThesis publication)
         {
             return Ok(await tps.AddThesis(id, mapper.Map<Thesis>(publication)));
         }
-        [HttpPut("Theses")]
-        public async Task<ActionResult> UpdateThesis(Guid id, [Required][FromBody] RequestThesis publication)
+        [HttpPut("Thesis/{publicationId:guid}")]
+        public async Task<ActionResult> UpdateThesis(Guid id, Guid publicationId, [Required][FromBody] RequestThesis publication)
         {
-            await tps.UpdateThesis(id, mapper.Map<Thesis>(publication));
+            await tps.UpdateThesis(id, publicationId,mapper.Map<Thesis>(publication));
             return Ok();
         }
         #endregion
 
         #region Article Endpoints
-        [HttpGet("Articles")]
+        [HttpGet("Article")]
         public async Task<ActionResult<IEnumerable<ResponseArticle>>> GetAllArticles(Guid id)
         {
             return Ok(mapper.Map<IEnumerable<ResponseArticle>>(await tps.GetAllArticles(id)));
         }
-        [HttpGet("Articles/{publicationId:guid}")]
+        [HttpGet("Article/{publicationId:guid}")]
         public async Task<ActionResult<ResponseArticle>> GetArticle(Guid id, Guid publicationId)
         {
             return Ok(mapper.Map<ResponseArticle>(await tps.GetArticle(id, publicationId)));
         }
-        [HttpPost("Articles")]
+        [HttpPost("Article")]
         public async Task<ActionResult<Guid>> AddArticle(Guid id, [Required][FromBody] RequestArticle publication)
         {
             return Ok(await tps.AddArticle(id, mapper.Map<Article>(publication)));
         }
-        [HttpPut("Articles")]
-        public async Task<ActionResult> UpdateArticle(Guid id, [Required][FromBody] RequestArticle publication)
+        [HttpPut("Article/{publicationId:guid}")]
+        public async Task<ActionResult> UpdateArticle(Guid id, Guid publicationId, [Required][FromBody] RequestArticle publication)
         {
-            await tps.UpdateArticle(id, mapper.Map<Article>(publication));
+            await tps.UpdateArticle(id, publicationId, mapper.Map<Article>(publication));
             return Ok();
         }
         #endregion

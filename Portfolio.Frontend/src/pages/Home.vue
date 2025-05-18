@@ -10,7 +10,7 @@
   const filtredUsers = ref<UserProfile[]>([]);
   onMounted(async () => {
     users.value = await api.get<UserProfile[]>('api/teacher').json();
-    filtredUsers.valye = users.value;
+    filtredUsers.value = users.value;
   });
   async function handleSelectedKey(id: string) {
     if (id === 'all')
@@ -35,12 +35,10 @@
   };
 </script>
 <template>
+  <NInput style="margin-bottom: 1rem;" placeholder="Поиск по ФИО" clearable @update:value="handleSearch" />
   <NFlex class="roothome" justify="space-between" size="large">
-      <NFlex>
-        <NInput placeholder="Поиск по ФИО" clearable @update:value="handleSearch" />
-        <CardUser class="users" :users=filtredUsers />
-      </NFlex>
-      <NavigableBlock class="navblock" @selected="handleSelectedKey" />
+    <CardUser class="users" :users=filtredUsers />
+    <NavigableBlock class="navblock" @selected="handleSelectedKey" />
   </NFlex>
 </template>
 <style scoped>
@@ -49,6 +47,7 @@
     flex-shrink: 0;
     flex-grow: 1;
   }
+
   .navblock {
     width: 20rem;
     flex-grow: 1;

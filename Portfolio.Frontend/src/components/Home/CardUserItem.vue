@@ -6,20 +6,29 @@
   import { PostType } from '@/enums/PostType';
   import { hashCode } from '@/hashCode';
   import { useEnumLocalization } from '@/EnumLocalization';
-import { useDepartmentStore } from '@/stores/departmentStore';
+  import { useI18n } from 'vue-i18n';
+  import { useDepartmentStore } from '@/stores/departmentStore';
+  import { computed } from 'vue';
+  const { t } = useI18n();
   const { localizeEnum } = useEnumLocalization();
   const props = defineProps<{
     user: UserProfile
   }>();
   const departmentStore = useDepartmentStore();
+  const urlAvatar = computed(() => {
+    if (props.user.avatar)
+      return `/api/user/${props.user.id}/avatar`;
+    else
+      return `https://avatar.iran.liara.run/public/${hashCode(props.user.id) % 100}`;
+  });
 </script>
 <template>
   <NFlex>
-        <NAvatar lazy circle :size="64" :src='`https://avatar.iran.liara.run/public/${hashCode(user.id) % 100}`' />
+        <NAvatar lazy circle :size="64" :src=urlAvatar />
         <NFlex class="fiopost" justify="space-between">
           <NFlex vertical>
             <NText class="fio" type="info">{{ user.lastName }} {{ user.firstName }} {{ user.middleName }}</NText>
-            <NText class="post" type="info" v-for="post of user.posts">{{ localizeEnum(post.postType, PostType, 'Post') }} в подразделении {{ departmentStore.getDepartmentById(post.departmentId)?.name }}</NText>
+            <NText class="post" type="info" v-for="post of user.posts">{{ localizeEnum(post.postType, PostType, 'Post') }} {{ t('Common.InDepartment') }} {{ departmentStore.getDepartmentById(post.departmentId)?.name }}</NText>
           </NFlex>
           <NFlex vertical>
             <UserDetailsInfoItem :icon=Envelope>{{ user.email }}</UserDetailsInfoItem>

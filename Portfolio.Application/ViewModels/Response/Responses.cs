@@ -22,7 +22,7 @@ namespace Portfolio.Application.ViewModels.Response
         public DissertationType Type { get; set; }
         public int YearProtection { get; set;  }
     }
-    public record ResponseMonography(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files, string? Publisher, int Сirculation, int CountPages) : ResponsePublication(Id, Name, PublicationType, YearPublication, CoAuthors, Files);
+    public record ResponseMonography(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files, string? Publisher, int Circulation, int CountPages) : ResponsePublication(Id, Name, PublicationType, YearPublication, CoAuthors, Files);
     public record ResponseArticle(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files, string? Journal, int IssueNumber, int PrintedSheets, int BeginPage, int EndPage, string? URL) : ResponsePublication(Id, Name, PublicationType, YearPublication, CoAuthors, Files);
     public record ResponseThesis(Guid Id, string Name, PublicationType PublicationType, int YearPublication, List<ResponseTeacherShort> CoAuthors, List<UserFile> Files, string Type, string Collection, int BeginPage, int EndPage, string Place, DateOnly DateEvent, int CountPages) : ResponsePublication(Id, Name, PublicationType, YearPublication, CoAuthors, Files);
     public class ResponseUser

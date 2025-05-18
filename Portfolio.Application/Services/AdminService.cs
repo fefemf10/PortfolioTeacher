@@ -81,7 +81,7 @@ namespace Portfolio.Application.Services
 					{
 						Name = $"Монография {Random.Shared.Next(1, 10)}",
 						Publisher = $"Издатель {Random.Shared.Next(1, 10)}",
-						Сirculation = Random.Shared.Next(100, 500),
+						Circulation = Random.Shared.Next(100, 500),
 						YearPublication = Random.Shared.Next(1980, 2025),
 						CountPages = Random.Shared.Next(50, 200)
 					};

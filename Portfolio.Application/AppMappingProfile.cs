@@ -35,8 +35,8 @@ namespace Portfolio.Application
             CreateMap<Thesis, ResponseThesis>();
 
             CreateMap<RequestPublication, Publication>()
-                .ForMember(dest => dest.CoAuthors, opt => opt.Ignore())
-                .ForMember(dest => dest.Files, opt => opt.Ignore())
+                .ForMember(dest => dest.CoAuthors, opt => opt.MapFrom(src => src.CoAuthors.Select(id => new Teacher { Id = id }).ToList()))
+                .ForMember(dest => dest.Files, opt => opt.MapFrom(src => src.Files.Select(id => new UserFile { Id = id }).ToList()))
                 .Include<RequestMonography, Monography>()
                 .Include<RequestArticle, Article>()
                 .Include<RequestThesis, Thesis>();

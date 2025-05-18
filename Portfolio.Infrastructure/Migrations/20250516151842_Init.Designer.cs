@@ -12,7 +12,7 @@ using Portfolio.Infrastructure;
 namespace Portfolio.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20250509211631_Init")]
+    [Migration("20250516151842_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -932,14 +932,14 @@ namespace Portfolio.Infrastructure.Migrations
                 {
                     b.HasBaseType("Portfolio.Domain.Models.Publication");
 
+                    b.Property<int>("Circulation")
+                        .HasColumnType("int");
+
                     b.Property<int>("CountPages")
                         .HasColumnType("int");
 
                     b.Property<string>("Publisher")
                         .HasColumnType("longtext");
-
-                    b.Property<int>("Сirculation")
-                        .HasColumnType("int");
 
                     b.ToTable("Monographies");
                 });

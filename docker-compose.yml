@@ -42,3 +42,6 @@ services:
   cache:
     image: redis:latest
     restart: always
+  s3.portfolio:
+    image: quay.io/minio/minio:latest
+    restart: always

@@ -74,6 +74,17 @@ services:
       interval: 5s
       timeout: 5s
       retries: 3
+
+  s3.portfolio:
+    command: server /data --console-address ":9001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - s3_data:/data
 volumes:
+  s3_data:
   id_db:
   api_db:  

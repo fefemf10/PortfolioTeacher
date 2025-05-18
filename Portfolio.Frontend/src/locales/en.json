@@ -1,5 +1,6 @@
 {
     "Common": {
+        "InDepartment": "in department",
         "ConfirmDelete": "Confirm delete",
         "DeleteConfirmation": "Delete confirmation",
         "Delete": "Delete",
@@ -31,6 +32,10 @@
             "phone": "Telephone",
             "department": "Department",
             "btnSave": "Save"
+        },
+        "Dissertation":{
+            "specialization": "Enter specialization",
+            "topic": "Enter topic"
         }
     },
     "Pages": {
@@ -113,7 +118,9 @@
                     "CoAuthors",
                     "Name",
                     "Publisher",
-                    "Year of publication"
+                    "Year of publication",
+                    "Circulation",
+                    "Count pages"
                 ]
             },
             "Theses": {
