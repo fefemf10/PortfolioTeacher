@@ -15,6 +15,7 @@ namespace Portfolio.API
                 var config = serviceProvider.GetRequiredService<IOptions<MinioConfig>>().Value;
                 return new MinioClient().WithEndpoint(config.Endpoint).WithCredentials(config.AccessKey, config.SecretKey).WithSSL(config.UseSsl).Build();
             });
+            services.AddScoped<IPublicationService, PublicationService>();
             services.AddScoped<IDepartmentService, DepartmentService>();
             services.AddScoped<IDisciplineService, DisciplineService>();
             services.AddScoped<ITeacherService, TeacherService>();

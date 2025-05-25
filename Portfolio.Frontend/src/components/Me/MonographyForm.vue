@@ -4,7 +4,7 @@
   import { UserFile } from '@/classes/UserFile';
   import { PublicationType } from '@/enums/PublicationType';
   import { guid } from '@/oidc';
-  import {  useDialog, useMessage, NForm, NFormItem, NSpace, NModal, NInput, NInputNumber, NButton } from 'naive-ui'
+  import { useDialog, useMessage, NForm, NFormItem, NSpace, NModal, NInput, NInputNumber, NButton } from 'naive-ui'
   import { ref } from 'vue';
   import { useI18n } from 'vue-i18n';
   const {t} = useI18n();

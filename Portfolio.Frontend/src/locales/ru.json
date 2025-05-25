@@ -12,7 +12,11 @@
         "UpdatedSuccessfully": "Успешно обновлено",
         "AddedSuccessfully": "Успешно добавлено",
         "UpdateError": "Ошибка обновления",
-        "AddError": "Ошибка добавления"
+        "AddError": "Ошибка добавления",
+        "Files": "Файлы",
+        "CoAuthors": "Со-Авторы",
+        "UploadFiles": "Загрузить файлы",
+        "Download": "Скачать"
     },
     "Nav": {
         "Lang": "Язык",

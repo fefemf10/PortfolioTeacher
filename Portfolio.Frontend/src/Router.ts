@@ -79,7 +79,7 @@ const routes:RouteRecordRaw[] = [
       { path: 'dissertations', component: MeDissertations },
       { path: 'professionalDevelopments', component: MeProfessionalDevelopments },
       { path: 'publicActivities', component: MePublicActivities },
-      { path: 'monographies', component: MeMonographies },
+      { path: 'monographies/:eid?', component: MeMonographies },
       { path: 'theses', component: MeTheses },
       { path: 'articles', component: MeArticles },
       { path: 'scienceProjects', component: MeScienceProjects },

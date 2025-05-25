@@ -54,7 +54,7 @@ namespace Portfolio.API.Cotrollers
             UserFile userFile = new()
             {
                 FileType = UserFile.GetFileTypeFromMime(file.ContentType),
-                Name = file.Name,
+                Name = file.FileName,
                 Size = file.Length
             };
             PutObjectArgs putObjectArgs = new PutObjectArgs()

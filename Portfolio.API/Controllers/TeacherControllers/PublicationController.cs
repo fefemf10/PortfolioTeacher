@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Portfolio.Domain.Models;
-using Portfolio.Application.ViewModels.Request;
-using System.ComponentModel.DataAnnotations;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Portfolio.Application.ViewModels.Request;
 using Portfolio.Application.ViewModels.Response;
+using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.API.Controllers.TeacherControllers
 {
@@ -36,6 +36,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
             await tps.Delete(id, publicationId);
             return Ok();
         }
+
         #endregion
 
         #region Monography Endpoints

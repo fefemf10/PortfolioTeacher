@@ -12,7 +12,11 @@
         "UpdatedSuccessfully": "Updated Successfully",
         "AddedSuccessfully": "Added Successfully",
         "UpdateError": "Update Error",
-        "AddError": "Add Error"
+        "AddError": "Add Error",
+        "Files": "Files",
+        "CoAuthors": "CoAuthors",
+        "UploadFiles": "Upload files",
+        "Download": "Download"
     },
     "Nav": {
         "Lang": "Language",
