@@ -6,6 +6,7 @@
   import MyNCard from '@/components/MyNCard.vue';
   import { useI18n } from 'vue-i18n';
   import { Thesis } from '@/classes/Publication';
+import ThesisDetails from '@/components/ThesisDetails.vue';
   const route = useRoute();
   const {t} = useI18n();
   const data = ref<Thesis[]>([]);
@@ -39,12 +40,19 @@
         key: 'yearPublication'
       }
   ]);
+  const selected = computed<Thesis>(() => {
+    return data.value.find(e => e.id === route.params.eid);
+  });
   onMounted(async () => {
     data.value = await api.get<Thesis[]>(`api/teacher/${route.params.id}/publication/thesis`).json();
   });
 </script>
 <template>
-  <MyNCard :title="t('Pages.Resume.Theses.CardTitle')">
+  <MyNCard v-if=!route.params.eid :title="t('Pages.Resume.Theses.CardTitle')">
     <NDataTable :columns="columns" :data="data" bordered />
+  </MyNCard>
+  <ThesisDetails v-if="route.params.eid && selected" :selected="selected" :loading="false"></ThesisDetails>
+  <MyNCard v-if="route.params.eid && !selected" title="Такого доклада нет">
+
   </MyNCard>
 </template>

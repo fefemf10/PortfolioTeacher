@@ -6,9 +6,10 @@
   import MyNCard from '@/components/MyNCard.vue';
   import { useI18n } from 'vue-i18n';
   import { Article } from '@/classes/Publication';
+  import ArticleDetails from '@/components/ArticleDetails.vue';
   const route = useRoute();
   const {t} = useI18n();
-  const data = ref<Articl[]>([]);
+  const data = ref<Article[]>([]);
   const columns = computed(() => [
       {
         title: t('Pages.Resume.Articles.DataColumns.0'),
@@ -39,12 +40,19 @@
         key: 'yearPublication'
       }
   ]);
+  const selected = computed<Article>(() => {
+    return data.value.find(e => e.id === route.params.eid);
+  });
   onMounted(async () => {
     data.value = await api.get<Article[]>(`api/teacher/${route.params.id}/publication/article`).json();
   });
 </script>
 <template>
-  <MyNCard :title="t('Pages.Resume.Articles.CardTitle')">
+  <MyNCard v-if=!route.params.eid :title="t('Pages.Resume.Articles.CardTitle')">
     <NDataTable :columns="columns" :data="data" bordered />
+  </MyNCard>
+  <ArticleDetails v-if="route.params.eid && selected" :selected="selected" :loading="false"></ArticleDetails>
+  <MyNCard v-if="route.params.eid && !selected" title="Такой статьи нет">
+
   </MyNCard>
 </template>

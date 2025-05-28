@@ -1,11 +1,11 @@
 <script setup lang="ts">
   import { NFlex, NGrid, NText, NGi} from 'naive-ui';
   import MyNCard from '@/components/MyNCard.vue';
-  import { Monography } from '@/classes/Publication';
+  import { Article } from '@/classes/Publication';
   import FileManager from '@/components/FileManager.vue';
   import { useI18n } from 'vue-i18n';
   const props = defineProps<{
-    selected: Monography
+    selected: Article
     loading: boolean
   }>();
   const {t} = useI18n();
@@ -22,28 +22,40 @@
           </NFlex>
         </NGi>
         <NGi span="3 s:3">
-          <NText strong>{{ t('Pages.Resume.Monographies.DataColumns.2') }}</NText>
+          <NText strong>{{ t('Pages.Resume.Articles.DataColumns.2') }}</NText>
         </NGi>
         <NGi span="9 s:9">
-          <NText>{{ selected.publisher }}</NText>
+          <NText>{{ selected.journal }}</NText>
         </NGi>
         <NGi span="3 s:3">
-          <NText strong>{{ t('Pages.Resume.Monographies.DataColumns.3') }}</NText>
+          <NText strong>{{ t('Pages.Resume.Articles.DataColumns.3') }}</NText>
         </NGi>
         <NGi span="9 s:9">
           <NText>{{ selected.yearPublication }}</NText>
         </NGi>
         <NGi span="3 s:3">
-          <NText strong>{{ t('Pages.Resume.Monographies.DataColumns.4') }}</NText>
+          <NText strong>{{ t('Pages.Resume.Articles.DataColumns.4') }}</NText>
         </NGi>
         <NGi span="9 s:9">
-          <NText>{{ selected.circulation }}</NText>
+          <NText>{{ selected.beginPage }} - {{ selected.endPage }}</NText>
         </NGi>
         <NGi span="3 s:3">
-          <NText strong>{{ t('Pages.Resume.Monographies.DataColumns.5') }}</NText>
+          <NText strong>{{ t('Pages.Resume.Articles.DataColumns.5') }}</NText>
         </NGi>
         <NGi span="9 s:9">
-          <NText>{{ selected.countPages }}</NText>
+          <NText>{{ selected.issueNumber }}</NText>
+        </NGi>
+        <NGi span="3 s:3">
+          <NText strong>{{ t('Pages.Resume.Articles.DataColumns.6') }}</NText>
+        </NGi>
+        <NGi span="9 s:9">
+          <NText>{{ selected.printedSheets }}</NText>
+        </NGi>
+        <NGi span="3 s:3">
+          <NText strong>{{ t('Pages.Resume.Articles.DataColumns.7') }}</NText>
+        </NGi>
+        <NGi span="9 s:9">
+          <NText>{{ selected.url }}</NText>
         </NGi>
         <NGi span="3 s:3">
           <NText strong>{{ t('Common.Files') }}</NText>

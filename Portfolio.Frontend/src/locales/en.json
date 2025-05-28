@@ -134,7 +134,12 @@
                     "CoAuthors",
                     "Name",
                     "Collection",
-                    "Year of publication"
+                    "Year of publication",
+                    "Type",
+                    "Range",
+                    "Count pages",
+                    "Date event",
+                    "Place"
                 ]
             },
             "Articles": {
@@ -144,7 +149,11 @@
                     "CoAuthors",
                     "Name",
                     "Journal",
-                    "Year of publication"
+                    "Year of publication",
+                    "Range",
+                    "Issue Number",
+                    "Printed Sheets",
+                    "URL"
                 ]
             },
             "ScienceProjects": {
