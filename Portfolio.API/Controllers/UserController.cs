@@ -8,7 +8,7 @@ using Portfolio.Application.ViewModels.Response;
 using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
 
-namespace Portfolio.API.Cotrollers
+namespace Portfolio.API.Controllers
 {
 	[AllowAnonymous]
 	[Route("api/[controller]")]
