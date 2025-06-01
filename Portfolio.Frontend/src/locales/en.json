@@ -1,5 +1,8 @@
 {
     "Common": {
+        "ListWorkers": "List of workers",
+        "InputSearchWorker": "Full name search",
+        "NavigableBlockLabel": "Organization structure",
         "InDepartment": "in department",
         "ConfirmDelete": "Confirm delete",
         "DeleteConfirmation": "Delete confirmation",

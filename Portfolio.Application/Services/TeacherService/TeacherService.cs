@@ -5,6 +5,7 @@ using Portfolio.Application.Exceptions;
 using Portfolio.Domain.Models;
 using Portfolio.Domain.Services;
 using Portfolio.Infrastructure;
+using StackExchange.Redis;
 using System.Collections;
 using System.Text.Json;
 
@@ -83,16 +84,31 @@ namespace Portfolio.Application.Services.TeacherService
         public async Task<Teacher> GetByIdFromCache(Guid id)
         {
             Teacher? teacher = null;
-            string? teacherString = await cache.GetStringAsync("teacherWithDependencies" + id);
-            if (teacherString != null) teacher = JsonSerializer.Deserialize<Teacher>(teacherString);
+            string? teacherString = null;
+            try
+            {
+                teacherString = await cache.GetStringAsync("teacherWithDependencies" + id);
+                if (teacherString != null) teacher = JsonSerializer.Deserialize<Teacher>(teacherString);
+            }
+            catch (RedisException ex)
+            {
+
+            }
             if (teacher is null)
             {
                 teacher = await db.Teachers.IncludeAll(db).AsSplitQuery().SingleOrDefaultAsync(x => x.Id == id) ?? throw new NotFoundByIdException();
                 teacherString = JsonSerializer.Serialize(teacher);
-                await cache.SetStringAsync("teacherWithDependencies" + id, teacherString, options: new DistributedCacheEntryOptions
+                try
                 {
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
-                });
+                    await cache.SetStringAsync("teacherWithDependencies" + id, teacherString, options: new DistributedCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+                    });
+                }
+                catch (RedisException ex)
+                {
+
+                }
             }
             return teacher;
         }

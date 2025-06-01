@@ -61,7 +61,6 @@ namespace Portfolio.API.Controllers
                 .WithBucket(config.Value.BucketName)
                 .WithObject($"users/{id}/{userFile.Id}")
                 .WithStreamData(file.OpenReadStream())
-                .WithFileName(file.Name)
                 .WithObjectSize(file.Length)
                 .WithContentType(file.ContentType);
             try

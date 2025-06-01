@@ -1,5 +1,8 @@
 {
     "Common": {
+        "ListWorkers": "Список сотрудников",
+        "InputSearchWorker": "Поиск по ФИО",
+        "NavigableBlockLabel": "Организационная структура",
         "InDepartment": "в подразделении",
         "ConfirmDelete": "Подтвердите удаление",
         "DeleteConfirmation": "Подтверждение удаления",

@@ -2,9 +2,11 @@
 import { computed, onMounted, ref } from 'vue';
 import { NTree, NCard, NText, TreeOption } from 'naive-ui'
 import { useDepartmentStore } from '@/stores/departmentStore';
+import { useI18n } from 'vue-i18n';
 const departmentStore = useDepartmentStore();
 const expandedKeys = ref<string[]>(['all']);
 const selectedId = ref<string | null>(null);
+const {t} = useI18n();
 const treeData = computed<TreeOption[]>(() => [{
   label: 'Все',
   key: 'all',
@@ -31,7 +33,7 @@ function handleExpandedKeys(keys: string[]) {
 <template>
   <NCard class="cards">
     <template #header>
-      <NText class="cardtitle" type="success">Организационная структура</NText>
+      <NText class="cardtitle" type="success">{{ t('Common.NavigableBlockLabel') }}</NText>
     </template>
     <NTree :data=treeData block-line :animated=false show-line
     :selected-keys="[selectedId]"

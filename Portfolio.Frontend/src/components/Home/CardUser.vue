@@ -3,6 +3,8 @@
   import { UserProfile } from '@/classes/UserProfile';
   import CardUserItem from './CardUserItem.vue';
   import router from '@/Router';
+  import { useI18n } from 'vue-i18n';
+  const {t} = useI18n();
   const props = defineProps<{
     users: UserProfile[]
   }>();
@@ -13,7 +15,7 @@
 <template>
   <NList class="carduser" hoverable clickable>
     <template #header>
-      <NText class="cardtitle" type="info">Список сотрудников</NText>
+      <NText class="cardtitle" type="info">{{ t('Common.ListWorkers') }}</NText>
     </template>
     <NListItem v-for="user in users" @click="click(user.id)"><CardUserItem :user=user /></NListItem>
   </NList>

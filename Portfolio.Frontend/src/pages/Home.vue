@@ -5,6 +5,8 @@
   import NavigableBlock from '@/components/NavigableBlock.vue'
   import CardUser from '@/components/Home/CardUser.vue';
   import api from '@/api'
+  import { useI18n } from 'vue-i18n';
+  const {t} = useI18n();
   const searchQuery = ref('');
   const users = ref<UserProfile[]>([]);
   const filtredUsers = ref<UserProfile[]>([]);
@@ -35,7 +37,7 @@
   };
 </script>
 <template>
-  <NInput style="margin-bottom: 1rem;" placeholder="Поиск по ФИО" clearable @update:value="handleSearch" />
+  <NInput style="margin-bottom: 1rem;" :placeholder="t('Common.InputSearchWorker')" clearable @update:value="handleSearch" />
   <NFlex class="roothome" justify="space-between" size="large">
     <CardUser class="users" :users=filtredUsers />
     <NavigableBlock class="navblock" @selected="handleSelectedKey" />
