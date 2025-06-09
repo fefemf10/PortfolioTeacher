@@ -82,12 +82,7 @@ connectionStringBuilder.Server = builder.Configuration["DBHost"];
 connectionStringBuilder.Database = builder.Configuration["DBDatabase"];
 connectionStringBuilder.UserID = builder.Configuration["DBUser"];
 connectionStringBuilder.Password = builder.Configuration["DBPassword"];
-Console.WriteLine(builder.Configuration["DBHost"]);
-Console.WriteLine(builder.Configuration["DBDatabase"]);
-Console.WriteLine(builder.Configuration["DBUser"]);
-Console.WriteLine(builder.Configuration["DBPassword"]);
 string connection = connectionStringBuilder.ConnectionString;
-Console.WriteLine(connection);
 ServerVersion serverVersion = ServerVersion.AutoDetect(connection);
 builder.Services.AddDbContext<ApplicationContext>(options => options.UseMySql(connection, serverVersion, opt => opt.MigrationsAssembly(typeof(ApplicationContext).Assembly)));
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
