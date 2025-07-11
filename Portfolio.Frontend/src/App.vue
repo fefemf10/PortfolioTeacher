@@ -10,28 +10,23 @@
   import router from './Router';
   import { SignOutAlt as LogoutIcon, User as UserIcon} from '@vicons/fa'
   import { useDepartmentStore } from './stores/departmentStore';
+  import { useUserStore } from './stores/userStore';
   const { t, locale } = useI18n();
-  const auth = ref<boolean>(false);
   const departmentStore = useDepartmentStore();
+  const userStore = useUserStore();
   const updateAuthState = async () => {
-    auth.value = await isAuthenticated();
-    if (auth.value && !userCreated.value && await role() !== 'Administrator')
+    userStore.fetchUserProfile();
+    if (userStore.isAuthenticated && !userStore.isUserCreatedOnAPI && !userStore.isAdmin)
       router.replace('/registration');
   };
   onMounted(async () => {
     document.documentElement.lang = locale.value;
-    updateAuthState();
+    userStore.fetchUserProfile();
     userManager.events.addUserLoaded(updateAuthState);
-    userManager.events.addUserUnloaded(() => {
-      auth.value = false;
-    });
     departmentStore.fetchDepartments();
   });
   onBeforeUnmount(() => {
     userManager.events.removeUserLoaded(updateAuthState);;
-    userManager.events.removeUserUnloaded(() => {
-      auth.value = false;
-    });
   });
   function renderIcon(icon: Component) {
     return () => h(NIcon, { component: icon })
@@ -59,13 +54,15 @@
   <NLayout>
     <NLayoutHeader class="headfoot">
       <RouterLink to='/'><NButton>ДонГТУ</NButton></RouterLink>
+      <RouterLink to='/admin'><NButton v-if="userStore.isAdmin">Админ панель</NButton></RouterLink>
       <NFlex>
-        <NDropdown trigger="click" :options="options" @select="handleSelect">
+        <NDropdown trigger="click" v-if="userStore.isUserCreatedOnAPI" :options="options" @select="handleSelect">
           <div>
-          <UserPreview class="loginoutbtn" v-if="auth && role().then(role => { return role !== 'Administrator'})" />
+            <UserPreview class="loginoutbtn" />
           </div>
         </NDropdown>
-        <NButton class="loginoutbtn" v-if="!auth" :onClick="login">{{ t('Nav.BtnLogin') }}</NButton>
+        <NButton class="loginoutbtn" v-else-if="userStore.isAuthenticated" :onClick="logout">{{ t('Nav.BtnLogout') }}</NButton>
+        <NButton class="loginoutbtn" v-if="!userStore.isAuthenticated" :onClick="login">{{ t('Nav.BtnLogin') }}</NButton>
       </NFlex>
     </NLayoutHeader>
     <NLayoutContent content-style="min-height: calc(100dvh - 6rem); padding: 1rem; min-width: 320px;">

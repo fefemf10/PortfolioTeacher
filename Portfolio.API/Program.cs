@@ -18,6 +18,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(Portfolio.Application.AppMappingProfile).Assembly);
+builder.Configuration.AddUserSecrets<Program>();
 builder.Services.Configure<Portfolio.API.MinioConfig>(builder.Configuration.GetSection("Minio"));
 builder.Services.AddAPIServices();
 //builder.Services.AddSwaggerGen(options =>
@@ -75,7 +76,6 @@ builder.Services.AddAPIServices();
 //		}
 //	});
 //});
-builder.Configuration.AddUserSecrets<Program>();
 
 var connectionStringBuilder = new MySqlConnectionStringBuilder();
 connectionStringBuilder.Server = builder.Configuration["DBHost"];
@@ -91,11 +91,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         options.Authority = builder.Configuration["Api:Authority"];
         options.RequireHttpsMetadata = false;
         options.TokenValidationParameters.ValidateAudience = false;
-        options.TokenValidationParameters.ValidateIssuer = true;
-        options.TokenValidationParameters.ValidIssuers = new[]
-        {
-            "http://localhost/id", "https://localhost/id", "https://pteach.ru/id", "https://tp6tqkw7-443.euw.devtunnels.ms/id",
-        };
+        options.TokenValidationParameters.ValidateIssuer = false;
         options.TokenValidationParameters.ValidTypes = new[] { "at+jwt" };
     });
 

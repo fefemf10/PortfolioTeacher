@@ -5,7 +5,8 @@
   import UserDetailsInfo from './UserDetailsInfo.vue';
   import MyNCard from '@/components/MyNCard.vue';
   import { hashCode } from '@/hashCode';
-import { computed, onMounted, ref } from 'vue';
+  import { computed, onMounted, ref } from 'vue';
+  import { useUserStore } from '@/stores/userStore';
   const props = defineProps<{
     user: UserProfile,
     upload: boolean
@@ -16,16 +17,12 @@ import { computed, onMounted, ref } from 'vue';
   }
   const themeVars = useThemeVars();
   const borderColor = themeVars.value.boxShadow1;
-  const urlAvatar = ref<string>(null);
+  const userStore = useUserStore();
   onMounted(async () => {
-    if (props.user.avatar)
-      urlAvatar.value = `/api/user/${props.user.id}/avatar`;
-    else
-      urlAvatar.value = `https://avatar.iran.liara.run/public/${hashCode(props.user.id) % 100}`;
+    userStore.updateAvatar();
   });
   function onFinishedUpload(){
-    const timestamp = new Date().getTime();
-    urlAvatar.value = `/api/user/${props.user.id}/avatar?${timestamp}`;
+    userStore.updateAvatar();
   }
 </script>
 <template>
@@ -34,9 +31,9 @@ import { computed, onMounted, ref } from 'vue';
       <NFlex>
         <NUpload v-if="upload" :show-file-list=false @finish="onFinishedUpload"
           :action="`/api/user/${user.id}/avatar`">
-          <NAvatar lazy circle :size="200" :src=urlAvatar style="cursor: pointer;" />
+          <NAvatar lazy circle :size="200" :src=userStore.urlAvatar style="cursor: pointer;" />
         </NUpload>
-        <NAvatar v-else lazy circle :size="200" :src=urlAvatar />
+        <NAvatar v-else lazy circle :size="200" :src=userStore.urlAvatar />
       </NFlex>
       <NFlex vertical>
         <UserNameInfo :lastName=user.lastName :firstName=user.firstName :middleName=user.middleName :academicDegree=user.academicDegree :academicTitle=user.academicTitle />

@@ -19,7 +19,7 @@
     if (props.user.avatar)
       return `/api/user/${props.user.id}/avatar`;
     else
-      return `https://avatar.iran.liara.run/public/${hashCode(props.user.id) % 100}`;
+      return `/images/id/AV${hashCode(props.user.id) % 100}.png`;
   });
 </script>
 <template>
