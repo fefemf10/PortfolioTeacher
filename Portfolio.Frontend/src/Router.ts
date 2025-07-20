@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from 'vue-router'
-import userManager, { login, role } from './oidc'
+import userManager, { login, role } from './oidc.js'
 const pages = import.meta.glob('./pages/**/*.vue')
 function lazy(page) {
   const path = `./pages/${page}.vue`;
@@ -101,10 +101,10 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { top: 0 }
+    if (to.hash) {
+      return {
+        behavior: 'auto',
+      }
     }
   }
 })

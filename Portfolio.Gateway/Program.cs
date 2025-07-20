@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 builder.Services.AddHttpLogging(options =>
 {
-    options.LoggingFields = HttpLoggingFields.RequestPropertiesAndHeaders;
+    options.LoggingFields = HttpLoggingFields.RequestProperties;
 });
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
@@ -17,6 +17,6 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 });
 var app = builder.Build();
 app.UseForwardedHeaders();
-app.UseHttpLogging();
+//app.UseHttpLogging();
 app.MapReverseProxy();
 app.Run();

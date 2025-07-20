@@ -9,6 +9,9 @@ services:
   frontend.portfolio:
     ports:
       - "10000:80"
+  idui.portfolio:
+    ports:
+      - "10001:80"
   api.portfolio:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
@@ -35,7 +38,6 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
-
   db.api.portfolio:
     environment:
       MYSQL_ROOT_PASSWORD: 1234

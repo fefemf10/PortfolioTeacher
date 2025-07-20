@@ -1,7 +1,7 @@
-import { Department } from "@/classes/Department";
+import { Department } from "@/classes/Department.js";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import api from '@/api';
+import api from '@/api.js';
 
 export const useDepartmentStore = defineStore('department', () => {
   const departments = ref<Department[]>([]);

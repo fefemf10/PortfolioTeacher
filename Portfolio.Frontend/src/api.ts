@@ -1,5 +1,5 @@
 import ky from 'ky';
-import userManager from './oidc'
+import userManager from './oidc.js'
 
 const api = ky.create({
   prefixUrl: `${window.location.origin}`,

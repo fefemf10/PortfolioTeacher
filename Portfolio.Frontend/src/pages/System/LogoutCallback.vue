@@ -7,8 +7,6 @@ const router = useRouter();
 
 onMounted(() => {
   userManager.signoutRedirectCallback().then(() => {
-    window.localStorage.setItem('user_api_created', 'false');
-    userCreated.value = false;
     router.replace({ path: '/' });
   });
 });

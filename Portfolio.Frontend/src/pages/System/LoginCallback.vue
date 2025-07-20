@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import userManager from '@/oidc';
-
+const route = useRoute();
 const router = useRouter();
 onMounted(() => {
   userManager.signinRedirectCallback().then(async () => {

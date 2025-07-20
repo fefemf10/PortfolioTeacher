@@ -1,0 +1,31 @@
+{
+    "Common": {
+        "SignIn": "Вход",
+        "SignUp": "Регистрация",
+        "Lang": "Язык"
+    },
+    "Messages": {
+        "EmailRequired": "Введите электронную почту",
+        "EmailFails": "Некорректная электронная почта",
+        "PasswordRequired": "Введите пароль",
+        "ConfirmPasswordRequired": "Введите подтверждение пароля",
+        "ConfirmPasswordFails": "Пароли не совпадают",
+        "InvalidCredentials": "Не верный логин или пароль",
+        "PasswordMinLength": "Минимальная длина пароля {min}"
+    },
+    "Placeholders": {
+        "Register": {
+            "email": "Электронная почта",
+            "password": "Пароль",
+            "confirmPassword": "Подтверждение пароля",
+            "btnRegister": "Зарегистрироваться"
+        },
+        "Login": {
+            "email": "Электронная почта",
+            "password": "Пароль",
+            "rememberLogin": "Запомнить вход",
+            "btnLogin": "Войти",
+            "btnCancel": "Отмена"
+        }
+    }
+}

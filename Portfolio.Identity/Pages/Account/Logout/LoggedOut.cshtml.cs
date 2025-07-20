@@ -21,7 +21,7 @@ public class LoggedOut : PageModel
     {
         // get context information (client name, post logout redirect URI and iframe for federated signout)
         var logout = await _interactionService.GetLogoutContextAsync(logoutId);
-
+        
         View = new LoggedOutViewModel
         {
             AutomaticRedirectAfterSignOut = LogoutOptions.AutomaticRedirectAfterSignOut,

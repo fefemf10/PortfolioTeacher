@@ -24,6 +24,9 @@ namespace IdentityServer
 			{
 				ClientId = "PortfolioSite",
                 AllowedGrantTypes = GrantTypes.Code,
+				AllowedCorsOrigins = {
+                    "http://localhost"
+                },
 				AllowedScopes =
 				{
 					IdentityServerConstants.StandardScopes.OpenId,

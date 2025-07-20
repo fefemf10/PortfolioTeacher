@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import api from '@/api';
-import { guid, role, isAuthenticated as oidcIsAuthenticated } from "@/oidc";
-import { UserProfile } from "@/classes/UserProfile";
-import { hashCode } from "@/hashCode";
+import api from '@/api.js';
+import { guid, role, isAuthenticated as oidcIsAuthenticated } from "@/oidc.js";
+import { UserProfile } from "@/classes/UserProfile.js";
+import { hashCode } from "@/hashCode.js";
 
 export const useUserStore = defineStore('user', () => {
   const user = ref<UserProfile>(null);

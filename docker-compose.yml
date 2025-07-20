@@ -4,17 +4,16 @@ services:
     build:
       context: .
       dockerfile: Portfolio.Gateway/Dockerfile
-    depends_on:
-      - api.portfolio
-      - id.portfolio
   frontend.portfolio:
     image: ${DOCKER_REGISTRY-}frontend.portfolio
     build:
       context: .
       dockerfile: Portfolio.Frontend/Dockerfile
-    depends_on:
-      - api.portfolio
-      - id.portfolio
+  idui.portfolio:
+    image: ${DOCKER_REGISTRY-}idui.portfolio
+    build:
+      context: .
+      dockerfile: Portfolio.IdentityUI/Dockerfile
   api.portfolio:
     image: ${DOCKER_REGISTRY-}api.portfolio
     build:

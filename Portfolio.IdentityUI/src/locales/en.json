@@ -1,0 +1,31 @@
+{
+    "Common": {
+        "SignIn": "Sign In",
+        "SignUp": "Sign Up",
+        "Lang": "Language"
+    },
+    "Messages": {
+        "EmailRequired": "Enter your email address",
+        "EmailFails": "Incorrect email address",
+        "PasswordRequired": "Enter the password",
+        "ConfirmPasswordRequired": "Enter the confirmation password",
+        "ConfirmPasswordFails": "Passwords don't match",
+        "InvalidCredentials": "Incorrect username or password",
+        "PasswordMinLength": "Minimum password length {min}"
+    },
+    "Placeholders": {
+        "Register": {
+            "email": "Email",
+            "password": "Password",
+            "confirmPassword": "Confirm password",
+            "btnRegister": "Register"
+        },
+        "Login": {
+            "email": "Email",
+            "password": "Password",
+            "rememberLogin": "Remember login",
+            "btnLogin": "Login",
+            "btnCancel": "Cancel"
+        }
+    }
+}

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Portfolio.Identity.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration : Migration
+    public partial class ApplicationContextMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -195,13 +195,13 @@ namespace Portfolio.Identity.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { new Guid("2d7668b6-9171-4a2f-b9d5-23adcf97db07"), null, "Administrator", "ADMINISTRATOR" },
-                    { new Guid("31d62015-3509-4c9d-958b-74f8391f5028"), null, "IdentityServer", "IDENTITYSERVER" },
-                    { new Guid("5c5e0a4e-6aff-423f-90a1-0db279a921c3"), null, "Moderator", "MODERATOR" },
-                    { new Guid("7182018c-8bc7-4376-800f-eb6b628aedf9"), null, "Teacher", "TEACHER" },
-                    { new Guid("8ad687cb-152a-4dde-9f81-b66a0626fe2b"), null, "Deputy", "DEPUTY" },
-                    { new Guid("912565e3-9d0a-43d1-9815-c2fb904babba"), null, "Student", "STUDENT" },
-                    { new Guid("ff2db28d-5564-48a5-bfb7-2d5c8567cd95"), null, "Dean", "DEAN" }
+                    { new Guid("00ebe860-ce1a-41c2-9a0c-8421b34bfb2a"), null, "Administrator", "ADMINISTRATOR" },
+                    { new Guid("0bb7e4c6-be14-460d-8f74-b8b74384b59a"), null, "Student", "STUDENT" },
+                    { new Guid("102d1a58-6f95-4e2d-aa9d-81766271c62c"), null, "Teacher", "TEACHER" },
+                    { new Guid("325172de-bdf8-4af5-91a0-41bb140bcd6e"), null, "Moderator", "MODERATOR" },
+                    { new Guid("3e682df7-a0d1-4ea5-b788-6cd71af73798"), null, "IdentityServer", "IDENTITYSERVER" },
+                    { new Guid("c21510d0-ffda-4452-924b-2526a616dd8c"), null, "Deputy", "DEPUTY" },
+                    { new Guid("cd3a5d1e-a7fd-415f-a7cf-785a4d72b0df"), null, "Dean", "DEAN" }
                 });
 
             migrationBuilder.CreateIndex(

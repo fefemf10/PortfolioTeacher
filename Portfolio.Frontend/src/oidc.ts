@@ -7,7 +7,7 @@ const oidcConfig:UserManagerSettings = {
   post_logout_redirect_uri: `${window.location.origin}/authentication/logout-callback`,
   response_type: 'code',
   scope: 'openid profile PortfolioServer IdentityServerApi',
-  userStore: new WebStorageStateStore({store: window.localStorage}),
+  userStore: new WebStorageStateStore({ store: window.localStorage }),
   stateStore: new WebStorageStateStore({ store: window.sessionStorage }),
   silent_redirect_uri: `${window.location.origin}/authentication/silent-callback`,
   monitorSession:false,

@@ -17,7 +17,7 @@ namespace Portfolio.Identity.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0-preview.1.24081.2")
+                .HasAnnotation("ProductVersion", "9.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
@@ -51,43 +51,43 @@ namespace Portfolio.Identity.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("2d7668b6-9171-4a2f-b9d5-23adcf97db07"),
+                            Id = new Guid("00ebe860-ce1a-41c2-9a0c-8421b34bfb2a"),
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = new Guid("5c5e0a4e-6aff-423f-90a1-0db279a921c3"),
+                            Id = new Guid("325172de-bdf8-4af5-91a0-41bb140bcd6e"),
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         },
                         new
                         {
-                            Id = new Guid("ff2db28d-5564-48a5-bfb7-2d5c8567cd95"),
+                            Id = new Guid("cd3a5d1e-a7fd-415f-a7cf-785a4d72b0df"),
                             Name = "Dean",
                             NormalizedName = "DEAN"
                         },
                         new
                         {
-                            Id = new Guid("8ad687cb-152a-4dde-9f81-b66a0626fe2b"),
+                            Id = new Guid("c21510d0-ffda-4452-924b-2526a616dd8c"),
                             Name = "Deputy",
                             NormalizedName = "DEPUTY"
                         },
                         new
                         {
-                            Id = new Guid("7182018c-8bc7-4376-800f-eb6b628aedf9"),
+                            Id = new Guid("102d1a58-6f95-4e2d-aa9d-81766271c62c"),
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = new Guid("912565e3-9d0a-43d1-9815-c2fb904babba"),
+                            Id = new Guid("0bb7e4c6-be14-460d-8f74-b8b74384b59a"),
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = new Guid("31d62015-3509-4c9d-958b-74f8391f5028"),
+                            Id = new Guid("3e682df7-a0d1-4ea5-b788-6cd71af73798"),
                             Name = "IdentityServer",
                             NormalizedName = "IDENTITYSERVER"
                         });

@@ -17,6 +17,12 @@
   }
   const themeVars = useThemeVars();
   const borderColor = themeVars.value.boxShadow1;
+  const urlAvatar = computed(() => {
+    if (props.user.avatar)
+      return `/api/user/${props.user.id}/avatar`;
+    else
+      return `/images/id/AV${hashCode(props.user.id) % 100 + 1}.png`;
+  });
   const userStore = useUserStore();
   onMounted(async () => {
     userStore.updateAvatar();
@@ -31,9 +37,9 @@
       <NFlex>
         <NUpload v-if="upload" :show-file-list=false @finish="onFinishedUpload"
           :action="`/api/user/${user.id}/avatar`">
-          <NAvatar lazy circle :size="200" :src=userStore.urlAvatar style="cursor: pointer;" />
+          <NAvatar lazy circle :size="200" :src=urlAvatar style="cursor: pointer;" />
         </NUpload>
-        <NAvatar v-else lazy circle :size="200" :src=userStore.urlAvatar />
+        <NAvatar v-else lazy circle :size="200" :src=urlAvatar />
       </NFlex>
       <NFlex vertical>
         <UserNameInfo :lastName=user.lastName :firstName=user.firstName :middleName=user.middleName :academicDegree=user.academicDegree :academicTitle=user.academicTitle />

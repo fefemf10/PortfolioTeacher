@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import { NFlex, NCard } from 'naive-ui'
-  import { UserProfile } from '../classes/UserProfile';
   import NavMenu from '../components/NavMenu.vue';
 </script>
 <template>

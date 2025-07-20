@@ -19,7 +19,7 @@
     if (props.user.avatar)
       return `/api/user/${props.user.id}/avatar`;
     else
-      return `/images/id/AV${hashCode(props.user.id) % 100}.png`;
+      return `/images/id/AV${hashCode(props.user.id) % 100 + 1}.png`;
   });
 </script>
 <template>

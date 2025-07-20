@@ -1,5 +1,5 @@
 import ky from 'ky';
-import userManager from './oidc'
+import userManager from './oidc.js'
 
 const id = ky.create({
   prefixUrl: `${window.location.origin}/id`,

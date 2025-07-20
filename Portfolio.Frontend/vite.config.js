@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 import { createHtmlPlugin } from 'vite-plugin-html'
 import vueDevTools from 'vite-plugin-vue-devtools'
+import { env } from 'process';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,6 +25,6 @@ export default defineConfig({
       }),
     ],
     server: {
-        port: 10000,
+        port: parseInt(env.DEV_SERVER_PORT || '10000'),
     }
 })

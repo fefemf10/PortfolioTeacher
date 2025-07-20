@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Portfolio.Identity.Migrations.PersistedGrantDb
 {
     /// <inheritdoc />
-    public partial class PersistedGrantDb : Migration
+    public partial class PersistedGrantDbContextMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
