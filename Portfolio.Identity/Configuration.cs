@@ -24,9 +24,6 @@ namespace IdentityServer
 			{
 				ClientId = "PortfolioSite",
                 AllowedGrantTypes = GrantTypes.Code,
-				AllowedCorsOrigins = {
-                    "http://localhost"
-                },
 				AllowedScopes =
 				{
 					IdentityServerConstants.StandardScopes.OpenId,
@@ -37,9 +34,11 @@ namespace IdentityServer
 				RedirectUris = {
 					"http://localhost:4000/authentication/login-callback", "https://pteach.ru/authentication/login-callback", "https://tp6tqkw7-443.euw.devtunnels.ms/authentication/login-callback", "http://localhost/authentication/login-callback",
                     "http://localhost:4000/authentication/silent-callback", "https://pteach.ru/authentication/silent-callback",
-                    
+                    "http://192.168.1.100/authentication/login-callback"
                 },
-				PostLogoutRedirectUris = { "http://localhost:4000/authentication/logout-callback", "https://pteach.ru/authentication/logout-callback", "https://tp6tqkw7-443.euw.devtunnels.ms/authentication/logout-callback", "http://localhost/authentication/logout-callback" },
+				PostLogoutRedirectUris = { "http://localhost:4000/authentication/logout-callback", "https://pteach.ru/authentication/logout-callback",
+					"https://tp6tqkw7-443.euw.devtunnels.ms/authentication/logout-callback", "http://localhost/authentication/logout-callback",
+                    "http://192.168.1.100/authentication/logout-callback" },
 				RequireClientSecret = false,
 				AllowAccessTokensViaBrowser = true,
 			}

@@ -60,7 +60,7 @@ builder.Services.AddIdentityServer()
 
 builder.Services.ConfigureApplicationCookie(options => {
     options.Cookie.SameSite = SameSiteMode.Strict;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
 });
 
 builder.Services.AddScoped<ICorsPolicyService>(sp =>
