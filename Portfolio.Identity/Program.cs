@@ -83,6 +83,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownProxies.Clear();
     options.AllowedHosts.Clear();
 });
+
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseForwardedHeaders();

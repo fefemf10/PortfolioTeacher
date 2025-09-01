@@ -5,16 +5,32 @@ using Microsoft.Extensions.Options;
 using Minio;
 using Minio.DataModel.Args;
 using MySqlConnector;
+using OpenTelemetry;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Portfolio.API;
 using Portfolio.API.Middleware;
 using Portfolio.Infrastructure;
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
+using Serilog.Sinks.OpenTelemetry;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers(options =>
+builder.Services.AddProblemDetails(options =>
 {
-    options.Filters.Add<LoggingFilter>();
+    options.CustomizeProblemDetails = context =>
+    {
+        context.ProblemDetails.Instance = $"{context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
+        context.ProblemDetails.Extensions.Add("requestId", context.HttpContext.TraceIdentifier);
+    };
 });
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
+builder.Services.AddSerilog();
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly(), typeof(Portfolio.Application.AppMappingProfile).Assembly);
@@ -76,7 +92,29 @@ builder.Services.AddAPIServices();
 //		}
 //	});
 //});
-
+builder.Logging.AddOpenTelemetry(options =>
+{
+    options.IncludeFormattedMessage = true;
+    options.IncludeScopes = true;
+    options.ParseStateValues = true;
+});
+builder.Services.AddOpenTelemetry()
+      .ConfigureResource(resource => resource
+          .AddService(builder.Environment.ApplicationName))
+      .WithLogging()
+      .WithTracing(tracing => tracing
+          .AddConnectorNet()
+          .AddAspNetCoreInstrumentation()
+          .AddHttpClientInstrumentation()
+          .AddEntityFrameworkCoreInstrumentation()
+          .AddRedisInstrumentation()
+          .SetSampler(new AlwaysOnSampler()))
+      .WithMetrics(metrics => metrics
+          .AddAspNetCoreInstrumentation()
+          .AddHttpClientInstrumentation()
+          .AddRuntimeInstrumentation()
+          .AddProcessInstrumentation())
+      .UseOtlpExporter();
 var connectionStringBuilder = new MySqlConnectionStringBuilder();
 connectionStringBuilder.Server = builder.Configuration["DBHost"];
 connectionStringBuilder.Database = builder.Configuration["DBDatabase"];
@@ -117,6 +155,9 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.AllowedHosts.Clear();
 });
 var app = builder.Build();
+app.UseSerilogRequestLogging();
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 {
     using var scope = app.Services.CreateScope();
     var minioClient = scope.ServiceProvider.GetRequiredService<IMinioClient>();
@@ -131,7 +172,6 @@ var app = builder.Build();
     }
 }
 app.UseForwardedHeaders();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseCors(builder =>
 {
     builder

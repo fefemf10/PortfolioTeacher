@@ -22,7 +22,7 @@ namespace Portfolio.API.Controllers.TeacherControllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ResponseTeacher>>> GetInfoAll()
         {
-            var teachers = await teacherService.GetAllDependencies();
+            var teachers = await teacherService.GetAllFromCache();
             return Ok(mapper.Map<IEnumerable<ResponseTeacher>>(teachers));
         }
         [HttpGet("{id:guid}")]

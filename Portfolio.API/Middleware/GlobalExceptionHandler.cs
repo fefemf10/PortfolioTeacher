@@ -1,34 +1,43 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Minio.Exceptions;
 using Portfolio.Application.Exceptions;
+using System.Diagnostics;
 using System.Net;
 
 namespace Portfolio.API.Middleware
 {
-    public class ExceptionHandlingMiddleware
+    internal sealed class GlobalExceptionHandler(IProblemDetailsService problemDetailsService) : IExceptionHandler
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionHandlingMiddleware> _logger;
+        public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
+        {
+            httpContext.Response.StatusCode = exception switch
+            {
+                NotFoundByIdException => StatusCodes.Status404NotFound,
+                AlreadyExistException _ => StatusCodes.Status400BadRequest,
+                UnauthorizedAccessException _ => StatusCodes.Status401Unauthorized,
+                AutoMapperMappingException _ => StatusCodes.Status500InternalServerError,
+                HttpRequestException => StatusCodes.Status502BadGateway,
+                MinioException => StatusCodes.Status502BadGateway,
+                _ => StatusCodes.Status500InternalServerError
+            };
+            return await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+            {
+                HttpContext = httpContext,
+                Exception = exception,
+                ProblemDetails = new ProblemDetails
+                {
+                    Type = exception.GetType().Name,
+                    Title = "An error occured",
+                    Detail = exception.Message
+                }
+            });
+        }
 
-        public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<ExceptionHandlingMiddleware> logger)
-        {
-            _next = next;
-            _logger = logger;
-        }
-        public async Task InvokeAsync(HttpContext context)
-        {
-            try
-            {
-                await _next(context);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(context, ex);
-            }
-        }
         private async Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            _logger.LogError(exception, "An unexpected error occurred.");
             ExceptionResponse response = exception switch
             {
                 NotFoundByIdException _ => new ExceptionResponse(HttpStatusCode.NotFound, "Not Found By Id."),

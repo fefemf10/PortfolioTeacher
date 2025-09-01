@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Portfolio.Domain.Models;
 using Portfolio.Application.ViewModels.Response;
-using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
-using Portfolio.Application.ViewModels.Request;
 using Portfolio.Domain.Services;
-using System.ComponentModel.DataAnnotations;
 
 namespace Portfolio.API.Controllers.TeacherControllers
 {
